@@ -3,11 +3,8 @@
 ################################################################################
 
 /.vs
-/UntitledBulletHellGame.sln
-/UntitledBulletHellGame.vcxproj.user
-/UntitledBulletHellGame.vcxproj.filters
-/UntitledBulletHellGame.vcxproj
-/UntitledBulletHellGameVS.vcxproj.user
-/UntitledBulletHellGameVS.vcxproj.filters
-/UntitledBulletHellGameVS.vcxproj
-/UntitledBulletHellGameVS.sln
+/Code/UntitledBulletHellGameVS.vcxproj.user
+/Code/UntitledBulletHellGameVS.vcxproj.filters
+/Code/UntitledBulletHellGameVS.vcxproj
+/Code/UntitledBulletHellGameVS.sln
+/Code/.vs/
