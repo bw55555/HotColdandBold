@@ -2,6 +2,10 @@
 #include <GLFW/glfw3.h>
 #include "stb_image.h"
 #include <iostream>
+#include <Shader.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -167,9 +171,9 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    unsigned int texture1, texture2;
-    loadTexture("../../resources/textures/container.jpg", &texture1, GL_RGB);
-    loadTexture("../../resources/textures/awesomeface.png", &texture2, GL_RGBA);
+    unsigned int texture1;
+    //loadTexture("../../resources/textures/container.jpg", &texture2, GL_RGB);
+    loadTexture("../../resources/textures/awesomeface.png", &texture1, GL_RGBA);
 
     // build and compile our shader program
     // ------------------------------------
@@ -179,8 +183,8 @@ int main()
     unsigned int shaderProgram2 = glCreateProgram();
     createShaderProgram(&shaderProgram2, vertexShaderSource2, fragmentShaderSource2);
 
-    unsigned int shaderProgram3 = glCreateProgram();
-    createShaderProgram(&shaderProgram3, vertexShaderSourceforTexture, fragmentShaderSourceforTexture);
+    //unsigned int shaderProgram3 = glCreateProgram();
+    Shader shader("../../resources/shaders/SpriteShader_U.vert", "../../resources/shaders/SpriteShader_U.frag");
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
     
@@ -236,33 +240,42 @@ int main()
 
     // render loop
     // -----------
-    glUseProgram(shaderProgram3);
-    glUniform1i(glGetUniformLocation(shaderProgram3, "texture1"), 0);
-    glUniform1i(glGetUniformLocation(shaderProgram3, "texture2"), 1);
+    shader.use();
+    shader.setInt("texture1", 0);
+    //glUniform1i(glGetUniformLocation(shaderProgram3, "texture2"), 1);
 
-    float speed = 0.0005f;
+    float speed = 0.01f;
     float vMove = 0.0f;
     float hMove = 0.0f;
-
+    float currFrame = 0.0f;
+    float drawTime = 0.0f;
     while (!glfwWindowShouldClose(window))
     {
         // input
         // -----
+        drawTime = glfwGetTime();
         processInput(window);
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
             vMove -= speed;
         else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
             vMove += speed;
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             hMove -= speed;
+            std::cout << "moveleft" << glfwGetTime()-currFrame << "\n";
+        }
         else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
             hMove += speed;
-        glUniform2f(glGetUniformLocation(shaderProgram3, "offset"), hMove, vMove);
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::scale(trans, glm::vec3(2, 2, 2));
+        trans = glm::translate(trans, glm::vec3(hMove, vMove, 0.0f));
+        shader.setMat4("transformation", trans);
+        shader.setMat4("projection", glm::mat4(1.0f));
+        //glUniform2f(glGetUniformLocation(shaderProgram3, "offset"), hMove, vMove);
         // render
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
+        
         // draw our first triangle
         
         
@@ -293,8 +306,8 @@ int main()
         //glBindTexture(GL_TEXTURE_2D, texture);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2);
+        //glActiveTexture(GL_TEXTURE1);
+        //glBindTexture(GL_TEXTURE_2D, texture2);
         
         glBindVertexArray(VAO5);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -314,6 +327,8 @@ int main()
         // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
+        currFrame = glfwGetTime();
+        _sleep(1000.0f / 60.0f - (currFrame-drawTime));
     }
 
     // optional: de-allocate all resources once they've outlived their purpose:
