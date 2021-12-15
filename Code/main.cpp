@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "GameWindow.h"
+#include <vector>
 
 GameWindow* gameWindow;
 void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum format);
@@ -16,6 +17,8 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 unsigned int Sprite::VAO;
+std::vector<Sprite*> Sprite::spriteList;
+
 
 int main() {
     glfwInit();

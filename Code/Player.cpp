@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(unsigned int textureID): Sprite(textureID, glm::vec3(0.1f, 0.1f, 0.1f)) {
+Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, textureID, glm::vec3(0.1f, 0.1f, 0.1f)) {
 	hMove = 0;
 	vMove = 0;
 	speed = 0.01;

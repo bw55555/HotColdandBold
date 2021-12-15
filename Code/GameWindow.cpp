@@ -59,7 +59,10 @@ void GameWindow::initialize() {
     
     playerTexture = 0;
     loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
-    player = new Player(playerTexture);
+    Hitbox playerHitbox;
+    playerHitbox.center = 0;
+    //dosmth with the player hitbox
+    player = new Player(playerHitbox, playerTexture);
 }
 
 void GameWindow::render() {

@@ -5,7 +5,7 @@ Sprite::Sprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, floa
 	trans = offset;
 	rot = rotation;
 	texture = textureID;
-	//spriteList.push_back(this);
+	spriteList.push_back(this);
 }
 
 void Sprite::draw(Shader* shader) {

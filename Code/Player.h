@@ -9,15 +9,16 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-#include "Sprite.h"
+#include "CollidableObject.h"
 class Player :
-    public Sprite
+    public CollidableObject
 {
 public:
     float speed;
     float hMove;
     float vMove;
-    Player(unsigned int textureID);
+
+    Player(Hitbox collisionbox, unsigned int textureID);
     void checkMovement(GLFWwindow* window);
 };
 

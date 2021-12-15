@@ -16,13 +16,13 @@ private:
 	
 public: 
 	static unsigned int VAO;
+	static std::vector<Sprite*> spriteList;
 
 	Sprite(unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);
 	unsigned int texture = 0;
 	glm::vec3 scale;
 	glm::vec3 trans;
 	float rot;
-	//static std::vector<Sprite*> spriteList;
 	void draw(Shader* shader);
 
 };
