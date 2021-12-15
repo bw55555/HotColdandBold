@@ -15,6 +15,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+unsigned int Sprite::VAO;
+
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -46,9 +48,13 @@ int main() {
     }
     Shader s = Shader("../../resources/shaders/SpriteShader_U.vert", "../../resources/shaders/SpriteShader_U.frag");
     gameWindow = new GameWindow(window, &s);
+    float currFrame = glfwGetTime();
     while (!glfwWindowShouldClose(window)) {
+
         gameWindow->update();
         gameWindow->render();
+        _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
+        currFrame = glfwGetTime();
     }
 
     // glfw: terminate, clearing all previously allocated GLFW resources.

@@ -1,11 +1,4 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "stb_image.h"
-#include <iostream>
-#include <Shader.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+
 
 #include "GameWindow.h"
 
@@ -36,18 +29,17 @@ void GameWindow::initialize() {
         1.0f, 0.0f,
         1.0f, 1.0f
     };
-    
+    unsigned int VAO;
     unsigned int VBO;
     unsigned int textureVBO;
     unsigned int EBO;
-    playerVAO = 0;
-    glGenVertexArrays(1, &playerVAO);
+    glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &textureVBO);
     glGenBuffers(1, &EBO);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-    glBindVertexArray(playerVAO);
-
+    glBindVertexArray(VAO);
+    Sprite::VAO = VAO;
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -67,29 +59,14 @@ void GameWindow::initialize() {
     
     playerTexture = 0;
     loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
-    shader->use();
-    shader->setInt("texture1", 0);
-
+    player = new Player(playerTexture);
 }
 
 void GameWindow::render() {
-    shader->use();
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::scale(trans, glm::vec3(0.25f, 0.25f, 0.25f));
-    trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-    shader->setMat4("transformation", trans);
-    shader->setMat4("projection", glm::mat4(1.0f));
-    
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, playerTexture);
-
-    glBindVertexArray(playerVAO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+    player->draw(shader);
 	
     glfwSwapBuffers(window);
     glfwPollEvents();
@@ -98,6 +75,7 @@ void GameWindow::render() {
 void GameWindow::update() {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    player->checkMovement(window);
 }
 
 void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer) {
