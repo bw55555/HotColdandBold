@@ -15,6 +15,7 @@ void createShaderProgram(unsigned int* shaderProgramPointer, const char* vertexS
 void create_pic(float center, float width, float height, unsigned int* VAOpointer);
 void test(float center, float width, float height, unsigned int* VAOpointer);
 void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum format);
+int testmain();
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -139,7 +140,7 @@ void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum form
     }
 }
 
-int main()
+int testmain()
 {
     // glfw: initialize and configure
     // ------------------------------
