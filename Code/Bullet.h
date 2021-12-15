@@ -10,13 +10,18 @@
 #include <vector>
 
 #include "CollidableObject.h"
-class Player :
+class Bullet :
     public CollidableObject
 {
 public:
-    float speed;
+    static std::vector<Bullet*> bullets;
 
-    Player(Hitbox collisionbox, unsigned int textureID);
-    void checkMovement(GLFWwindow* window);
+    typedef void (*UpdateFunc)(Bullet*);
+    UpdateFunc updatefunc;
+    
+    float currTime;
+
+    Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
+    void update();
 };
 

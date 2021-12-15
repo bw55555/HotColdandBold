@@ -10,6 +10,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Sprite.h"
 #include "Player.h"
+#include "Enemy.h"
+#include "BulletSpawner.h"
 
 class GameWindow
 {
@@ -19,6 +21,7 @@ private:
 	Shader* shader;
 	Player* player;
 public:
+	static unsigned int enemyTextures[10];
 	GameWindow(GLFWwindow* w, Shader* s);
 	void render();
 	void update();
@@ -26,3 +29,4 @@ public:
 	void loadTexture(const char* filePath, unsigned int* texturePointer);
 };
 
+void enemyTestFunc(Enemy* enemy);

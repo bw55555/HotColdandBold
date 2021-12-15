@@ -63,14 +63,23 @@ void GameWindow::initialize() {
     playerHitbox.center = 0;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
+
+    loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
+    Enemy* e = new Enemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
+
+    loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
 }
 
 void GameWindow::render() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    player->draw(shader);
-	
+    //player->draw(shader);
+    
+    for (Sprite* sprite : Sprite::spriteList) {
+        sprite->draw(shader);
+    }
+    
     glfwSwapBuffers(window);
     glfwPollEvents();
 }
@@ -79,6 +88,9 @@ void GameWindow::update() {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     player->checkMovement(window);
+    for (Enemy* enemy : Enemy::enemies) {
+        enemy->update();
+    }
 }
 
 void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer) {
@@ -111,4 +123,28 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     {
         std::cout << "Texture failed to load at path: " << filePath << std::endl;
     }
+}
+
+void enemyTestFunc(Enemy* enemy) {
+    //how to use void* like this?
+    if (enemy->currTime == 1.0f) {
+        float dir = 1.0f;
+        enemy->customVars.push_back(&dir);
+    }
+    float xpos = enemy->getPos().x;
+    float spd = 0.01f;
+    
+    if (xpos <= -0.8) {
+        float dir = 1.0f;
+        enemy->customVars[0] = &dir;
+    }
+    if (xpos >= 0.8) {
+        float dir = -1.0f;
+        enemy->customVars[0] = &dir;
+    }
+    
+    float dir = *(float*) (enemy->customVars[0]);
+    std::cout << dir;
+    enemy->move(glm::vec2(((dir>0) - (dir<0)) * spd, 0.0f));
+    
 }

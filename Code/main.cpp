@@ -8,6 +8,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "GameWindow.h"
 #include <vector>
+#include "BulletSpawner.h"
+#include "Enemy.h"
 
 GameWindow* gameWindow;
 void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum format);
@@ -17,7 +19,11 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 unsigned int Sprite::VAO;
+std::vector<Enemy*> Enemy::enemies;
 std::vector<Sprite*> Sprite::spriteList;
+unsigned int BulletSpawner::bulletPresetTextures[10];
+unsigned int GameWindow::enemyTextures[10];
+std::vector<Bullet*> Bullet::bullets;
 
 
 int main() {

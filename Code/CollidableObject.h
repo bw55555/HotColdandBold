@@ -18,11 +18,16 @@ struct Hitbox {
 class CollidableObject :
     public Sprite
 {
+private:
+    glm::vec3 pos;
 public:
     //static std::vector<CollidableObject*> collList;
     bool collisionEnabled;
     Hitbox hitbox;
-    CollidableObject(Hitbox collisionBox, unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);
+    CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), float rotation = 0.0f);
+    CollidableObject(Hitbox collisionBox, glm::vec2 initialPos, unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), float rotation = 0.0f);
     bool checkCollision(CollidableObject* other);
+    void move(glm::vec2 movement);
+    glm::vec3 getPos();
 };
 
