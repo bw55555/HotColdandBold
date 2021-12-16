@@ -20,12 +20,12 @@ public:
     typedef void (*UpdateFunc)(Enemy*);
     UpdateFunc updatefunc;
     std::vector<float> customFloats;
-    std::vector<void*> customVars;
 
     std::vector<BulletSpawner*> spawners;
     float currTime;
     Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*));
     void update();
     ~Enemy();
+    void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
 };
 

@@ -30,3 +30,5 @@ public:
 };
 
 void enemyTestFunc(Enemy* enemy);
+void bulletSpawnerTestFunc(BulletSpawner* spawner);
+void targetedBullet(Bullet* bullet);

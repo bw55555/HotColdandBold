@@ -1,7 +1,8 @@
 #include "Bullet.h"
-Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*)) : CollidableObject(collisionbox, initialPos, textureID) {
+Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling) {
 	currTime = 0.0f;
 	updatefunc = func;
+	bullets.push_back(this);
 }
 
 void Bullet::update(){

@@ -11,6 +11,8 @@
 
 #include "Bullet.h"
 
+class Enemy;
+
 class BulletSpawner
 {
 public:
@@ -18,11 +20,16 @@ public:
 
 	typedef void (*UpdateFunc)(BulletSpawner*);
 	UpdateFunc updatefunc;
+	std::vector<float> customFloats;
 
+	glm::vec3 localPos;
 	glm::vec3 pos;
 	float currTime;
+	Enemy* parent;
+	std::vector<Bullet*> bullets;
 
-	BulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
+	BulletSpawner(Enemy* parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*));
+	BulletSpawner(Enemy* parentPointer, glm::vec3 initialPos, void (*func)(BulletSpawner*));
 	void update();
 
 	void spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));

@@ -1,13 +1,31 @@
 #include "BulletSpawner.h"
+#include "Enemy.h"
 
-BulletSpawner::BulletSpawner(glm::vec2 initialPos, void (*updatefunction)(BulletSpawner*)) {
+
+BulletSpawner::BulletSpawner(Enemy* parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
+	parent = parentPointer;
 	currTime = 0.0f;
-	updatefunc = updatefunction;
-	pos = glm::vec3(initialPos, 0.0f);
+	updatefunc = func;
+	localPos = glm::vec3(initialPos, 0.0f);
+	pos = localPos + parent->getPos();
+}
+
+BulletSpawner::BulletSpawner(Enemy* parentPointer, glm::vec3 initialPos, void (*func)(BulletSpawner*)) {
+	parent = parentPointer;
+	currTime = 0.0f;
+	updatefunc = func;
+	localPos = initialPos;
+	pos = localPos + parent->getPos();
 }
 
 void BulletSpawner::update() {
 	currTime += 1.0f;
+	if (parent != nullptr) {
+		pos = localPos + parent->getPos();
+	}
+	else {
+		pos = localPos;
+	}
 	updatefunc(this);
 }
 

@@ -19,3 +19,8 @@ Enemy::~Enemy() {
 	}
 	spawners.clear();
 }
+
+void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
+	BulletSpawner* s = new BulletSpawner(this, initialPos, func);
+	spawners.push_back(s);
+}

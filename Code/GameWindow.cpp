@@ -66,7 +66,8 @@ void GameWindow::initialize() {
 
     loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
     Enemy* e = new Enemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
-
+    e->customFloats.push_back(1.0f);
+    e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
 }
 
@@ -90,6 +91,12 @@ void GameWindow::update() {
     player->checkMovement(window);
     for (Enemy* enemy : Enemy::enemies) {
         enemy->update();
+        for (BulletSpawner* spawner : enemy->spawners) {
+            spawner->update();
+        }
+    }
+    for (Bullet* bullet : Bullet::bullets) {
+        bullet->update();
     }
 }
 
@@ -127,9 +134,9 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
 
 void enemyTestFunc(Enemy* enemy) {
     //how to use void* like this?
-    if (enemy->currTime == 1.0f) {
-        enemy->customFloats.push_back(1.0f);
-    }
+    if (enemy->customFloats.size() <= 0) { 
+        std::cout << "Custom Floats not initialized" << std::endl;
+        return; }
     float xpos = enemy->getPos().x;
     float spd = 0.01f;
     
@@ -143,4 +150,14 @@ void enemyTestFunc(Enemy* enemy) {
     float dir = enemy->customFloats[0];
     enemy->move(glm::vec2(dir * spd, 0.0f));
     
+}
+
+void bulletSpawnerTestFunc(BulletSpawner* spawner) {
+    if ((int) (spawner->currTime) % 10 == 0) {
+        spawner->spawnPreset(0, glm::vec2(spawner->pos), targetedBullet);
+    }
+}
+
+void targetedBullet(Bullet* bullet) {
+    bullet->move(glm::vec2(0.0f, -0.02f));
 }
