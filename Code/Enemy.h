@@ -19,6 +19,7 @@ public:
 
     typedef void (*UpdateFunc)(Enemy*);
     UpdateFunc updatefunc;
+    std::vector<float> customFloats;
     std::vector<void*> customVars;
 
     std::vector<BulletSpawner*> spawners;

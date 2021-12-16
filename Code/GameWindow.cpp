@@ -128,23 +128,19 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
 void enemyTestFunc(Enemy* enemy) {
     //how to use void* like this?
     if (enemy->currTime == 1.0f) {
-        float dir = 1.0f;
-        enemy->customVars.push_back(&dir);
+        enemy->customFloats.push_back(1.0f);
     }
     float xpos = enemy->getPos().x;
     float spd = 0.01f;
     
     if (xpos <= -0.8) {
-        float dir = 1.0f;
-        enemy->customVars[0] = &dir;
+        enemy->customFloats[0] = 1.0f;
     }
     if (xpos >= 0.8) {
-        float dir = -1.0f;
-        enemy->customVars[0] = &dir;
+        enemy->customFloats[0] = -1.0f;
     }
     
-    float dir = *(float*) (enemy->customVars[0]);
-    std::cout << dir;
-    enemy->move(glm::vec2(((dir>0) - (dir<0)) * spd, 0.0f));
+    float dir = enemy->customFloats[0];
+    enemy->move(glm::vec2(dir * spd, 0.0f));
     
 }
