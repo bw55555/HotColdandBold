@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <vector>
 
 class Sprite
@@ -24,6 +25,7 @@ public:
 	glm::vec3 trans;
 	float rot;
 	void draw(Shader* shader);
-
+	void rotate(float angle);
+	void rotate(glm::vec2 dir);
 };
 

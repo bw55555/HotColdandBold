@@ -65,9 +65,15 @@ void GameWindow::initialize() {
     player = new Player(playerHitbox, playerTexture);
 
     loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    Enemy* e = new Enemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
+    Enemy* e = new Enemy(playerHitbox, glm::vec2(-0.5, 0.5f), enemyTextures[0], enemyTestFunc);
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
+    Enemy* e2 = new Enemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
+    e2->customFloats.push_back(1.0f);
+    e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+    Enemy* e3 = new Enemy(playerHitbox, glm::vec2(0.5, 0.5f), enemyTextures[0], enemyTestFunc);
+    e3->customFloats.push_back(1.0f);
+    e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
 }
@@ -167,6 +173,7 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
         glm::vec2 dir = glm::normalize(glm::vec2(GameWindow::player->getPos() - spawner->pos));
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
+        bullet->rotate(dir);
     }
 }
 

@@ -20,6 +20,7 @@ void CollidableObject::move(glm::vec2 movement) {
 	pos = pos + glm::vec3(movement, 0.0f);
 	trans = pos;
 }
+
 glm::vec3 CollidableObject::getPos() {
 	return pos;
 }

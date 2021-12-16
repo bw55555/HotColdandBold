@@ -24,3 +24,11 @@ void Sprite::draw(Shader* shader) {
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
+
+void Sprite::rotate(float angle) {
+	rot += angle;
+}
+
+void Sprite::rotate(glm::vec2 dir) {
+	rot += glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
+}
