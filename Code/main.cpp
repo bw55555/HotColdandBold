@@ -16,7 +16,7 @@ void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum form
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_HEIGHT = 800;
 
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
