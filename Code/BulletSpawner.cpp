@@ -40,5 +40,11 @@ Bullet* BulletSpawner::spawnPreset(unsigned int type, glm::vec2 pos, void (*func
 		//hitbox whatevers
 		return new Bullet(h, pos, bulletPresetTextures[0], func);
 	}
+	if (type == 1) {
+		Hitbox h;
+		h.center = 0;
+		//hitbox whatevers
+		return new Bullet(h, pos, bulletPresetTextures[1], func);
+	}
 	return nullptr;
 }

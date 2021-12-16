@@ -57,7 +57,7 @@ void GameWindow::initialize() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    playerTexture = 0;
+    unsigned int playerTexture = 0;
     loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
     Hitbox playerHitbox;
     playerHitbox.center = 0;
@@ -69,6 +69,7 @@ void GameWindow::initialize() {
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
+    loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
 }
 
 void GameWindow::render() {
@@ -154,10 +155,18 @@ void enemyTestFunc(Enemy* enemy) {
 
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 10 == 0) {
-        spawner->spawnPreset(0, glm::vec2(spawner->pos), targetedBullet);
+        Bullet* bullet = spawner->spawnPreset(0, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        bullet->customFloats.push_back(0.02f);
+        bullet->customFloats.push_back(0.0f);
+        bullet->customFloats.push_back(-1.0f);
+    }
+
+    if ((int)(spawner->currTime) % 60 == 0) {
+        Bullet* bullet = spawner->spawnPreset(1, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        bullet->customFloats.push_back(0.02f);
+        glm::vec2 dir = glm::normalize(glm::vec2(GameWindow::player->getPos() - spawner->pos));
+        bullet->customFloats.push_back(dir.x);
+        bullet->customFloats.push_back(dir.y);
     }
 }
 
-void targetedBullet(Bullet* bullet) {
-    bullet->move(glm::vec2(0.0f, -0.02f));
-}

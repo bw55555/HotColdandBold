@@ -15,9 +15,11 @@ class Bullet :
 {
 public:
     static std::vector<Bullet*> bullets;
+    static void directionalBullet(Bullet* bullet);
 
     typedef void (*UpdateFunc)(Bullet*);
     UpdateFunc updatefunc;
+    std::vector<float> customFloats;
     
     float currTime;
 

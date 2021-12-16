@@ -16,12 +16,12 @@
 class GameWindow
 {
 private:
-	unsigned int playerTexture;
 	GLFWwindow* window;
 	Shader* shader;
-	Player* player;
 public:
+	static Player* player;
 	static unsigned int enemyTextures[10];
+
 	GameWindow(GLFWwindow* w, Shader* s);
 	void render();
 	void update();
@@ -31,4 +31,3 @@ public:
 
 void enemyTestFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
-void targetedBullet(Bullet* bullet);

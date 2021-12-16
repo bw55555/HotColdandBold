@@ -19,6 +19,7 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 unsigned int Sprite::VAO;
+Player* GameWindow::player;
 std::vector<Enemy*> Enemy::enemies;
 std::vector<Sprite*> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];

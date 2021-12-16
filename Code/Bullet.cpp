@@ -9,3 +9,14 @@ void Bullet::update(){
 	currTime += 1.0f;
 	updatefunc(this);
 }
+
+void Bullet::directionalBullet(Bullet* bullet) {
+    //bullet with constant speed in a direction
+    //speed, x, y
+    if (bullet->customFloats.size() == 0) {
+        bullet->customFloats.push_back(0.02f);
+        bullet->customFloats.push_back(0.0f);
+        bullet->customFloats.push_back(1.0f);
+    }
+    bullet->move(bullet->customFloats[0] * glm::vec2(bullet->customFloats[1], bullet->customFloats[2]));
+}
