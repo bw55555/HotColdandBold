@@ -3,9 +3,5 @@
 ################################################################################
 
 /.vs
-/Code/UntitledBulletHellGameVS.vcxproj.user
-/Code/UntitledBulletHellGameVS.vcxproj.filters
-/Code/UntitledBulletHellGameVS.vcxproj
-/Code/UntitledBulletHellGameVS.sln
 /Code/.vs/
 /Code/x64/Debug
