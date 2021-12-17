@@ -36,9 +36,12 @@ void Player::fire() {
 		return;
 	}
 	lastFired = 0.0f;
+	float bulletSize = 0.1f;
 	Hitbox bulletHitbox;
-	bulletHitbox.center = 0;
-	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, glm::vec2(getPos()) + glm::vec2(0.0f, 0.01f), BulletSpawner::bulletPresetTextures[2], Bullet::directionalBullet, glm::vec3(0.1f));
+	bulletHitbox.type = HitboxType::Circle;
+	bulletHitbox.radius = bulletSize/2.0f;
+	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 0.01f), BulletSpawner::bulletPresetTextures[2], Bullet::directionalBullet, glm::vec3(bulletSize));
+	bullet->firedByPlayer = true;
 	bullet->customFloats.push_back(0.1f);
 	bullet->customFloats.push_back(0.0f);
 	bullet->customFloats.push_back(1.0f);

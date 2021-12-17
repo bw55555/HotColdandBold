@@ -12,6 +12,19 @@ std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPo
 	return e;
 }
 
+std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
+	float minDistance = -1.0f;
+	std::shared_ptr<Enemy> minDistEnemy = std::shared_ptr<Enemy>(nullptr);
+	for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+		float dist = glm::distance(pos, e->getPos());
+		if (minDistance < 0 || dist < minDistance) {
+			minDistance = dist;
+			minDistEnemy = e;
+		}
+	}
+	return minDistEnemy;
+}
+
 void Enemy::update() {
 	currTime += 1.0f;
 	updatefunc(this);

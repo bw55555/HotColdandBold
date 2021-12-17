@@ -28,6 +28,7 @@ public:
 	void initialize();
 	void loadTexture(const char* filePath, unsigned int* texturePointer);
 	void clearScreen();
+	void checkCollisions();
 };
 
 void enemyTestFunc(Enemy* enemy);

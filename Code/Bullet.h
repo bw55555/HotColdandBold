@@ -10,6 +10,9 @@
 #include <vector>
 
 #include "CollidableObject.h"
+
+class Enemy;
+
 class Bullet :
     public CollidableObject
 {
@@ -17,6 +20,7 @@ public:
     static std::vector<std::shared_ptr<Bullet>> bullets;
     static std::shared_ptr<Bullet> makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(0.05f));
     static void directionalBullet(Bullet* bullet);
+    static void homingBullet(Bullet* bullet);
 
     typedef void (*UpdateFunc)(Bullet*);
     UpdateFunc updatefunc;

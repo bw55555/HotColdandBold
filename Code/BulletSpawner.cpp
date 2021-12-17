@@ -6,7 +6,7 @@ BulletSpawner::BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 ini
 	parent = std::weak_ptr<Enemy>(parentPointer);
 	currTime = 0.0f;
 	updatefunc = func;
-	localPos = glm::vec3(initialPos, 0.0f);
+	localPos = initialPos;
 
 	pos = localPos + parentPointer->getPos();
 }
@@ -15,7 +15,7 @@ BulletSpawner::BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec3 ini
 	parent = parentPointer;
 	currTime = 0.0f;
 	updatefunc = func;
-	localPos = initialPos;
+	localPos = glm::vec2(initialPos);
 	pos = localPos + parentPointer->getPos();
 }
 
@@ -38,15 +38,24 @@ void BulletSpawner::spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsig
 std::shared_ptr<Bullet> BulletSpawner::spawnPreset(unsigned int type, glm::vec2 pos, void (*func)(Bullet*)) {
 	if (type == 0) {
 		Hitbox h;
-		h.center = 0;
+		h.type = HitboxType::Circle;
+		h.radius = 0.025f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[0], func);
 	}
 	if (type == 1) {
 		Hitbox h;
-		h.center = 0;
+		h.type = HitboxType::Circle;
+		h.radius = 0.025f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func);
+	}
+	if (type == 2) {
+		Hitbox h;
+		h.type = HitboxType::Circle;
+		h.radius = 0.05f;
+		//hitbox whatevers
+		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func, glm::vec3(0.1f));
 	}
 	return std::shared_ptr<Bullet>(nullptr);
 }

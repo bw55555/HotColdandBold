@@ -22,8 +22,8 @@ public:
 	UpdateFunc updatefunc;
 	std::vector<float> customFloats;
 
-	glm::vec3 localPos;
-	glm::vec3 pos;
+	glm::vec2 localPos;
+	glm::vec2 pos;
 	float currTime;
 	std::weak_ptr<Enemy> parent;
 

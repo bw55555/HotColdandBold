@@ -60,7 +60,8 @@ void GameWindow::initialize() {
     unsigned int playerTexture = 0;
     loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
     Hitbox playerHitbox;
-    playerHitbox.center = 0;
+    playerHitbox.type = HitboxType::Circle;
+    playerHitbox.radius = 0.01f;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
 
@@ -119,6 +120,7 @@ void GameWindow::update() {
     for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
         bullet->update();
     }
+    checkCollisions();
 }
 
 void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer) {
@@ -153,9 +155,33 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     }
 }
 
+void GameWindow::checkCollisions() {
+    for (std::shared_ptr<Bullet> b : Bullet::bullets) {
+        if (b->firedByPlayer) {
+            for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+                if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
+                    //collision detected between enemy and player bullet, do something!
+                    std::cout << "Hit enemy!" << std::endl;
+                }
+            }
+        }
+        else {
+            if (player->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
+                //Collision detected between player and enemy bullet, do something!
+                std::cout << "Got hit :(" << std::endl;
+            }
+        }
+    }
+    for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+        if (player->checkCollision(std::static_pointer_cast<CollidableObject>(e))) {
+            //Collision detected between enemy and player, do something!
+            std::cout << "Got hit by enemy :(" << std::endl;
+        }
+    }
+}
+
 void GameWindow::clearScreen() {
     Bullet::bullets.clear();
-    Sprite::spriteList.clear();
 }
 
 void enemyTestFunc(Enemy* enemy) {
@@ -180,7 +206,7 @@ void enemyTestFunc(Enemy* enemy) {
 
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 10 == 0) {
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(0.02f);
         bullet->customFloats.push_back(0.0f);
         bullet->customFloats.push_back(-1.0f);
@@ -188,9 +214,9 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     }
 
     if ((int)(spawner->currTime) % 60 == 0) {
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(0.02f);
-        glm::vec2 dir = glm::normalize(glm::vec2(GameWindow::player->getPos() - spawner->pos));
+        glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - spawner->pos);
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
         bullet->rotate(dir);
