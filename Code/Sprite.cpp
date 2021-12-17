@@ -42,5 +42,4 @@ void Sprite::rotate(glm::vec2 dir) {
 
 Sprite::~Sprite() {
 	//spriteList.erase(std::begin(spriteList));
-	std::cout << "Ran" << spriteList.size() << std::endl;
 }

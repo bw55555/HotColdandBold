@@ -19,14 +19,10 @@ void Enemy::update() {
 
 Enemy::~Enemy() {
 	//should delete the pointer in the enemies vector
-	for (auto p : spawners)
-	{
-		delete p;
-	}
 	spawners.clear();
 }
 
 void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
-	BulletSpawner* s = new BulletSpawner(shared_from_this(), initialPos, func);
-	spawners.push_back(s);
+	std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
+	spawners.push_back(std::move(s));
 }

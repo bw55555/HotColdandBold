@@ -110,8 +110,8 @@ void GameWindow::update() {
     player->checkMovement(window);
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
-        for (BulletSpawner* spawner : enemy->spawners) {
-            spawner->update();
+        for (int i = 0; i < enemy->spawners.size(); i++) {
+            enemy->spawners[i]->update();
         }
     }
     for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {

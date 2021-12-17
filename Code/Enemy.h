@@ -22,7 +22,7 @@ public:
     UpdateFunc updatefunc;
     std::vector<float> customFloats;
 
-    std::vector<BulletSpawner*> spawners;
+    std::vector<std::unique_ptr<BulletSpawner>> spawners;
     float currTime;
     Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*));
     void update();
