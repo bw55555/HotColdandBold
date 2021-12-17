@@ -63,7 +63,7 @@ int main() {
 
         gameWindow->update();
         gameWindow->render();
-        _sleep(1000.0f / 10.0f - (glfwGetTime() - currFrame));
+        _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
         currFrame = glfwGetTime();
     }
 
