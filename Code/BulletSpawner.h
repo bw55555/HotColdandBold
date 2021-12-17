@@ -25,14 +25,13 @@ public:
 	glm::vec3 localPos;
 	glm::vec3 pos;
 	float currTime;
-	Enemy* parent;
-	std::vector<Bullet*> bullets;
+	std::weak_ptr<Enemy> parent;
 
-	BulletSpawner(Enemy* parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*));
-	BulletSpawner(Enemy* parentPointer, glm::vec3 initialPos, void (*func)(BulletSpawner*));
+	BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*));
+	BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec3 initialPos, void (*func)(BulletSpawner*));
 	void update();
 
 	void spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
-	Bullet* spawnPreset(unsigned int type, glm::vec2 pos, void (*func)(Bullet*));
+	std::shared_ptr<Bullet> spawnPreset(unsigned int type, glm::vec2 pos, void (*func)(Bullet*));
 };
 

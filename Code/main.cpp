@@ -20,11 +20,11 @@ const unsigned int SCR_HEIGHT = 600;
 
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
-std::vector<Enemy*> Enemy::enemies;
-std::vector<Sprite*> Sprite::spriteList;
+std::vector<std::shared_ptr<Enemy>> Enemy::enemies;
+std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
-std::vector<Bullet*> Bullet::bullets;
+std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
 
 
 int main() {
@@ -63,7 +63,7 @@ int main() {
 
         gameWindow->update();
         gameWindow->render();
-        _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
+        _sleep(1000.0f / 10.0f - (glfwGetTime() - currFrame));
         currFrame = glfwGetTime();
     }
 

@@ -1,9 +1,15 @@
 #include "Enemy.h"
 
 Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*)) : CollidableObject(collisionbox, initialPos, textureID, glm::vec3(0.1f, 0.1f, 0.1f)) {
+	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
 	currTime = 0.0f;
 	updatefunc = func;
-	enemies.push_back(this);
+}
+
+std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*)) {
+	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(collisionbox, initialPos, textureID, func);
+	enemies.push_back(e);
+	return e;
 }
 
 void Enemy::update() {
@@ -21,6 +27,6 @@ Enemy::~Enemy() {
 }
 
 void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
-	BulletSpawner* s = new BulletSpawner(this, initialPos, func);
+	BulletSpawner* s = new BulletSpawner(shared_from_this(), initialPos, func);
 	spawners.push_back(s);
 }

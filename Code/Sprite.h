@@ -17,15 +17,17 @@ private:
 	
 public: 
 	static unsigned int VAO;
-	static std::vector<Sprite*> spriteList;
-
+	static std::vector<std::shared_ptr<Sprite>> spriteList;
+	static std::shared_ptr<Sprite> makeSprite(unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);
 	Sprite(unsigned int textureID, glm::vec3 scaling = glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);
 	unsigned int texture = 0;
 	glm::vec3 scale;
 	glm::vec3 trans;
+	bool isBullet;
 	float rot;
 	void draw(Shader* shader);
 	void rotate(float angle);
 	void rotate(glm::vec2 dir);
+	~Sprite();
 };
 

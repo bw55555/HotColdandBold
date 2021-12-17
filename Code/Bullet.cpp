@@ -1,8 +1,15 @@
 #include "Bullet.h"
 Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling) {
-	currTime = 0.0f;
+    //never use this, it screws with shared pointers! use makeBullet instead
+    currTime = 0.0f;
 	updatefunc = func;
-	bullets.push_back(this);
+    isBullet = true;
+}
+
+std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) {
+    std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(collisionbox, initialPos, textureID, func);
+    bullets.push_back(bullet);
+    return bullet;
 }
 
 void Bullet::update(){
@@ -19,4 +26,8 @@ void Bullet::directionalBullet(Bullet* bullet) {
         bullet->customFloats.push_back(1.0f);
     }
     bullet->move(bullet->customFloats[0] * glm::vec2(bullet->customFloats[1], bullet->customFloats[2]));
+}
+
+Bullet::~Bullet() {
+    //bullets.erase(std::begin(bullets));
 }

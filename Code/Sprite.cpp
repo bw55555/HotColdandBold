@@ -5,7 +5,14 @@ Sprite::Sprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, floa
 	trans = offset;
 	rot = rotation;
 	texture = textureID;
-	spriteList.push_back(this);
+	isBullet = false;
+	//spriteList.push_back(std::move(std::shared_ptr<Sprite>(this)));
+}
+
+std::shared_ptr<Sprite> Sprite::makeSprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, float rotation) {
+	std::shared_ptr<Sprite> s = std::make_shared<Sprite>(textureID, scaling, offset, rotation);
+	spriteList.push_back(s);
+	return s;
 }
 
 void Sprite::draw(Shader* shader) {
@@ -31,4 +38,9 @@ void Sprite::rotate(float angle) {
 
 void Sprite::rotate(glm::vec2 dir) {
 	rot += glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
+}
+
+Sprite::~Sprite() {
+	//spriteList.erase(std::begin(spriteList));
+	std::cout << "Ran" << spriteList.size() << std::endl;
 }

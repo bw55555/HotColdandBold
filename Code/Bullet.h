@@ -14,7 +14,8 @@ class Bullet :
     public CollidableObject
 {
 public:
-    static std::vector<Bullet*> bullets;
+    static std::vector<std::shared_ptr<Bullet>> bullets;
+    static std::shared_ptr<Bullet> makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(0.05f));
     static void directionalBullet(Bullet* bullet);
 
     typedef void (*UpdateFunc)(Bullet*);
@@ -25,5 +26,6 @@ public:
 
     Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(0.05f));
     void update();
+    ~Bullet();
 };
 

@@ -65,15 +65,16 @@ void GameWindow::initialize() {
     player = new Player(playerHitbox, playerTexture);
 
     loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    Enemy* e = new Enemy(playerHitbox, glm::vec2(-0.5, 0.5f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e = Enemy::makeEnemy(playerHitbox, glm::vec2(-0.5, 0.5f), enemyTextures[0], enemyTestFunc);
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
-    Enemy* e2 = new Enemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(playerHitbox, glm::vec2(0, 0.5f), enemyTextures[0], enemyTestFunc);
     e2->customFloats.push_back(1.0f);
     e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    Enemy* e3 = new Enemy(playerHitbox, glm::vec2(0.5, 0.5f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(playerHitbox, glm::vec2(0.5, 0.5f), enemyTextures[0], enemyTestFunc);
     e3->customFloats.push_back(1.0f);
     e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
 }
@@ -82,10 +83,19 @@ void GameWindow::render() {
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    //player->draw(shader);
     
-    for (Sprite* sprite : Sprite::spriteList) {
-        sprite->draw(shader);
+    
+    for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
+        sprite->draw(shader); 
+    }
+    
+    player->draw(shader);
+    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
+        enemy->draw(shader);
+    }
+    
+    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
+        bullet->draw(shader);
     }
     
     glfwSwapBuffers(window);
@@ -95,14 +105,16 @@ void GameWindow::render() {
 void GameWindow::update() {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+        clearScreen();
     player->checkMovement(window);
-    for (Enemy* enemy : Enemy::enemies) {
+    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
         for (BulletSpawner* spawner : enemy->spawners) {
             spawner->update();
         }
     }
-    for (Bullet* bullet : Bullet::bullets) {
+    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
         bullet->update();
     }
 }
@@ -139,6 +151,11 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     }
 }
 
+void GameWindow::clearScreen() {
+    Bullet::bullets.clear();
+    Sprite::spriteList.clear();
+}
+
 void enemyTestFunc(Enemy* enemy) {
     //how to use void* like this?
     if (enemy->customFloats.size() <= 0) { 
@@ -161,19 +178,21 @@ void enemyTestFunc(Enemy* enemy) {
 
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 10 == 0) {
-        Bullet* bullet = spawner->spawnPreset(0, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, glm::vec2(spawner->pos), Bullet::directionalBullet);
         bullet->customFloats.push_back(0.02f);
         bullet->customFloats.push_back(0.0f);
         bullet->customFloats.push_back(-1.0f);
+        bullet.reset();
     }
 
     if ((int)(spawner->currTime) % 60 == 0) {
-        Bullet* bullet = spawner->spawnPreset(1, glm::vec2(spawner->pos), Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, glm::vec2(spawner->pos), Bullet::directionalBullet);
         bullet->customFloats.push_back(0.02f);
         glm::vec2 dir = glm::normalize(glm::vec2(GameWindow::player->getPos() - spawner->pos));
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
         bullet->rotate(dir);
+        bullet.reset();
     }
 }
 
