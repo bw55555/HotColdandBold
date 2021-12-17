@@ -23,7 +23,7 @@ public:
     std::vector<float> customFloats;
     
     float currTime;
-
+    bool firedByPlayer = false;
     Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(0.05f));
     void update();
     ~Bullet();

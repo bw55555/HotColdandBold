@@ -75,8 +75,10 @@ void GameWindow::initialize() {
     e3->customFloats.push_back(1.0f);
     e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 
+    //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
+    loadTexture("../../resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
 }
 
 void GameWindow::render() {
@@ -107,7 +109,7 @@ void GameWindow::update() {
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
         clearScreen();
-    player->checkMovement(window);
+    player->update(window);
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
         for (int i = 0; i < enemy->spawners.size(); i++) {

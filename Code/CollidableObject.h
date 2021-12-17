@@ -11,8 +11,10 @@
 
 #include "Sprite.h"
 struct Hitbox {
+    //note that the hitbox should be localized. So center is (0,0) means centered at the center of the CollidableObject. Honestly this should be a vector though
     int center;
-    int bound;
+    std::string type;
+    int bound; //idk what this is, do whatever to make it work
 };
 
 class CollidableObject :

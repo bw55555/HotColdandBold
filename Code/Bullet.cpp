@@ -7,7 +7,7 @@ Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID
 }
 
 std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) {
-    std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(collisionbox, initialPos, textureID, func);
+    std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(collisionbox, initialPos, textureID, func, scaling);
     bullets.push_back(bullet);
     return bullet;
 }
