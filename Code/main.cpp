@@ -60,12 +60,44 @@ int main() {
     Shader s = Shader("../../resources/shaders/SpriteShader_U.vert", "../../resources/shaders/SpriteShader_U.frag");
     gameWindow = new GameWindow(window, &s);
     float currFrame = glfwGetTime();
-    while (!glfwWindowShouldClose(window)) {
 
+    bool debugMode = false;
+    bool pressedP = false;
+    bool pressedAdvance = false;
+    bool canAdvance = false;
+    while (!glfwWindowShouldClose(window)) {
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+            if (!pressedP) {
+                pressedP = true;
+                debugMode = !debugMode;
+            }
+        }
+        else if (pressedP) {
+            pressedP = false;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS) {
+            if (!pressedAdvance) {
+                pressedAdvance = true;
+                canAdvance = true;
+
+            }
+        }
+        else if (pressedAdvance) {
+            pressedAdvance = false;
+        }
+
+        if (!canAdvance && debugMode) {
+            glfwPollEvents();
+            continue;
+        }
+        canAdvance = false;
         gameWindow->update();
         gameWindow->render();
         _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
         currFrame = glfwGetTime();
+
+        glfwPollEvents();
     }
 
     // glfw: terminate, clearing all previously allocated GLFW resources.

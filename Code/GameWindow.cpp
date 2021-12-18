@@ -104,7 +104,6 @@ void GameWindow::render() {
     }
     
     glfwSwapBuffers(window);
-    glfwPollEvents();
 }
 
 void GameWindow::update() {
