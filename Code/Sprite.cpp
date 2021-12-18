@@ -42,6 +42,10 @@ void Sprite::rotate(glm::vec2 dir) {
 	rot += glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
 }
 
+void Sprite::setRotation(glm::vec2 dir) {
+	rot = glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
+}
+
 Sprite::~Sprite() {
 	//spriteList.erase(std::begin(spriteList));
 }

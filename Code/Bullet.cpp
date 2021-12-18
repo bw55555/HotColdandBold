@@ -13,9 +13,14 @@ std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initia
     return bullet;
 }
 
-void Bullet::update(){
+void Bullet::update() {
 	currTime += 1.0f;
 	updatefunc(this);
+}
+
+void Bullet::destroy() {
+    destroyed = true;
+    collisionEnabled = false;
 }
 
 void Bullet::directionalBullet(Bullet* bullet) {
@@ -37,14 +42,11 @@ void Bullet::homingBullet(Bullet* bullet) {
     }
     std::shared_ptr<Enemy> enemy = Enemy::findNearestEnemy(bullet->getPos());
     if (!enemy) {
-        bullet->move(glm::vec2(0.0f, 20.0f));
+        bullet->move(glm::vec2(0.0f, bullet->customFloats[0]));
     }
     else {
-        glm::vec2 dir = glm::normalize(bullet->getPos() - enemy->getPos());
-        bullet->move(bullet->customFloats[0] * glm::vec2(bullet->customFloats[1], bullet->customFloats[2]));
+        glm::vec2 dir = glm::normalize(enemy->getPos() - bullet->getPos());
+        bullet->move(bullet->customFloats[0] * dir);
+        bullet->setRotation(dir);
     }
-}
-
-Bullet::~Bullet() {
-    //bullets.erase(std::begin(bullets));
 }

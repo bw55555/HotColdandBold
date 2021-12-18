@@ -61,18 +61,20 @@ void GameWindow::initialize() {
     loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 0.01f;
+    playerHitbox.radius = 5.0f;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
-
+    Hitbox enemyHitbox;
+    enemyHitbox.type = HitboxType::Circle;
+    enemyHitbox.radius = 50.0f;
     loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    std::shared_ptr<Enemy> e = Enemy::makeEnemy(playerHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
-    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(playerHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e2->customFloats.push_back(1.0f);
     e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(playerHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(enemyHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e3->customFloats.push_back(1.0f);
     e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 
@@ -108,8 +110,12 @@ void GameWindow::render() {
 void GameWindow::update() {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    //bomb!
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
         clearScreen();
+
+    //update player, enemy, spawners, bullets
     player->update(window);
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
@@ -121,6 +127,15 @@ void GameWindow::update() {
         bullet->update();
     }
     checkCollisions();
+
+    //check for and destroy bullets with a true destroyed tag at the end
+    if (Bullet::bullets.size() > 0) {
+        
+        Bullet::bullets.erase(std::remove_if(Bullet::bullets.begin(), Bullet::bullets.end(), [](const std::shared_ptr<Bullet>& bullet) {
+            return bullet->destroyed;
+        }), Bullet::bullets.end());
+        
+    }
 }
 
 void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer) {
@@ -162,6 +177,7 @@ void GameWindow::checkCollisions() {
                 if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                     //collision detected between enemy and player bullet, do something!
                     std::cout << "Hit enemy!" << std::endl;
+                    b->destroy();
                 }
             }
         }
@@ -169,9 +185,11 @@ void GameWindow::checkCollisions() {
             if (player->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                 //Collision detected between player and enemy bullet, do something!
                 std::cout << "Got hit :(" << std::endl;
+                b->destroy();
             }
         }
     }
+
     for (std::shared_ptr<Enemy> e : Enemy::enemies) {
         if (player->checkCollision(std::static_pointer_cast<CollidableObject>(e))) {
             //Collision detected between enemy and player, do something!
@@ -219,7 +237,7 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - spawner->pos);
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
-        bullet->rotate(dir);
+        bullet->setRotation(dir);
         bullet.reset();
     }
 }

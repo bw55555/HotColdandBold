@@ -28,8 +28,9 @@ public:
     
     float currTime;
     bool firedByPlayer = false;
+    bool destroyed = false;
     Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(50.0f));
     void update();
-    ~Bullet();
+    void destroy();
 };
 

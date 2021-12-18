@@ -28,6 +28,7 @@ public:
 	void draw(Shader* shader);
 	void rotate(float angle);
 	void rotate(glm::vec2 dir);
+	void setRotation(glm::vec2 dir);
 	~Sprite();
 };
 
