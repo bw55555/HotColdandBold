@@ -224,17 +224,18 @@ void enemyTestFunc(Enemy* enemy) {
 
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 10 == 0) {
+        
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(20.0f);
         bullet->customFloats.push_back(0.0f);
         bullet->customFloats.push_back(-1.0f);
-        bullet.reset();
+        
     }
 
-    if ((int)(spawner->currTime) % 60 == 0) {
+    if ((int)(spawner->currTime) % 60 == 0 || true) {
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(20.0f);
-        glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - spawner->pos);
+        glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
         bullet->setRotation(dir);

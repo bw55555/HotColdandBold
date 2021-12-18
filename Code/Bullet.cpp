@@ -31,7 +31,9 @@ void Bullet::directionalBullet(Bullet* bullet) {
         bullet->customFloats.push_back(0.0f);
         bullet->customFloats.push_back(1.0f);
     }
-    bullet->move(bullet->customFloats[0] * glm::vec2(bullet->customFloats[1], bullet->customFloats[2]));
+    glm::vec2 dir = glm::vec2(bullet->customFloats[1], bullet->customFloats[2]);
+    bullet->move(bullet->customFloats[0] * dir);
+    bullet->setRotation(dir);
 }
 
 void Bullet::homingBullet(Bullet* bullet) {
