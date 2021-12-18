@@ -1,4 +1,5 @@
 #include "CollidableObject.h"
+#include "GameWindow.h"
 
 CollidableObject::CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling, float rotation) : Sprite(textureID, scaling, initialPos, rotation) {
 	hitbox = collisionBox;
@@ -38,7 +39,7 @@ bool CollidableObject::checkCollision(std::shared_ptr<CollidableObject> other) {
 
 void CollidableObject::move(glm::vec2 movement) {
 	pos = pos + movement;
-	trans = glm::vec3(pos, 0);
+	trans = glm::vec3(pos, 0.0f);
 }
 
 glm::vec2 CollidableObject::getPos() {

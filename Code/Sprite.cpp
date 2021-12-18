@@ -23,7 +23,9 @@ void Sprite::draw(Shader* shader) {
 	transmatrix = glm::rotate(transmatrix, glm::radians(rot), glm::vec3(0.0f, 0.0f, 1.0f));
 	transmatrix = glm::scale(transmatrix, scale);
 	shader->setMat4("transformation", transmatrix);
-	shader->setMat4("projection", glm::mat4(1.0f));
+	glm::mat4 scaleMatrix = glm::mat4(1.0f);
+	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.001f, 0.001f, 0.0f));
+	shader->setMat4("projection", scaleMatrix);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);

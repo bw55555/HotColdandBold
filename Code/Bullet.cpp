@@ -22,7 +22,7 @@ void Bullet::directionalBullet(Bullet* bullet) {
     //bullet with constant speed in a direction
     //customFloats: speed, x, y
     if (bullet->customFloats.size() == 0) {
-        bullet->customFloats.push_back(0.02f);
+        bullet->customFloats.push_back(20.0f);
         bullet->customFloats.push_back(0.0f);
         bullet->customFloats.push_back(1.0f);
     }
@@ -33,11 +33,11 @@ void Bullet::homingBullet(Bullet* bullet) {
     //bullet that follows the nearest enemy
     //speed
     if (bullet->customFloats.size() == 0) {
-        bullet->customFloats.push_back(0.02f);
+        bullet->customFloats.push_back(20.0f);
     }
     std::shared_ptr<Enemy> enemy = Enemy::findNearestEnemy(bullet->getPos());
     if (!enemy) {
-        bullet->move(glm::vec2(0.0f, 0.02f));
+        bullet->move(glm::vec2(0.0f, 20.0f));
     }
     else {
         glm::vec2 dir = glm::normalize(bullet->getPos() - enemy->getPos());

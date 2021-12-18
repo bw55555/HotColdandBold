@@ -1,13 +1,13 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*)) : CollidableObject(collisionbox, initialPos, textureID, glm::vec3(0.1f, 0.1f, 0.1f)) {
+Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
 	currTime = 0.0f;
 	updatefunc = func;
 }
 
-std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*)) {
-	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(collisionbox, initialPos, textureID, func);
+std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
+	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(collisionbox, initialPos, textureID, func, scaling);
 	enemies.push_back(e);
 	return e;
 }

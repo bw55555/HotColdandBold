@@ -39,21 +39,21 @@ std::shared_ptr<Bullet> BulletSpawner::spawnPreset(unsigned int type, glm::vec2 
 	if (type == 0) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
-		h.radius = 0.025f;
+		h.radius = 25.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[0], func);
 	}
 	if (type == 1) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
-		h.radius = 0.025f;
+		h.radius = 25.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func);
 	}
 	if (type == 2) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
-		h.radius = 0.05f;
+		h.radius = 50.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func, glm::vec3(0.1f));
 	}

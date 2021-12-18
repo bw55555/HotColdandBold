@@ -21,6 +21,9 @@ private:
 public:
 	static Player* player;
 	static unsigned int enemyTextures[10];
+	static const glm::vec2 normalized_coordinate_axes; //set in main.cpp
+	
+	glm::mat4 projectionMatrix;
 
 	GameWindow(GLFWwindow* w, Shader* s);
 	void render();

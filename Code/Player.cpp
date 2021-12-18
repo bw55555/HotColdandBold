@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -0.6f), textureID, glm::vec3(0.1f, 0.1f, 0.1f)) {
-	speed = 0.01;
+Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
+	speed = 15.0f;
 	currTime = 0.0f;
 	lastFired = 0.0f;
 }
@@ -36,13 +36,13 @@ void Player::fire() {
 		return;
 	}
 	lastFired = 0.0f;
-	float bulletSize = 0.1f;
+	float bulletSize = 100.0f;
 	Hitbox bulletHitbox;
 	bulletHitbox.type = HitboxType::Circle;
 	bulletHitbox.radius = bulletSize/2.0f;
-	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 0.01f), BulletSpawner::bulletPresetTextures[2], Bullet::directionalBullet, glm::vec3(bulletSize));
+	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[2], Bullet::directionalBullet, glm::vec3(bulletSize));
 	bullet->firedByPlayer = true;
-	bullet->customFloats.push_back(0.1f);
+	bullet->customFloats.push_back(100.0f);
 	bullet->customFloats.push_back(0.0f);
 	bullet->customFloats.push_back(1.0f);
 }
