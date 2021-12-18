@@ -11,7 +11,7 @@
 
 #include "Sprite.h"
 
-enum class HitboxType {Circle, Box};
+enum class HitboxType {Circle};
 
 struct Hitbox {
     //note that the hitbox should be localized. So center is (0,0) means centered at the center of the CollidableObject. Honestly this should be a vector though
