@@ -15,8 +15,10 @@ class GameWindow;
 
 enum class HitboxType {Circle};
 
+//yeah this is bad design but idc bite me
 struct Hitbox {
-    //note that the hitbox should be localized. So center is (0,0) means centered at the center of the CollidableObject. Honestly this should be a vector though
+    //note that the hitbox should be localized. 
+    //So center is (0,0) means centered at the center of the CollidableObject.
     glm::vec2 center = glm::vec2(0,0);
     HitboxType type = HitboxType::Circle;
     float radius = 0; //idk what this is, do whatever to make it work
