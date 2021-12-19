@@ -13,7 +13,7 @@
 
 class GameWindow;
 
-enum class HitboxType {Circle};
+enum class HitboxType {Circle, Box};
 
 //yeah this is bad design but idc bite me
 struct Hitbox {

@@ -10,6 +10,7 @@
 #include <vector>
 #include "BulletSpawner.h"
 #include "Enemy.h"
+#include "DropItem.h"
 
 GameWindow* gameWindow;
 void loadTexture(const char* filePath, unsigned int* texturePointer, GLenum format);
@@ -18,6 +19,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 const unsigned int SCR_WIDTH = 2000;
 const unsigned int SCR_HEIGHT = 2000;
 
+unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
 std::vector<std::shared_ptr<Enemy>> Enemy::enemies;

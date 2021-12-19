@@ -113,6 +113,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletSpawner.cpp" />
     <ClCompile Include="CollidableObject.cpp" />
+    <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletSpawner.h" />
     <ClInclude Include="CollidableObject.h" />
+    <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Player.h" />
