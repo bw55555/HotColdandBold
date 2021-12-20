@@ -34,7 +34,7 @@ bool CollidableObject::checkCollision(CollidableObject* other) {
 	if (hitbox.type == HitboxType::Box && other->hitbox.type == HitboxType::Box) {
 		glm::vec2 diff = firstCenter - secondCenter;
 		return abs(diff.x) < abs(hitbox.half_extents.x + other->hitbox.half_extents.x) &&
-			abs(diff.y) < abs(hitbox.half_extents.y + other->hitbox.half_extents.y)
+			abs(diff.y) < abs(hitbox.half_extents.y + other->hitbox.half_extents.y);
 	}
 
 	//code collision between 2 boxes and 1 box, 1 circle
