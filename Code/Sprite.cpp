@@ -24,7 +24,7 @@ void Sprite::draw(Shader* shader) {
 	transmatrix = glm::scale(transmatrix, scale);
 	shader->setMat4("transformation", transmatrix);
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.001f, 0.001f, 0.0f));
+	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.002f, 0.001f, 0.0f));
 	shader->setMat4("projection", scaleMatrix);
 	shader->setBool("shouldBlend", false);
 	glActiveTexture(GL_TEXTURE0);
