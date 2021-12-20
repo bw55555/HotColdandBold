@@ -21,7 +21,8 @@ struct Hitbox {
     //So center is (0,0) means centered at the center of the CollidableObject.
     glm::vec2 center = glm::vec2(0,0);
     HitboxType type = HitboxType::Circle;
-    float radius = 0; //idk what this is, do whatever to make it work
+    float radius = 0; //only for circle
+    glm::vec2 half_extents = glm::vec2(0, 0); //only for box
 };
 
 class CollidableObject :

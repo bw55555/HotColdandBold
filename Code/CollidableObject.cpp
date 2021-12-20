@@ -20,6 +20,23 @@ bool CollidableObject::checkCollision(CollidableObject* other) {
 		float dist = glm::distance(firstCenter, secondCenter);
 		return dist < other->hitbox.radius + hitbox.radius;
 	}
+
+	if (hitbox.type == HitboxType::Circle && other->hitbox.type == HitboxType::Box) {
+		glm::vec2 closest = secondCenter + glm::clamp(firstCenter - secondCenter, -1.0f * other->hitbox.half_extents, other->hitbox.half_extents);
+		return glm::length(closest - firstCenter) < hitbox.radius;
+	}
+
+	if (hitbox.type == HitboxType::Box && other->hitbox.type == HitboxType::Circle) {
+		glm::vec2 closest = firstCenter + glm::clamp(secondCenter - firstCenter, -1.0f * hitbox.half_extents, hitbox.half_extents);
+		return glm::length(closest - secondCenter) < other->hitbox.radius;
+	}
+
+	if (hitbox.type == HitboxType::Box && other->hitbox.type == HitboxType::Box) {
+		glm::vec2 diff = firstCenter - secondCenter;
+		return abs(diff.x) < abs(hitbox.half_extents.x + other->hitbox.half_extents.x) &&
+			abs(diff.y) < abs(hitbox.half_extents.y + other->hitbox.half_extents.y)
+	}
+
 	//code collision between 2 boxes and 1 box, 1 circle
 	return false;
 	//remember to copy this code to the shared pointer version
