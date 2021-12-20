@@ -23,8 +23,8 @@ public:
 	static unsigned int enemyTextures[10];
 	static const glm::vec2 normalized_coordinate_axes; //set in main.cpp
 	
-	static float width;
-	static float height;
+	static float halfWidth;
+	static float halfHeight;
 
 	glm::mat4 projectionMatrix;
 
