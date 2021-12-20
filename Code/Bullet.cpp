@@ -4,7 +4,6 @@ Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID
     //never use this, it screws with shared pointers! use makeBullet instead
     currTime = 0.0f;
 	updatefunc = func;
-    isBullet = true;
 }
 
 std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) {
@@ -21,6 +20,7 @@ void Bullet::update() {
 void Bullet::destroy() {
     destroyed = true;
     collisionEnabled = false;
+    renderEnabled = false;
 }
 
 void Bullet::directionalBullet(Bullet* bullet) {

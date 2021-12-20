@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "BulletSpawner.h"
+#include "DropItem.h"
 
 class GameWindow
 {

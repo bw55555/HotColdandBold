@@ -23,7 +23,7 @@ public:
 	unsigned int texture = 0;
 	glm::vec3 scale;
 	glm::vec3 trans;
-	bool isBullet;
+	bool renderEnabled;
 	float rot;
 	void draw(Shader* shader);
 	void rotate(float angle);

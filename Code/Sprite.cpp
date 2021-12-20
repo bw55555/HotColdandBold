@@ -6,7 +6,7 @@ Sprite::Sprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, floa
 	trans = offset;
 	rot = rotation;
 	texture = textureID;
-	isBullet = false;
+	renderEnabled = true;
 	//spriteList.push_back(std::move(std::shared_ptr<Sprite>(this)));
 }
 
@@ -17,6 +17,7 @@ std::shared_ptr<Sprite> Sprite::makeSprite(unsigned int textureID, glm::vec3 sca
 }
 
 void Sprite::draw(Shader* shader) {
+	if (!renderEnabled) { return; }
 	shader->use();
 	shader->setInt("texture1", 0);
 	glm::mat4 transmatrix = glm::mat4(1.0f);

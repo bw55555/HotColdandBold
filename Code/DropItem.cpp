@@ -37,4 +37,5 @@ void DropItem::update() {
 void DropItem::destroy() {
 	destroyed = true;
 	collisionEnabled = false;
+	renderEnabled = false;
 }

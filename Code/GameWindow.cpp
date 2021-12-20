@@ -103,6 +103,10 @@ void GameWindow::render() {
         bullet->draw(shader);
     }
     
+    for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
+        dropItem->draw(shader);
+    }
+
     glfwSwapBuffers(window);
 }
 
@@ -134,6 +138,14 @@ void GameWindow::update() {
             return bullet->destroyed;
         }), Bullet::bullets.end());
         
+    }
+
+    if (DropItem::dropItems.size() > 0) {
+
+        DropItem::dropItems.erase(std::remove_if(DropItem::dropItems.begin(), DropItem::dropItems.end(), [](const std::shared_ptr<DropItem>& dropItem) {
+            return dropItem->destroyed;
+            }), DropItem::dropItems.end());
+
     }
 }
 
