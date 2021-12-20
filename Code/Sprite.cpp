@@ -1,4 +1,5 @@
 #include "Sprite.h"
+#include "GameWindow.h"
 
 Sprite::Sprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, float rotation) {
 	scale = scaling;
@@ -24,7 +25,7 @@ void Sprite::draw(Shader* shader) {
 	transmatrix = glm::scale(transmatrix, scale);
 	shader->setMat4("transformation", transmatrix);
 	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(0.002f, 0.001f, 0.0f));
+	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f / GameWindow::width, 1.0f / GameWindow::height, 0.0f));
 	shader->setMat4("projection", scaleMatrix);
 	shader->setBool("shouldBlend", false);
 	glActiveTexture(GL_TEXTURE0);

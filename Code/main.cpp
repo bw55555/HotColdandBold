@@ -28,6 +28,8 @@ unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
 const glm::vec2 GameWindow::normalized_coordinate_axes = glm::vec2(1000.0f, 1000.0f);
+float GameWindow::width = 500.0f;
+float GameWindow::height = 1000.0f;
 
 
 int main() {
