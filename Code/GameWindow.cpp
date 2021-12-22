@@ -1,6 +1,7 @@
-
-
 #include "GameWindow.h"
+
+extern std::string PATH_START;
+
 
 GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
 	window = w;
@@ -58,7 +59,7 @@ void GameWindow::initialize() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     unsigned int playerTexture = 0;
-    loadTexture("../../resources/textures/awesomeface.png", &playerTexture);
+    loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
     playerHitbox.radius = 5.0f;
@@ -67,7 +68,7 @@ void GameWindow::initialize() {
     Hitbox enemyHitbox;
     enemyHitbox.type = HitboxType::Circle;
     enemyHitbox.radius = 50.0f;
-    loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
+    loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTextures[0]);
     std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
@@ -80,9 +81,9 @@ void GameWindow::initialize() {
     e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
     */
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
-    loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
-    loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
-    loadTexture("../../resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
+    loadTexture(PATH_START + "resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
+    loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
 }
 
 void GameWindow::render() {
@@ -148,6 +149,10 @@ void GameWindow::update() {
             }), DropItem::dropItems.end());
 
     }
+}
+
+void GameWindow::loadTexture(std::string filePath, unsigned int* texturePointer) {
+    loadTexture(filePath.c_str(), texturePointer);
 }
 
 void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer) {
@@ -218,7 +223,8 @@ void enemyTestFunc(Enemy* enemy) {
     //how to use void* like this?
     if (enemy->customFloats.size() <= 0) { 
         std::cout << "Custom Floats not initialized" << std::endl;
-        return; }
+        return; 
+    }
     float xpos = enemy->getPos().x;
     float spd = 10.0f;
     
@@ -230,7 +236,7 @@ void enemyTestFunc(Enemy* enemy) {
     }
     
     float dir = enemy->customFloats[0];
-    //enemy->move(glm::vec2(dir * spd, 0.0f));
+    enemy->move(glm::vec2(dir * spd, 0.0f));
     
 }
 

@@ -33,6 +33,7 @@ public:
 	void render();
 	void update();
 	void initialize();
+	void loadTexture(std::string filePath, unsigned int* texturePointer);
 	void loadTexture(const char* filePath, unsigned int* texturePointer);
 	void clearScreen();
 	void checkCollisions();
