@@ -68,16 +68,17 @@ void GameWindow::initialize() {
     enemyHitbox.type = HitboxType::Circle;
     enemyHitbox.radius = 50.0f;
     loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+    std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e->customFloats.push_back(1.0f);
     e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
-    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+    /*
+    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e2->customFloats.push_back(1.0f);
     e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
     std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(enemyHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
     e3->customFloats.push_back(1.0f);
     e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-
+    */
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
@@ -229,28 +230,28 @@ void enemyTestFunc(Enemy* enemy) {
     }
     
     float dir = enemy->customFloats[0];
-    enemy->move(glm::vec2(dir * spd, 0.0f));
+    //enemy->move(glm::vec2(dir * spd, 0.0f));
     
 }
 
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
-    if ((int) (spawner->currTime) % 10 == 0) {
+    if ((int) (spawner->currTime) % 1 == 0) {
         
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
-        bullet->customFloats.push_back(20.0f);
-        bullet->customFloats.push_back(0.0f);
-        bullet->customFloats.push_back(-1.0f);
-        
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
+        bullet->customFloats.push_back(10.0f);
+        glm::vec2 dir{ sin(90 + 45 * spawner->currTime), cos(90 + 45 * spawner->currTime) };
+        bullet->customFloats.push_back(dir.x);
+        bullet->customFloats.push_back(dir.y);
+        bullet->setRotation(dir);
     }
 
-    if ((int)(spawner->currTime) % 60 == 0 || true) {
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
+    if ((int)(spawner->currTime) % 5 == 0) {
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(20.0f);
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
         bullet->customFloats.push_back(dir.x);
         bullet->customFloats.push_back(dir.y);
         bullet->setRotation(dir);
-        bullet.reset();
     }
 }
 

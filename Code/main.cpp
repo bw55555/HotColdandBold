@@ -21,6 +21,7 @@ const unsigned int SCR_HEIGHT = 2000;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
+std::vector<std::shared_ptr<DropItem>> DropItem::dropItems;
 std::vector<std::shared_ptr<Enemy>> Enemy::enemies;
 std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];
