@@ -10,8 +10,6 @@ GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
 }
 
 void GameWindow::initialize() {
-
-    
     float vertices[] = {
          -0.5f, -0.5f, 0.0f, //bl
          -0.5f, 0.5f, 0.0f, //tl

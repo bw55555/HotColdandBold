@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "GameWindow.h"
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
 	speed = 15.0f;
@@ -28,7 +29,10 @@ void Player::checkMovement(GLFWwindow* window) {
 		hMove -= speed;
 	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
 		hMove += speed;
-	move(glm::vec2(hMove, vMove));
+	
+	glm::vec4 clampBox{0.0f - GameWindow::halfWidth + scale.x/2, 0.0f - GameWindow::halfHeight + scale.y/2, 0.0f + GameWindow::halfWidth - scale.x/2, 0.0f + GameWindow::halfHeight - scale.y/2};
+
+	move(glm::vec2(hMove, vMove), clampBox);
 }
 
 void Player::fire() {
