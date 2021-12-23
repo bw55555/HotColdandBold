@@ -64,21 +64,15 @@ void GameWindow::initialize() {
     playerHitbox.radius = 5.0f;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
-    Hitbox enemyHitbox;
-    enemyHitbox.type = HitboxType::Circle;
-    enemyHitbox.radius = 50.0f;
-    loadTexture("../../resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e->customFloats.push_back(1.0f);
-    e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
-    /*
-    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e2->customFloats.push_back(1.0f);
-    e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(enemyHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e3->customFloats.push_back(1.0f);
-    e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    */
+
+    FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
+    DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
+    EnemyBuildDirector director; //Creates the director
+
+    std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f)); // Make a fairy at 0, 500
+    std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 500.0f)); // Make a fairy at 500, 500
+    std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(100.0f, 100.0f)); // Make a doppleganger at 100, 100
+
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture("../../resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
