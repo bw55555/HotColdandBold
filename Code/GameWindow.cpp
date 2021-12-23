@@ -252,13 +252,13 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
 
 void Level1(GameLevel* level) {
     float ct = level->currTime;
-    if (ct == 120) {
+    if (ct == 30) {
         Hitbox enemyHitbox;
         enemyHitbox.type = HitboxType::Circle;
         enemyHitbox.radius = 50.0f;
         std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], enemyTestFunc);
         e->customFloats.push_back(1.0f);
-        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc2);
+        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
         /*
         std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
         e2->customFloats.push_back(1.0f);
@@ -301,17 +301,73 @@ void testFunc2(Bullet* b) {
     }
 }
 
-void spinningDirectionalBullet(Bullet* b) {
+void bulletSpawnerTestFuncDisplay(BulletSpawner* spawner) {
+    if ((int)(spawner->currTime) % 1 == 0) {
+
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, testFunc2);
+        bullet->customFloats.push_back(10.0f);
+        float angle = glm::radians(63 * spawner->currTime);
+        glm::vec2 dir{ sin(angle), cos(angle) };
+        dir = glm::normalize(dir);
+        bullet->customFloats.push_back(spawner->pos.x);
+        bullet->customFloats.push_back(spawner->pos.y);
+        bullet->customFloats.push_back(dir.x);
+        bullet->customFloats.push_back(dir.y);
+        bullet->setRotation(dir);
+    }
+}
+
+void spinningDirectionalBulletDisplay(Bullet* b) {
     //speed, centerX, centerY, directionX, directionY
 
     glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
     glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x));
-    glm::vec2 finalDir = glm::normalize(1.2f * spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
+    glm::vec2 finalDir = glm::normalize(spinDir * 1.05f + glm::vec2(b->customFloats[3], b->customFloats[4]));
 
     if (b->currTime < 15) {
         b->move(glm::vec2(b->customFloats[3], b->customFloats[4]) * b->customFloats[0]);
     }
     else {
         b->move(finalDir * b->customFloats[0]);
+        b->setRotation(finalDir);
+    }
+}
+
+void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
+    if ((int)(spawner->currTime) % 1 == 0) {
+
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, spinningDirectionalBullet);
+        bullet->customFloats.push_back(10.0f);
+        float angle = glm::radians(64.513f * spawner->currTime);
+        glm::vec2 dir{ sin(angle), cos(angle) };
+        dir = glm::normalize(dir);
+        bullet->customFloats.push_back(spawner->pos.x);
+        bullet->customFloats.push_back(spawner->pos.y);
+        bullet->customFloats.push_back(dir.x);
+        bullet->customFloats.push_back(dir.y);
+        bullet->setRotation(dir);
+    }
+}
+
+void spinningDirectionalBullet(Bullet* b) {
+    //speed, centerX, centerY, directionX, directionY
+
+    glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
+    glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x)) * (1 + b->currTime/500);
+    glm::vec2 finalDir = spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]);
+
+    if (b->currTime < 15) {
+        b->move(glm::vec2(b->customFloats[3], b->customFloats[4]) * b->customFloats[0]);
+    }
+    else if (b->currTime < 360) {
+        b->move(finalDir * b->customFloats[0]);
+        b->setRotation(finalDir);
+    }
+    else if (b->currTime == 360) {
+        b->customFloats.push_back(finalDir.x);
+        b->customFloats.push_back(finalDir.y);
+    }
+    else {
+        b->move(glm::vec2(b->customFloats[0] * glm::vec2(b->customFloats[5], b->customFloats[6])));
     }
 }
