@@ -45,3 +45,4 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner);
 void Level1(GameLevel* level);
 void bulletSpawnerTestFunc2(BulletSpawner* spawner);
 void spinningDirectionalBullet(Bullet* b);
+void testFunc2(Bullet* b);
