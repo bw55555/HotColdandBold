@@ -2,7 +2,7 @@
 #include "GameWindow.h"
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
-	speed = 15.0f;
+	speed = 25.0f;
 	currTime = 0.0f;
 	lastFired = 0.0f;
 }
@@ -18,6 +18,13 @@ void Player::update(GLFWwindow* window) {
 }
 
 void Player::checkMovement(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
+		speed = 10.0f;
+	}
+	else {
+		speed = 25.0f;
+	}
+
 	float hMove = 0;
 	float vMove = 0;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
