@@ -17,6 +17,7 @@ class Player :
 {
 public:
     static unsigned int hitboxTexture;
+    bool focus = false;
     float speed;
     float currTime;
     float lastFired;

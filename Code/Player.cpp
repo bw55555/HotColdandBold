@@ -20,9 +20,11 @@ void Player::update(GLFWwindow* window) {
 void Player::checkMovement(GLFWwindow* window) {
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
 		speed = 10.0f;
+		focus = true;
 	}
 	else {
 		speed = 25.0f;
+		focus = false;
 	}
 
 	float hMove = 0;
