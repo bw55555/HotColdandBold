@@ -43,3 +43,5 @@ public:
 void enemyTestFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
 void Level1(GameLevel* level);
+void bulletSpawnerTestFunc2(BulletSpawner* spawner);
+void spinningDirectionalBullet(Bullet* b);

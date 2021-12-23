@@ -103,9 +103,6 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-
     //bomb!
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
         clearScreen();
@@ -261,7 +258,7 @@ void Level1(GameLevel* level) {
         enemyHitbox.radius = 50.0f;
         std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], enemyTestFunc);
         e->customFloats.push_back(1.0f);
-        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc2);
         /*
         std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
         e2->customFloats.push_back(1.0f);
@@ -271,4 +268,38 @@ void Level1(GameLevel* level) {
         e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
         */
     }
+}
+
+void bulletSpawnerTestFunc2(BulletSpawner* spawner) {
+    if ((int)(spawner->currTime) % 1 == 0) {
+
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, spinningDirectionalBullet);
+        bullet->customFloats.push_back(10.0f);
+        glm::vec2 dir{ sin(glm::radians(47.5 * spawner->currTime)), cos(glm::radians(47.5 * spawner->currTime)) };
+        dir = glm::normalize(dir);
+        bullet->customFloats.push_back(spawner->pos.x);
+        bullet->customFloats.push_back(spawner->pos.y);
+        bullet->customFloats.push_back(dir.x);
+        bullet->customFloats.push_back(dir.y);
+        bullet->setRotation(dir);
+    }
+}
+
+void spinningDirectionalBullet(Bullet* b) {
+    //speed, centerX, centerY, directionX, directionY
+
+    glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
+    glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x));
+    glm::vec2 finalDir = glm::normalize(spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
+
+
+
+    if (b->currTime < 15) {
+        b->move(glm::vec2(0.0f, -1 * b->customFloats[0]));
+    }
+    else {
+        b->move(finalDir * b->customFloats[0]);
+    }
+
+
 }

@@ -84,6 +84,8 @@ int main() {
     bool pressedAdvance = false;
     bool canAdvance = false;
     while (!glfwWindowShouldClose(window)) {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            glfwSetWindowShouldClose(window, true);
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
             if (!pressedP) {
                 pressedP = true;
