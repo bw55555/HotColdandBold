@@ -18,9 +18,10 @@ extern std::string PATH_START = "";
 GameWindow* gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_WIDTH = 1600;
 const unsigned int SCR_HEIGHT = 2000;
 
+unsigned int Player::hitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
@@ -31,7 +32,7 @@ unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
 const glm::vec2 GameWindow::normalized_coordinate_axes = glm::vec2(1000.0f, 1000.0f);
-float GameWindow::halfWidth = 500.0f;
+float GameWindow::halfWidth = 800.0f;
 float GameWindow::halfHeight = 1000.0f;
 
 struct stat info;

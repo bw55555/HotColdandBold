@@ -60,7 +60,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 5.0f;
+    playerHitbox.radius = 15.0f;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
     Hitbox enemyHitbox;
@@ -82,6 +82,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture(PATH_START + "resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 }
 
 void GameWindow::render() {
@@ -95,6 +96,7 @@ void GameWindow::render() {
     }
     
     player->draw(shader);
+    player->drawHitbox(shader);
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->draw(shader);
     }
@@ -249,7 +251,7 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
         bullet->setRotation(dir);
     }
 
-    if ((int)(spawner->currTime) % 5 == 0) {
+    if ((int)(spawner->currTime) % 5 == 0 && (int) (spawner->currTime) % 100 != 5 && (int)(spawner->currTime) % 100 != 10) {
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
         bullet->customFloats.push_back(20.0f);
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());

@@ -16,6 +16,7 @@ class Player :
     public CollidableObject
 {
 public:
+    static unsigned int hitboxTexture;
     float speed;
     float currTime;
     float lastFired;
@@ -23,5 +24,6 @@ public:
     void checkMovement(GLFWwindow* window);
     void fire();
     void update(GLFWwindow* window);
+    void drawHitbox(Shader* shader);
 };
 

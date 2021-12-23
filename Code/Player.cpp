@@ -35,6 +35,25 @@ void Player::checkMovement(GLFWwindow* window) {
 	move(glm::vec2(hMove, vMove), clampBox);
 }
 
+void Player::drawHitbox(Shader* shader) {
+	if (!renderEnabled) { return; }
+	shader->use();
+	shader->setInt("texture1", 0);
+	glm::mat4 transmatrix = glm::mat4(1.0f);
+	transmatrix = glm::translate(transmatrix, trans);
+	transmatrix = glm::scale(transmatrix, glm::vec3(hitbox.radius));
+	shader->setMat4("transformation", transmatrix);
+	glm::mat4 scaleMatrix = glm::mat4(1.0f);
+	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f / GameWindow::halfWidth, 1.0f / GameWindow::halfHeight, 0.0f));
+	shader->setMat4("projection", scaleMatrix);
+	shader->setBool("shouldBlend", false);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, hitboxTexture);
+
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
 void Player::fire() {
 	if (lastFired > 0) {
 		return;
