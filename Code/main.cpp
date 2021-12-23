@@ -8,16 +8,20 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "GameWindow.h"
 #include <vector>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "BulletSpawner.h"
 #include "Enemy.h"
 #include "DropItem.h"
 
+extern std::string PATH_START = "";
 GameWindow* gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 1000;
+const unsigned int SCR_WIDTH = 1600;
 const unsigned int SCR_HEIGHT = 2000;
 
+unsigned int Player::hitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
 Player* GameWindow::player;
@@ -28,11 +32,21 @@ unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
 const glm::vec2 GameWindow::normalized_coordinate_axes = glm::vec2(1000.0f, 1000.0f);
-float GameWindow::halfWidth = 500.0f;
+float GameWindow::halfWidth = 800.0f;
 float GameWindow::halfHeight = 1000.0f;
+
+struct stat info;
 
 
 int main() {
+    if (stat("resources", &info) != 0) {
+        std::cout << "Changed path";
+        PATH_START = "../../";
+    }
+    else if (info.st_mode & S_IFDIR)  // S_ISDIR() doesn't exist on my windows 
+        PATH_START = "";
+    else
+        std::cout << "Welp something happened";
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -61,8 +75,8 @@ int main() {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    Shader s = Shader("../../resources/shaders/SpriteShader_U.vert", "../../resources/shaders/SpriteShader_U.frag");
-    gameWindow = new GameWindow(window, &s);
+    Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
+    gameWindow = new GameWindow(window, s);
     float currFrame = glfwGetTime();
 
     bool debugMode = false;
@@ -98,6 +112,7 @@ int main() {
         canAdvance = false;
         gameWindow->update();
         gameWindow->render();
+        //std::cout << glfwGetTime() - currFrame << " " << Bullet::bullets.size() << std::endl;
         _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
         currFrame = glfwGetTime();
 

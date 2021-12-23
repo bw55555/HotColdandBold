@@ -59,6 +59,24 @@ void CollidableObject::move(glm::vec2 movement) {
 	trans = glm::vec3(pos, 0.0f);
 }
 
+void CollidableObject::move(glm::vec2 movement, glm::vec4 clampBox) {
+	pos = pos + movement;
+	if (pos.x > clampBox[2]) {
+		pos.x = clampBox[2];
+	}
+	else if (pos.x < clampBox[0]) {
+		pos.x = clampBox[0];
+	}
+	if (pos.y > clampBox[3]) {
+		pos.y = clampBox[3];
+	}
+	else if (pos.y < clampBox[1]) {
+		pos.y = clampBox[1];
+	}
+
+	trans = glm::vec3(pos, 0.0f);
+}
+
 glm::vec2 CollidableObject::getPos() {
 	return pos;
 }

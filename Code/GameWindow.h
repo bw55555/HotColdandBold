@@ -13,6 +13,7 @@
 #include "Enemy.h"
 #include "BulletSpawner.h"
 #include "DropItem.h"
+#include "GameLevel.h"
 
 class GameWindow
 {
@@ -28,12 +29,13 @@ public:
 	static float halfHeight;
 
 	glm::mat4 projectionMatrix;
-
+	GameLevel* level = nullptr;
 	GameWindow(GLFWwindow* w, Shader* s);
 	void render();
 	void update();
 	void initialize();
 	static void loadTexture(const char* filePath, unsigned int* texturePointer);
+	static void loadTexture(std::string filePath, unsigned int* texturePointer);
 	void clearScreen();
 	void checkCollisions();
 };
@@ -134,3 +136,5 @@ public:
 		return builder->createEnemy();
 	}
 };
+
+void Level1(GameLevel* level);

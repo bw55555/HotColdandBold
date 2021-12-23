@@ -115,6 +115,7 @@
     <ClCompile Include="CollidableObject.cpp" />
     <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="CollidableObject.h" />
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
