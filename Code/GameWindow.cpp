@@ -63,26 +63,16 @@ void GameWindow::initialize() {
     playerHitbox.radius = 15.0f;
     //dosmth with the player hitbox
     player = new Player(playerHitbox, playerTexture);
-    Hitbox enemyHitbox;
-    enemyHitbox.type = HitboxType::Circle;
-    enemyHitbox.radius = 50.0f;
+    
     loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTextures[0]);
-    std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e->customFloats.push_back(1.0f);
-    e->createBulletSpawner(glm::vec2(0,0), bulletSpawnerTestFunc);
-    /*
-    std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e2->customFloats.push_back(1.0f);
-    e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(enemyHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
-    e3->customFloats.push_back(1.0f);
-    e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
-    */
+    
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture(PATH_START + "resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
+
+    level = new GameLevel(Level1);
 }
 
 void GameWindow::render() {
@@ -119,6 +109,8 @@ void GameWindow::update() {
     //bomb!
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
         clearScreen();
+
+    level->update();
 
     //update player, enemy, spawners, bullets
     player->update(window);
@@ -261,3 +253,22 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     }
 }
 
+void Level1(GameLevel* level) {
+    float ct = level->currTime;
+    if (ct == 120) {
+        Hitbox enemyHitbox;
+        enemyHitbox.type = HitboxType::Circle;
+        enemyHitbox.radius = 50.0f;
+        std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], enemyTestFunc);
+        e->customFloats.push_back(1.0f);
+        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+        /*
+        std::shared_ptr<Enemy> e2 = Enemy::makeEnemy(enemyHitbox, glm::vec2(-500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+        e2->customFloats.push_back(1.0f);
+        e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+        std::shared_ptr<Enemy> e3 = Enemy::makeEnemy(enemyHitbox, glm::vec2(500.0f, 500.0f), enemyTextures[0], enemyTestFunc);
+        e3->customFloats.push_back(1.0f);
+        e3->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+        */
+    }
+}
