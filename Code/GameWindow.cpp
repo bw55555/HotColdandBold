@@ -69,9 +69,9 @@ void GameWindow::initialize() {
     DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
     EnemyBuildDirector director; //Creates the director
 
-    std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f)); // Make a fairy at 0, 500
-    std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 500.0f)); // Make a fairy at 500, 500
-    std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(100.0f, 100.0f)); // Make a doppleganger at 100, 100
+    std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+    std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(100.0f, 100.0f), enemyTestFunc); // Make another
+    std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
 
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture("../../resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);

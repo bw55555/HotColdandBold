@@ -116,7 +116,7 @@ public:
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
 		loadTexture("../../resources/textures/scaryface.png", &enemyTexture);
 
-		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, this->position, enemyTexture, this->func);
+		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, position, enemyTexture, func);
 		e->customFloats.push_back(1.0f);
 		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 		return e;
@@ -126,7 +126,7 @@ public:
 class EnemyBuildDirector // Called in .cpp, provides information to correct builder
 {
 public:
-	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc) {
+	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir=glm::vec2(0.0f, 500.0f), void (*func)(Enemy*)=enemyTestFunc) {
 		// First parameter is the builder implementation to pass in
 		// Second is a vec2 that defaults to a location in the top/center of the screen
 		builder->setPosition(dir);
