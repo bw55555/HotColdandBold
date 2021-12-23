@@ -48,7 +48,7 @@ class EnemyBuilderInterface // An abstract enemy specification. Extend this in a
 {
 private: // For consistency, all variables that should be implemented have been defined here
 	Hitbox enemyHitbox; // The hitbox to give the enemy
-	glm::vec2 position = glm::vec2(0.0f, 500.0f); // Where they begin. By default, x = 0 y = 500
+	glm::vec2 position = glm::vec2(0.0f, 300.0f); // Where they begin. By default, x = 0 y = 500
 	unsigned int enemyTexture = 0; // Important for the loadTexture function
 	void (*func)(Enemy*) = enemyTestFunc; // The movement function for the enemy. By default, enemyTestFunc
 public:
@@ -87,7 +87,7 @@ class FairyBuilder : public EnemyBuilderInterface { //Builds the Touhou fairy en
 	// A useful sample implementation
 private:
 	Hitbox enemyHitbox;
-	glm::vec2 position = glm::vec2(0.0f, 500.0f); 
+	glm::vec2 position = glm::vec2(0.0f, 500.0f); //TODO: Fix the fact this seems to override inputs
 	unsigned int enemyTexture = 0; 
 	void (*func)(Enemy*) = enemyTestFunc;
 public:
@@ -108,7 +108,7 @@ class DoppleBuilder : public EnemyBuilderInterface { //Builds a scary Dopplegang
 	// A useful sample implementation
 private:
 	Hitbox enemyHitbox;
-	glm::vec2 position = glm::vec2(0.0f, 500.0f);
+	glm::vec2 position = glm::vec2(0.0f, 100.0f);
 	unsigned int enemyTexture = 0;
 	void (*func)(Enemy*) = enemyTestFunc;
 public:
