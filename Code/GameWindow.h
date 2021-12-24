@@ -15,6 +15,8 @@
 #include "DropItem.h"
 #include "GameLevel.h"
 
+extern std::string PATH_START;
+
 class GameWindow
 {
 private:
@@ -62,7 +64,7 @@ public:
 		this->enemyHitbox.radius = radius;
 	}
 
-	void loadTexture(const char* filePath, unsigned int* texturePointer) {
+	void loadTexture(std::string filePath, unsigned int* texturePointer) {
 		// Simply calls GameWindow's loadTexture function
 		GameWindow::loadTexture(filePath, texturePointer);
 	}
@@ -70,7 +72,7 @@ public:
 	void setPosition(glm::vec2 dir) {
 		// Sets the starting position for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
-		this->position = dir;
+		position = dir;
 	}
 
 	void setMovement(void (*func)(Enemy*)) {
@@ -95,7 +97,7 @@ public:
 		setHitboxInfo(HitboxType::Circle, 50.0f);
 
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
-		loadTexture("../../resources/textures/TouhouFairy.png", &enemyTexture);
+		loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTexture);
 
 		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, this->position, enemyTexture, this->func);
 		e->customFloats.push_back(1.0f);
@@ -116,7 +118,7 @@ public:
 		setHitboxInfo(HitboxType::Circle, 5.0f);
 
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
-		loadTexture("../../resources/textures/scaryface.png", &enemyTexture);
+		loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTexture);
 
 		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, position, enemyTexture, func);
 		e->customFloats.push_back(1.0f);
