@@ -15,8 +15,6 @@
 #include "DropItem.h"
 #include "GameLevel.h"
 
-extern std::string PATH_START;
-
 class GameWindow
 {
 private:
@@ -36,8 +34,8 @@ public:
 	void render();
 	void update();
 	void initialize();
-	static void loadTexture(const char* filePath, unsigned int* texturePointer);
-	static void loadTexture(std::string filePath, unsigned int* texturePointer);
+	void loadTexture(std::string filePath, unsigned int* texturePointer);
+	void loadTexture(const char* filePath, unsigned int* texturePointer);
 	void clearScreen();
 	void checkCollisions();
 };
@@ -45,3 +43,18 @@ public:
 void enemyTestFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
 void Level1(GameLevel* level);
+
+void bulletSpawnerTestFunc2(BulletSpawner* spawner);
+void testFunc2(Bullet* b);
+
+void bulletSpawnerTestFuncDisplay(BulletSpawner* spawner);
+void spinningDirectionalBulletDisplay(Bullet* b);
+
+void bulletSpawnerTestSpinning(BulletSpawner* spawner);
+void spinningDirectionalBullet(Bullet* b);
+
+void bulletSpawnerTest3(BulletSpawner* spawner);
+void testFunc3(Bullet* b);
+
+void bulletSpawnerTest4(BulletSpawner* spawner);
+void testFunc4(Bullet* b);
