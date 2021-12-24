@@ -85,3 +85,11 @@ void CollidableObject::setPos(glm::vec2 aPos) {
 	pos = aPos;
 	trans = glm::vec3(pos, 0.0f);
 }
+
+float CollidableObject::getX() {
+	return pos.x;
+}
+
+float CollidableObject::getY() {
+	return pos.x;
+}

@@ -281,10 +281,8 @@ void Level1(GameLevel* level) {
         EnemyBuildDirector director; //Creates the director
 
         std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-        std::cout << e->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
-        std::cout << e2->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
+        //std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
+        //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
     }
 }
 
@@ -431,7 +429,7 @@ void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
         for (float offset = 0; offset < 360; offset += 72) {
             float angle = glm::radians(3.0f * spawner->currTime + offset);
             glm::vec2 dir{ cos(angle), sin(angle) };
-            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, spinningDirectionalBullet);
+            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::spinningDirectionalBullet);
             bullet->customFloats.push_back(spawner->pos.x); //spin center x
             bullet->customFloats.push_back(spawner->pos.y); //spin center y
             bullet->customFloats.push_back(8.0f); //velocity (radius change)
