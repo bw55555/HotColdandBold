@@ -1,4 +1,5 @@
 #include "GameWindow.h"
+#include "EnemyBuilder.h"
 
 extern std::string PATH_START;
 
@@ -281,7 +282,7 @@ void Level1(GameLevel* level) {
 
         std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
         std::cout << e->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(100.0f, 100.0f), enemyFasterFunc); // Make another
+        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
         std::cout << e2->getPos().y << std::endl;
         std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
     }
