@@ -134,6 +134,7 @@
     <ClInclude Include="CollidableObject.h" />
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBuilder.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Player.h" />

@@ -16,6 +16,7 @@
 #include "GameLevel.h"
 
 void enemyTestFunc(Enemy* enemy);
+void enemyFasterFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
 
 class EnemyBuilderInterface // An abstract enemy specification. Extend this in a subclass, and remember to implement all methods!
@@ -53,7 +54,7 @@ public:
 	void setPosition(glm::vec2 dir) {
 		// Sets the starting position for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
-		position = dir;
+		this->position = dir;
 	}
 
 	glm::vec2 getPosition() {
@@ -61,10 +62,10 @@ public:
 		return position;
 	}
 
-	void setMovement(void (*func)(Enemy*)) {
+	void setMovement(void (*aFunc)(Enemy*)) {
 		// Sets the movement function for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
-		this->func = func;
+		this->func = aFunc;
 	}
 
 	// Must be implemented!
@@ -78,7 +79,6 @@ private:
 	glm::vec2 position = glm::vec2(0.0f, 400.0f); //TODO: Fix the fact this seems to override inputs
 	unsigned int enemyTexture = 0;
 public:
-	void (*func)(Enemy*) = enemyTestFunc;
 
 	std::shared_ptr<Enemy> createEnemy() override {
 		setHitboxInfo(HitboxType::Circle, 50.0f);
@@ -98,7 +98,6 @@ private:
 	glm::vec2 position = glm::vec2(0.0f, 100.0f);
 	unsigned int enemyTexture = 0;
 public:
-	void (*func)(Enemy*) = enemyTestFunc;
 
 	std::shared_ptr<Enemy> createEnemy() override {
 		setHitboxInfo(HitboxType::Circle, 5.0f);

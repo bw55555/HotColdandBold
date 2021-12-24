@@ -72,7 +72,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
     static unsigned int enemyTextures[10]; // Why is this 10?
-
+    createEnemyTextures();
     level = new GameLevel(Level1);
 }
 
@@ -289,9 +289,9 @@ void Level1(GameLevel* level) {
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
 
-        std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+        std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc, GameWindow::enemyTextures[0]); // Make a fairy at 0, 500
         std::cout << e->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
+        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc, GameWindow::enemyTextures[0]); // Make another
         std::cout << e2->getPos().y << std::endl;
         std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc, GameWindow::enemyTextures[1]); // Make a doppleganger
     }
