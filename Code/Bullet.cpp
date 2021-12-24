@@ -26,10 +26,10 @@ void Bullet::destroy() {
     collisionEnabled = false;
     renderEnabled = false;
 }
-
+//customFloats: speed, x, y
 void Bullet::directionalBullet(Bullet* bullet) {
     //bullet with constant speed in a direction
-    //customFloats: speed, x, y
+    //intentional fallthrough
     switch (bullet->customFloats.size()) {
     case 0:
         bullet->customFloats.push_back(20.0f);
@@ -61,8 +61,8 @@ void Bullet::homingBullet(Bullet* bullet) {
 }
 
 //note: make sure that the center is not the same as the current position!
+//centerX, centerY, radiusChange, angleChange, acceleration, spin acceleration
 void Bullet::spinningDirectionalBullet(Bullet* b) {
-    //centerX, centerY, radiusChange, angleChange, acceleration, spin acceleration
     switch (b->customFloats.size()) {
     case 0:
         b->customFloats.push_back(b->getX());
@@ -86,9 +86,9 @@ void Bullet::spinningDirectionalBullet(Bullet* b) {
     glm::vec2 radiusEx = glm::vec2(incrRadius * cos(glm::radians(incrAngle)), incrRadius * sin(glm::radians(incrAngle)));
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[5]));
 }
-
+//centerX, centerY, radiusChange, startingAngle, angleChange, acceleration, spin acceleration
 void Bullet::spinningDirectionalBullet2(Bullet* b) {
-    //centerX, centerY, radiusChange, startingAngle, angleChange, acceleration, spin acceleration
+    //intentional fallthrough on switch statement
     switch (b->customFloats.size()) {
     case 0:
         b->customFloats.push_back(b->getX());
