@@ -75,6 +75,12 @@ public:
 		position = dir;
 	}
 
+	glm::vec2 getPosition() {
+		// Sets the starting position for the enemy
+		// Remember, if you call this from checkEnemy it may override any passed in parameters!
+		return position;
+	}
+
 	void setMovement(void (*func)(Enemy*)) {
 		// Sets the movement function for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
@@ -89,7 +95,7 @@ class FairyBuilder : public EnemyBuilderInterface { //Builds the Touhou fairy en
 	// A useful sample implementation
 private:
 	Hitbox enemyHitbox;
-	glm::vec2 position = glm::vec2(0.0f, 500.0f); //TODO: Fix the fact this seems to override inputs
+	glm::vec2 position = glm::vec2(0.0f, 400.0f); //TODO: Fix the fact this seems to override inputs
 	unsigned int enemyTexture = 0; 
 	void (*func)(Enemy*) = enemyTestFunc;
 public:
@@ -98,8 +104,7 @@ public:
 
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
 		loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTexture);
-
-		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, this->position, enemyTexture, this->func);
+		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), enemyTexture, this->func);
 		e->customFloats.push_back(1.0f);
 		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 		return e;
@@ -120,7 +125,7 @@ public:
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
 		loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTexture);
 
-		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, position, enemyTexture, func);
+		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), enemyTexture, func);
 		e->customFloats.push_back(1.0f);
 		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 		return e;
