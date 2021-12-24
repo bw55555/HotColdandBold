@@ -71,6 +71,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
+    static unsigned int enemyTextures[10]; // Why is this 10?
+
     level = new GameLevel(Level1);
 }
 
@@ -176,6 +178,13 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     {
         std::cout << "Texture failed to load at path: " << filePath << std::endl;
     }
+}
+
+void GameWindow::createEnemyTextures() {
+    //This is not an ideal implementation! Simply a placeholder for now
+    //Add more textures here as you make more enemies, but ideally we're looping through everything in a file
+    loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTextures[0]);
+    loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTextures[1]);
 }
 
 void GameWindow::checkCollisions() {
@@ -284,6 +293,6 @@ void Level1(GameLevel* level) {
         std::cout << e->getPos().y << std::endl;
         std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
         std::cout << e2->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
+        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc, &GameWindow::enemyTextures[1]); // Make a doppleganger
     }
 }
