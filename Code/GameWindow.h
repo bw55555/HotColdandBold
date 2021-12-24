@@ -52,3 +52,9 @@ void spinningDirectionalBulletDisplay(Bullet* b);
 
 void bulletSpawnerTestSpinning(BulletSpawner* spawner);
 void spinningDirectionalBullet(Bullet* b);
+
+void bulletSpawnerTest3(BulletSpawner* spawner);
+void testFunc3(Bullet* b);
+
+void bulletSpawnerTest4(BulletSpawner* spawner);
+void testFunc4(Bullet* b);

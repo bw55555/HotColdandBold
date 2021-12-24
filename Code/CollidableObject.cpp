@@ -80,3 +80,8 @@ void CollidableObject::move(glm::vec2 movement, glm::vec4 clampBox) {
 glm::vec2 CollidableObject::getPos() {
 	return pos;
 }
+
+void CollidableObject::setPos(glm::vec2 aPos) {
+	pos = aPos;
+	trans = glm::vec3(pos, 0.0f);
+}

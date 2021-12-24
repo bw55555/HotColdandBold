@@ -40,5 +40,6 @@ public:
     void move(glm::vec2 movement);
     void move(glm::vec2 movement, glm::vec4 clampBox);
     glm::vec2 getPos();
+    void setPos(glm::vec2 aPos);
 };
 

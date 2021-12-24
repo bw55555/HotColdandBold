@@ -131,5 +131,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
-    glViewport(width/2 - height/4, 0, height/2, height);
+    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
+    glViewport(width/2 - height/2 /ratio, 0, height/ratio, height);
 }
