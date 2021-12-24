@@ -293,6 +293,6 @@ void Level1(GameLevel* level) {
         std::cout << e->getPos().y << std::endl;
         std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
         std::cout << e2->getPos().y << std::endl;
-        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc, &GameWindow::enemyTextures[1]); // Make a doppleganger
+        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc, GameWindow::enemyTextures[1]); // Make a doppleganger
     }
 }

@@ -24,7 +24,7 @@ class EnemyBuilderInterface // An abstract enemy specification. Extend this in a
 private: // For consistency, all variables that should be implemented have been defined here
 	Hitbox enemyHitbox; // The hitbox to give the enemy
 	glm::vec2 position = glm::vec2(0.0f, 300.0f); // Where they begin. By default, x = 0 y = 500
-	unsigned int* enemyTexture = 0; // Important for the loadTexture function
+	unsigned int enemyTexture = 0; // Important for the loadTexture function
 public:
 	void (*func)(Enemy*) = enemyTestFunc; // The movement function for the enemy. By default, enemyTestFunc
 	virtual ~EnemyBuilderInterface() {}
@@ -42,11 +42,11 @@ public:
 		GameWindow::loadTexture(filePath, texturePointer);
 	}
 
-	void setTexture(unsigned int* goalTexture) {
+	void setTexture(unsigned int goalTexture) {
 		this->enemyTexture = goalTexture;
 	}
 
-	unsigned int* getTexture() {
+	unsigned int getTexture() {
 		return this->enemyTexture;
 	}
 
@@ -76,7 +76,7 @@ class FairyBuilder : public EnemyBuilderInterface { //Builds the Touhou fairy en
 private:
 	Hitbox enemyHitbox;
 	glm::vec2 position = glm::vec2(0.0f, 400.0f); //TODO: Fix the fact this seems to override inputs
-	unsigned int* enemyTexture = 0;
+	unsigned int enemyTexture = 0;
 public:
 	void (*func)(Enemy*) = enemyTestFunc;
 
@@ -96,7 +96,7 @@ class DoppleBuilder : public EnemyBuilderInterface { //Builds a scary Dopplegang
 private:
 	Hitbox enemyHitbox;
 	glm::vec2 position = glm::vec2(0.0f, 100.0f);
-	unsigned int* enemyTexture = 0;
+	unsigned int enemyTexture = 0;
 public:
 	void (*func)(Enemy*) = enemyTestFunc;
 
@@ -115,7 +115,7 @@ public:
 class EnemyBuildDirector // Called in .cpp, provides information to correct builder
 {
 public:
-	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc, unsigned int* texture = &GameWindow::enemyTextures[0]) {
+	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc, unsigned int texture = GameWindow::enemyTextures[0]) {
 		// First parameter is the builder implementation to pass in
 		// Second is a vec2 that defaults to a location in the top/center of the screen
 		builder->setPosition(dir);
