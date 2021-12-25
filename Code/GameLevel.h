@@ -24,8 +24,14 @@ public:
 
 	GameLevel(void (*func)(GameLevel*));
 	float currTime;
-
+	float waitTime;
+	int numWaits = 0;
+	int numWaitTrue = 0;
+	bool runLevel = true;
 	void update();
 	void setCurrentTime(float time);
+	bool wait(float time, float numTrue = 1.0f);
+	bool waitUntil(float time, float numTrue = 1.0f);
+	void updateWaitTime();
 	//void setCheckpoint();
 };

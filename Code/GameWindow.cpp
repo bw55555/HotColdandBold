@@ -256,33 +256,32 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 1 == 0) {
         
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
-        bullet->customFloats.push_back(10.0f);
         glm::vec2 dir{ sin(90 + 45 * spawner->currTime), cos(90 + 45 * spawner->currTime) };
-        bullet->customFloats.push_back(dir.x);
-        bullet->customFloats.push_back(dir.y);
+        bullet->initializeCustomVars(Speed{ 10.0f }, Direction{ dir });
         bullet->setRotation(dir);
     }
 
     if ((int)(spawner->currTime) % 5 == 0 && (int) (spawner->currTime) % 100 != 5 && (int)(spawner->currTime) % 100 != 10) {
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
-        bullet->customFloats.push_back(20.0f);
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
-        bullet->customFloats.push_back(dir.x);
-        bullet->customFloats.push_back(dir.y);
+        bullet->initializeCustomVars(Speed{ 20.0f }, Direction{ dir });
         bullet->setRotation(dir);
     }
 }
 
 void Level1(GameLevel* level) {
     float ct = level->currTime;
-    if (ct == 120) {
-        FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
-        DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
-        EnemyBuildDirector director; //Creates the director
-
+    FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
+    DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
+    EnemyBuildDirector director; //Creates the director
+    if (level->wait(30)) {
         std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-        //std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc); // Make another
-        //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc); // Make a doppleganger
+    }
+    if (level->wait(30)) {
+        std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc);
+    }
+    if (level->waitUntil(120)) {
+        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
     }
 }
 
