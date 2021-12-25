@@ -13,6 +13,19 @@
 
 class Enemy;
 
+struct Direction {
+    glm::vec2 dir;
+    Direction() : dir(glm::vec2(0.0f, -1.0f)) {}
+    Direction(float x, float y) { dir = glm::vec2(x, y); }
+    Direction(glm::vec2 aDir) { dir = aDir; }
+};
+
+struct Speed {
+    float spd;
+    Speed() : spd(10.0f) {}
+    Speed(float aSpd) { spd = aSpd; }
+};
+
 class Bullet :
     public CollidableObject
 {
@@ -27,24 +40,36 @@ public:
     typedef void (*UpdateFunc)(Bullet*);
     UpdateFunc updatefunc;
     std::vector<float> customFloats;
-
-    void initializeCustomFloats(float x)
-    {
-        customFloats.push_back(x);
-    }
-
-    template<typename... Args>
-    void initializeCustomFloats(float x, Args... args) // recursive variadic function
-    {
-        initializeCustomFloats(x);
-        initializeCustomFloats(args...);
-    }
-
-
     //use this if you want, not necessary
     glm::vec2 dir = glm::vec2(0.0f, -1.0f);
     //use this if you want, not necessary
     float speed = 10.0f;
+
+
+    void initializeCustomVars(float x)
+    {
+        customFloats.push_back(x);
+    }
+
+    void initializeCustomVars(Direction x)
+    {
+        dir = x.dir;
+    }
+
+    void initializeCustomVars(Speed x)
+    {
+        speed = x.spd;
+    }
+
+    template<typename T, typename... Args>
+    void initializeCustomVars(T x, Args... args) // recursive variadic function
+    {
+        initializeCustomVars(x);
+        initializeCustomVars(args...);
+    }
+
+
+    
 
     float currTime;
     float destroyTime;

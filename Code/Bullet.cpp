@@ -26,36 +26,26 @@ void Bullet::destroy() {
     collisionEnabled = false;
     renderEnabled = false;
 }
-//customFloats: speed, x, y
+
+//set direction and speed, no customFloats
 void Bullet::directionalBullet(Bullet* bullet) {
     //bullet with constant speed in a direction
     //intentional fallthrough
-    switch (bullet->customFloats.size()) {
-    case 0:
-        bullet->customFloats.push_back(20.0f);
-    case 1:
-        bullet->customFloats.push_back(0.0f);
-    case 2:
-        bullet->customFloats.push_back(1.0f);
-    }
-    bullet->dir = glm::vec2(bullet->customFloats[1], bullet->customFloats[2]);
-    bullet->move(bullet->customFloats[0] * bullet->dir);
+    bullet->move(bullet->speed * bullet->dir);
     bullet->setRotation(bullet->dir);
 }
 
+//set speed, no customFloats
 void Bullet::homingBullet(Bullet* bullet) {
     //bullet that follows the nearest enemy
     //speed
-    if (bullet->customFloats.size() == 0) {
-        bullet->customFloats.push_back(20.0f);
-    }
     std::shared_ptr<Enemy> enemy = Enemy::findNearestEnemy(bullet->getPos());
     if (!enemy) {
-        bullet->move(glm::vec2(0.0f, bullet->customFloats[0]));
+        bullet->move(glm::vec2(0.0f, bullet->speed));
     }
     else {
         bullet->dir = glm::normalize(enemy->getPos() - bullet->getPos());
-        bullet->move(bullet->customFloats[0] * bullet->dir);
+        bullet->move(bullet->speed * bullet->dir);
         bullet->setRotation(bullet->dir);
     }
 }
@@ -84,8 +74,10 @@ void Bullet::spinningDirectionalBullet(Bullet* b) {
     float incrAngle = angle + b->customFloats[3];
     float incrRadius = glm::length(radius) + b->customFloats[2] * (1 + b->currTime * b->customFloats[4]);
     glm::vec2 radiusEx = glm::vec2(incrRadius * cos(glm::radians(incrAngle)), incrRadius * sin(glm::radians(incrAngle)));
+    b->setRotation(glm::normalize(radius + radiusEx));
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[5]));
 }
+
 //centerX, centerY, radiusChange, startingAngle, angleChange, acceleration, spin acceleration
 void Bullet::spinningDirectionalBullet2(Bullet* b) {
     //intentional fallthrough on switch statement
@@ -111,5 +103,6 @@ void Bullet::spinningDirectionalBullet2(Bullet* b) {
     float incrAngle = b->customFloats[3] + b->customFloats[4] * b->currTime;
     float incrRadius = glm::length(radius) + b->customFloats[2] * (1 + b->currTime * b->customFloats[5]);
     glm::vec2 radiusEx = glm::vec2(incrRadius * cos(glm::radians(incrAngle)), incrRadius * sin(glm::radians(incrAngle)));
+    b->setRotation(glm::normalize(radius + radiusEx));
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[6]));
 }
