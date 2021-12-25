@@ -227,7 +227,7 @@ void enemyTestFunc(Enemy* enemy) {
     }
     
     float dir = enemy->customFloats[0];
-    enemy->move(glm::vec2(dir * spd, 0.0f));
+    //enemy->move(glm::vec2(dir * spd, 0.0f));
     
 }
 
@@ -276,12 +276,13 @@ void Level1(GameLevel* level) {
     EnemyBuildDirector director; //Creates the director
     if (level->wait(30)) {
         std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+        //std::shared_ptr<Enemy> e = Enemy::spawnPreset(EnemyType::Fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc);
     }
     if (level->wait(30)) {
         std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc);
     }
     if (level->waitUntil(120)) {
-        std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
+        //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
     }
 }
 
@@ -428,8 +429,9 @@ void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
         for (float offset = 0; offset < 360; offset += 72) {
             float angle = glm::radians(3.0f * spawner->currTime + offset);
             glm::vec2 dir{ cos(angle), sin(angle) };
-            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::spinningDirectionalBullet);
-            bullet->initializeCustomVars(spawner->pos.x, spawner->pos.y, 8.0f, 0.7f, 0.02f, 0.00f);
+            //std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::spinningDirectionalBullet);
+            //bullet->initializeCustomVars(spawner->pos.x, spawner->pos.y, 8.0f, 0.7f, 0.02f, 0.00f);
+            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::SpinningDirectionalBullet{ spawner->pos, 8.0f, 0.7f, 0.02f, 0.00f });
         }
     }
 }

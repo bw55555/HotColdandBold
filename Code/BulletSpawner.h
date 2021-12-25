@@ -33,5 +33,13 @@ public:
 
 	void spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
 	std::shared_ptr<Bullet> spawnPreset(unsigned int type, glm::vec2 pos, void (*func)(Bullet*));
+	
+	template<class T>
+	std::shared_ptr<Bullet> spawnPreset(unsigned int type, glm::vec2 pos, T iFunc) {
+		//static_assert(std::is_base_of<Bullet::BulletInitializer, T>::value, "template type must be a derived class of BulletInitializer");
+		std::shared_ptr<Bullet> b = spawnPreset(type, pos, iFunc.f);
+		iFunc.init(b);
+		return b;
+	}
 };
 

@@ -26,10 +26,14 @@ struct Speed {
     Speed(float aSpd) { spd = aSpd; }
 };
 
+
+
 class Bullet :
     public CollidableObject
 {
 public:
+    
+
     static std::vector<std::shared_ptr<Bullet>> bullets;
     static std::shared_ptr<Bullet> makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(50.0f));
     static void directionalBullet(Bullet* bullet);
@@ -38,6 +42,44 @@ public:
     static void spinningDirectionalBullet2(Bullet* bullet);
 
     typedef void (*UpdateFunc)(Bullet*);
+    struct BulletInitializer {
+        UpdateFunc f;
+        BulletInitializer() : f(Bullet::directionalBullet) {}
+        BulletInitializer(UpdateFunc aFunc) { f = aFunc; }
+        virtual void init(std::shared_ptr<Bullet> b) {};
+    };
+
+    struct DirectionalBullet : BulletInitializer {
+        glm::vec2 dir;
+        float spd;
+        DirectionalBullet(glm::vec2 aDir, float aSpd) : BulletInitializer(Bullet::directionalBullet) {
+            dir = aDir;
+            spd = aSpd;
+        }
+        void init(std::shared_ptr<Bullet> b) {
+            b->initializeCustomVars(Speed{ spd }, Direction{ dir });
+        }
+    };
+
+    struct SpinningDirectionalBullet : BulletInitializer {
+        glm::vec2 center;
+        float radiusChange;
+        float angleChange;
+        float acceleration;
+        float spinAcceleration;
+        SpinningDirectionalBullet(glm::vec2 aCenter, float aRadiusChange, float aAngleChange, float aAcceleration, float aSpinAcceleration) : BulletInitializer(Bullet::spinningDirectionalBullet) {
+            center = aCenter;
+            radiusChange = aRadiusChange;
+            angleChange = aAngleChange;
+            acceleration = aAcceleration;
+            spinAcceleration = aSpinAcceleration;
+        }
+        void init(std::shared_ptr<Bullet> b) {
+            b->initializeCustomVars(center.x, center.y, radiusChange, angleChange, acceleration, spinAcceleration);
+        }
+    };
+
+    
     UpdateFunc updatefunc;
     std::vector<float> customFloats;
     //use this if you want, not necessary
