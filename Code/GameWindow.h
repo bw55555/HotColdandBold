@@ -23,7 +23,7 @@ private:
 	GLFWwindow* window;
 	Shader* shader;
 public:
-	static Player* player;
+	static std::shared_ptr<Player> player;
 	static unsigned int enemyTextures[10];
 	static const glm::vec2 normalized_coordinate_axes; //set in main.cpp
 	
@@ -31,7 +31,7 @@ public:
 	static float halfHeight;
 
 	glm::mat4 projectionMatrix;
-	GameLevel* level = nullptr;
+	std::shared_ptr<GameLevel> level = nullptr;
 	GameWindow(GLFWwindow* w, Shader* s);
 	void render();
 	void update();

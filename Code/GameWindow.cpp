@@ -63,7 +63,7 @@ void GameWindow::initialize() {
     playerHitbox.type = HitboxType::Circle;
     playerHitbox.radius = 15.0f;
     //dosmth with the player hitbox
-    player = new Player(playerHitbox, playerTexture);
+    player = std::make_shared<Player>(playerHitbox, playerTexture);
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
@@ -71,7 +71,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
-    level = new GameLevel(Level1);
+    level = std::make_shared<GameLevel>(Level1);
 }
 
 void GameWindow::render() {
@@ -285,6 +285,8 @@ void Level1(GameLevel* level) {
     if (level->waitUntil(120)) {
         //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
     }
+    delete fairy;
+    delete dopple;
 }
 
 void bulletSpawnerTestFunc2(BulletSpawner* spawner) {
