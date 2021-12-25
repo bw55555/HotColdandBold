@@ -252,19 +252,20 @@ void enemyFasterFunc(Enemy* enemy) {
 
 }
 
+
 void bulletSpawnerTestFunc(BulletSpawner* spawner) {
     if ((int) (spawner->currTime) % 1 == 0) {
         
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos, BulletMovement::directionalBullet);
         glm::vec2 dir{ sin(90 + 45 * spawner->currTime), cos(90 + 45 * spawner->currTime) };
-        bullet->initializeCustomVars(Speed{ 10.0f }, Direction{ dir });
+        bullet->initializeCustomVars(BulletMovement::Speed{ 10.0f }, BulletMovement::Direction{ dir });
         bullet->setRotation(dir);
     }
 
     if ((int)(spawner->currTime) % 5 == 0 && (int) (spawner->currTime) % 100 != 5 && (int)(spawner->currTime) % 100 != 10) {
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, Bullet::directionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::RoundBlue, spawner->pos, BulletMovement::directionalBullet);
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
-        bullet->initializeCustomVars(Speed{ 20.0f }, Direction{ dir });
+        bullet->initializeCustomVars(BulletMovement::Speed{ 20.0f }, BulletMovement::Direction{ dir });
         bullet->setRotation(dir);
     }
 }
@@ -289,7 +290,7 @@ void Level1(GameLevel* level) {
 void bulletSpawnerTestFunc2(BulletSpawner* spawner) {
     if ((int)(spawner->currTime) % 1 == 0) {
 
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(0, spawner->pos, testFunc2);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::RoundBlue, spawner->pos, testFunc2);
         bullet->customFloats.push_back(10.0f);
         float angle = glm::radians(60 * spawner->currTime);
         glm::vec2 dir{ sin(angle), cos(angle) };
@@ -320,7 +321,7 @@ void testFunc2(Bullet* b) {
 void bulletSpawnerTestFuncDisplay(BulletSpawner* spawner) {
     if ((int)(spawner->currTime) % 1 == 0) {
 
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, spinningDirectionalBulletDisplay);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos, spinningDirectionalBulletDisplay);
         bullet->customFloats.push_back(10.0f);
         float angle = glm::radians(63.017 * spawner->currTime);
         glm::vec2 dir{ sin(angle), cos(angle) };
@@ -352,7 +353,7 @@ void spinningDirectionalBulletDisplay(Bullet* b) {
 void bulletSpawnerTest3(BulletSpawner* spawner) {
     if ((int)(spawner->currTime) % 1 == 0) {
 
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, testFunc3);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos, testFunc3);
         bullet->customFloats.push_back(10.0f);
         float angle = glm::radians(64.513f * spawner->currTime);
         glm::vec2 dir{ sin(angle), cos(angle) };
@@ -391,7 +392,7 @@ void testFunc3(Bullet* b) {
 void bulletSpawnerTest4(BulletSpawner* spawner) {
     if ((int)(spawner->currTime) % 1 == 0) {
 
-        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos, spinningDirectionalBullet);
+        std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos, spinningDirectionalBullet);
         bullet->customFloats.push_back(10.0f);
         float angle = glm::radians(64.513f * spawner->currTime);
         glm::vec2 dir{ sin(angle), cos(angle) };
@@ -429,9 +430,9 @@ void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
         for (float offset = 0; offset < 360; offset += 72) {
             float angle = glm::radians(3.0f * spawner->currTime + offset);
             glm::vec2 dir{ cos(angle), sin(angle) };
-            //std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::spinningDirectionalBullet);
+            //std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, Bullet::spinningDirectionalBullet);
             //bullet->initializeCustomVars(spawner->pos.x, spawner->pos.y, 8.0f, 0.7f, 0.02f, 0.00f);
-            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::SpinningDirectionalBullet{ spawner->pos, 8.0f, 0.7f, 0.02f, 0.00f });
+            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::SpinningDirectionalBullet{ spawner->pos, 8.0f, 0.7f, 0.02f, 0.00f });
         }
     }
 }

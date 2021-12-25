@@ -35,27 +35,27 @@ void BulletSpawner::spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsig
 	
 }
 
-std::shared_ptr<Bullet> BulletSpawner::spawnPreset(unsigned int type, glm::vec2 pos, void (*func)(Bullet*)) {
-	if (type == 0) {
+std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 pos, void (*func)(Bullet*)) {
+	if (type == BulletType::RoundBlue) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
 		h.radius = 15.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[0], func);
 	}
-	if (type == 1) {
+	if (type == BulletType::Knife) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
 		h.radius = 15.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func);
 	}
-	if (type == 2) {
+	if (type == BulletType::RoundRed) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
 		h.radius = 25.0f;
 		//hitbox whatevers
-		return Bullet::makeBullet(h, pos, bulletPresetTextures[1], func);
+		return Bullet::makeBullet(h, pos, bulletPresetTextures[2], func);
 	}
 	return std::shared_ptr<Bullet>(nullptr);
 }
