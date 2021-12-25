@@ -28,6 +28,19 @@ public:
     UpdateFunc updatefunc;
     std::vector<float> customFloats;
 
+    void initializeCustomFloats(float x)
+    {
+        customFloats.push_back(x);
+    }
+
+    template<typename... Args>
+    void initializeCustomFloats(float x, Args... args) // recursive variadic function
+    {
+        initializeCustomFloats(x);
+        initializeCustomFloats(args...);
+    }
+
+
     //use this if you want, not necessary
     glm::vec2 dir = glm::vec2(0.0f, -1.0f);
     //use this if you want, not necessary

@@ -17,6 +17,7 @@
 
 void enemyTestFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
+void bulletSpawnerTestSpinning(BulletSpawner* spawner);
 
 class EnemyBuilderInterface // An abstract enemy specification. Extend this in a subclass, and remember to implement all methods!
 	// If you aren't sure, check FairyBuilder or ping @KD on discord
@@ -79,7 +80,7 @@ public:
 		loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTexture);
 		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), enemyTexture, this->func);
 		e->customFloats.push_back(1.0f);
-		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
 		return e;
 	}
 };

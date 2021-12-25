@@ -430,12 +430,7 @@ void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
             float angle = glm::radians(3.0f * spawner->currTime + offset);
             glm::vec2 dir{ cos(angle), sin(angle) };
             std::shared_ptr<Bullet> bullet = spawner->spawnPreset(1, spawner->pos + dir, Bullet::spinningDirectionalBullet);
-            bullet->customFloats.push_back(spawner->pos.x); //spin center x
-            bullet->customFloats.push_back(spawner->pos.y); //spin center y
-            bullet->customFloats.push_back(8.0f); //velocity (radius change)
-            bullet->customFloats.push_back(0.7f); //angle change
-            bullet->customFloats.push_back(0.02f); //acceleration
-            bullet->customFloats.push_back(0.00f); //spin acceleration
+            bullet->initializeCustomFloats(spawner->pos.x, spawner->pos.y, 8.0f, 0.7f, 0.02f, 0.00f);
         }
     }
 }

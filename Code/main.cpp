@@ -113,8 +113,9 @@ int main() {
         }
         canAdvance = false;
         gameWindow->update();
+        //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
-        //std::cout << glfwGetTime() - currFrame << " " << Bullet::bullets.size() << std::endl;
+        //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;
         _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
         currFrame = glfwGetTime();
 
