@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "CollidableObject.h"
+#include "GameWindow.h"
 
 using namespace Movement;
 
@@ -134,4 +135,9 @@ void BulletMovement::DirectionalBullet::init(std::shared_ptr<Bullet> b) {
 
 void BulletMovement::SpinningDirectionalBullet::init(std::shared_ptr<Bullet> b) {
     b->initializeCustomVars(center.x, center.y, radiusChange, angleChange, acceleration, spinAcceleration);
+}
+
+void BulletMovement::TargetedBullet::init(std::shared_ptr<Bullet> b) {
+    glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - b->getPos());
+    b->initializeCustomVars(Speed{ spd }, Direction{dir});
 }

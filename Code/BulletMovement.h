@@ -54,6 +54,14 @@ namespace BulletMovement {
         void init(std::shared_ptr<Bullet> b);
     };
 
+    struct TargetedBullet : BulletInitializer {
+        float spd;
+        TargetedBullet(float _spd) : BulletInitializer(directionalBullet) {
+            spd = _spd;
+        }
+        void init(std::shared_ptr<Bullet> b);
+    };
+
     struct SpinningDirectionalBullet : BulletInitializer {
         glm::vec2 center;
         float radiusChange;

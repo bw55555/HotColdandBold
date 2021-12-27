@@ -2,6 +2,8 @@
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
 
+#define every(interval) if (s->every(interval))
+
 namespace Level {
     float operator"" _s(long double val) {
         return val * 60.0f;
@@ -12,19 +14,24 @@ namespace Level {
     }
 
     using namespace Movement;
-
+    using namespace BulletMovement;
     void Level1(GameLevel* level) {
         float ct = level->currTime;
         FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         if (level->wait(0.5_s)) {
-            std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), doNothingFunc); // Make a fairy at 0, 500
-            e->createBulletSpawner(glm::vec2(0, 0), bs2);
+            std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+            e->createBulletSpawner(glm::vec2(0, 0), stackingTest);
         }
         if (level->wait(1.5_s)) {
-            //std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc);
-            //e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
+            //force you to unfocus, must keep player at the bottom of the screen
+            /*
+            std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
+            e2->createBulletSpawner(glm::vec2(0, 0), [](BulletSpawner* s) {
+                every(4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
+            });
+            */
         }
         if (level->waitUntil(120)) {
             //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
@@ -33,10 +40,23 @@ namespace Level {
         delete dopple;
     }
 
+    void stackingTest(BulletSpawner* s) {
+        every(17) {
+            for (float offset = 0; offset < 360; offset += 45) {
+                for (int i = 0; i < 3; i++) {
+                    float angle = glm::radians(s->currTime/2 + offset);
+                    glm::vec2 dir{ cos(angle), sin(angle) };
+                    float spd = 5.0f + i * 3.0f;
+                    std::shared_ptr<Bullet> bullet = s->spawnPreset(BulletType::Knife, s->pos + dir, BulletMovement::DirectionalBullet{ dir, spd });
+                }
+            }
+        }
+    }
+
     void bs1(BulletSpawner* spawner) {
         if ((int)(spawner->currTime) % 2 == 0) {
             for (float offset = 0; offset < 360; offset += 45) {
-                float angle = glm::radians(360.0f * oscillate(spawner->currTime, -1, 1, 0.04f) + offset + 0.25 * spawner->currTime);
+                float angle = glm::radians(360.0f * oscillate(spawner->currTime, -1, 1, 0.04f) + offset + 0.25f * spawner->currTime);
                 glm::vec2 dir{ cos(angle), sin(angle) };
                 std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
             }
@@ -46,7 +66,7 @@ namespace Level {
     void bs_1(BulletSpawner* spawner) {
         if ((int)(spawner->currTime) % 2 == 0) {
             for (float offset = 0; offset < 360; offset += 45) {
-                float angle = glm::radians(360.0f * oscillate(-1, 1, 0.04f, spawner->currTime) + offset + 0.25 * spawner->currTime);
+                float angle = glm::radians(360.0f * oscillate(-1, 1, 0.04f, spawner->currTime) + offset + 0.25f * spawner->currTime);
                 glm::vec2 dir{ cos(angle), sin(angle) };
                 std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
             }
@@ -64,6 +84,26 @@ namespace Level {
     }
 
 
+    void enemyTestFunc(Enemy* enemy) {
+        //how to use void* like this?
+        if (enemy->customFloats.size() <= 0) {
+            std::cout << "Custom Floats not initialized" << std::endl;
+            return;
+        }
+        float xpos = enemy->getPos().x;
+        float spd = 5.0f;
+
+        if (xpos <= -800.0f) {
+            enemy->customFloats[0] = 1.0f;
+        }
+        if (xpos >= 800.0f) {
+            enemy->customFloats[0] = -1.0f;
+        }
+
+        float dir = enemy->customFloats[0];
+        enemy->move(glm::vec2(dir * spd, 0.0f));
+
+    }
 
     void enemyFasterFunc(Enemy* enemy) {
         //how to use void* like this?

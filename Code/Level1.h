@@ -12,6 +12,7 @@ namespace Level {
     void bs1(BulletSpawner* spawner);
     void bs2(BulletSpawner* spawner);
     void bs_1(BulletSpawner* spawner);
+    void stackingTest(BulletSpawner* s);
 
     void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);

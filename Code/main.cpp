@@ -1,4 +1,5 @@
 #include <glad/glad.h>
+#include <glad/glad_wgl.h>
 #include <GLFW/glfw3.h>
 #include "stb_image.h"
 #include <iostream>
@@ -10,9 +11,12 @@
 #include <vector>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <numeric>
+#include <functional>
 #include "BulletSpawner.h"
 #include "Enemy.h"
 #include "DropItem.h"
+
 
 extern std::string PATH_START = "";
 GameWindow* gameWindow;
@@ -37,7 +41,7 @@ const float GameWindow::halfHeight = 1000.0f;
 
 struct stat info;
 
-
+std::vector<float> frameRateLog;
 int main() {
     if (stat("resources", &info) != 0) {
         std::cout << "Changed path";
@@ -75,6 +79,12 @@ int main() {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+    if (!gladLoadWGLLoader((GLADloadproc)wglGetProcAddress, wglGetCurrentDC()))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+    wglSwapIntervalEXT(1.0f);
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
     gameWindow = new GameWindow(window, s);
     float currFrame = glfwGetTime();
@@ -84,6 +94,8 @@ int main() {
     bool pressedAdvance = false;
     bool canAdvance = false;
     while (!glfwWindowShouldClose(window)) {
+        currFrame = glfwGetTime();
+        glfwPollEvents();
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
@@ -108,7 +120,6 @@ int main() {
         }
 
         if (!canAdvance && debugMode) {
-            glfwPollEvents();
             continue;
         }
         canAdvance = false;
@@ -116,10 +127,22 @@ int main() {
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
         //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;
-        _sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame));
-        currFrame = glfwGetTime();
-
-        glfwPollEvents();
+        if (glfwGetTime() - currFrame > 1000.0f / 60.0f) {
+            std::cout << "FR: " << 1.0f / (glfwGetTime() - currFrame) << std::endl;
+        }
+        
+        //_sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame) - 0.06f);
+        
+        frameRateLog.push_back(glfwGetTime() - currFrame);
+        if (frameRateLog.size() == 60) {
+            float sum = 0;
+            for (float v : frameRateLog) {
+                sum += v;
+            }
+            std::cout << "TFR: " << 60/sum << " B: " << Bullet::bullets.size() << std::endl;
+            frameRateLog.clear();
+        }
+        
     }
 
     // glfw: terminate, clearing all previously allocated GLFW resources.

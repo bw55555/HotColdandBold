@@ -201,7 +201,7 @@ void GameWindow::checkCollisions() {
         else {
             if (player->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                 //Collision detected between player and enemy bullet, do something!
-                std::cout << "Got hit :(" << std::endl;
+                //std::cout << "Got hit :(" << std::endl;
                 b->destroy();
             }
         }
