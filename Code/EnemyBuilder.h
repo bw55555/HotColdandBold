@@ -87,7 +87,7 @@ public:
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
 		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), getTexture(), this->func);
 		e->customFloats.push_back(1.0f);
-		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
+		//e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
 		return e;
 	}
 };
@@ -107,7 +107,7 @@ public:
 
 		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), getTexture(), func);
 		e->customFloats.push_back(1.0f);
-		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
+		//e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 		return e;
 	}
 };

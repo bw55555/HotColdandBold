@@ -21,12 +21,14 @@ public:
     static std::shared_ptr<Enemy> findNearestEnemy(glm::vec2 pos);
     typedef void (*UpdateFunc)(Enemy*);
     UpdateFunc updatefunc;
-    std::vector<float> customFloats;
+
+    bool destroyed;
 
     std::vector<std::unique_ptr<BulletSpawner>> spawners;
     float currTime;
     Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
     void update();
+    void destroy();
     ~Enemy();
     void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
 };

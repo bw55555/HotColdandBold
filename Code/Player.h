@@ -18,7 +18,7 @@ class Player :
 public:
     static unsigned int hitboxTexture;
     bool focus = false;
-    float speed;
+    //speed declared in collidableObject
     float currTime;
     float lastFired;
     Player(Hitbox collisionbox, unsigned int textureID);

@@ -12,19 +12,6 @@
 class Bullet;
 
 namespace BulletMovement {
-    struct Direction {
-        glm::vec2 dir;
-        Direction() : dir(glm::vec2(0.0f, -1.0f)) {}
-        Direction(float x, float y) { dir = glm::vec2(x, y); }
-        Direction(glm::vec2 aDir) { dir = aDir; }
-    };
-
-    struct Speed {
-        float spd;
-        Speed() : spd(10.0f) {}
-        Speed(float aSpd) { spd = aSpd; }
-    };
-
     typedef void (*UpdateFunc)(Bullet*);
 
     void directionalBullet(Bullet* bullet);

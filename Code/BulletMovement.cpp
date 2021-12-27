@@ -1,6 +1,10 @@
 #include "BulletMovement.h"
 #include "Enemy.h"
 #include "Bullet.h"
+#include "CollidableObject.h"
+
+using namespace Movement;
+
 //set direction and speed, no customFloats
 void BulletMovement::directionalBullet(Bullet* bullet) {
     //bullet with constant speed in a direction

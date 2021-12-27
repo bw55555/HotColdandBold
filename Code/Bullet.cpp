@@ -3,7 +3,6 @@ Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID
     //never use this, it screws with shared pointers! use makeBullet instead
     currTime = 0.0f;
 	updatefunc = func;
-    destroyTime = 10000.0f;
 }
 
 std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) {
@@ -13,11 +12,22 @@ std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initia
 }
 
 void Bullet::update() {
+    if (checkDestruction()) { return; }
 	currTime += 1.0f;
 	updatefunc(this);
-    if (currTime >= destroyTime) {
+}
+
+bool Bullet::checkDestruction() {
+    if (destroyFlags.destroyTime != -1 && currTime >= destroyFlags.destroyTime) {
         destroy();
+        return true;
     }
+
+    if (destroyFlags.offScreen && !isOnScreen()) {
+        destroy();
+        return true;
+    }
+    return false;
 }
 
 void Bullet::destroy() {

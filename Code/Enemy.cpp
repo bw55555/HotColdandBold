@@ -30,6 +30,12 @@ void Enemy::update() {
 	updatefunc(this);
 }
 
+void Enemy::destroy() {
+	destroyed = true;
+	collisionEnabled = false;
+	renderEnabled = false;
+}
+
 Enemy::~Enemy() {
 	//should delete the pointer in the enemies vector
 	spawners.clear();

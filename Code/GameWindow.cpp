@@ -267,14 +267,14 @@ void bulletSpawnerTestFunc(BulletSpawner* spawner) {
         
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos, BulletMovement::directionalBullet);
         glm::vec2 dir{ sin(90 + 45 * spawner->currTime), cos(90 + 45 * spawner->currTime) };
-        bullet->initializeCustomVars(BulletMovement::Speed{ 10.0f }, BulletMovement::Direction{ dir });
+        bullet->initializeCustomVars(Movement::Speed{ 10.0f }, Movement::Direction{ dir });
         bullet->setRotation(dir);
     }
 
     if ((int)(spawner->currTime) % 5 == 0 && (int) (spawner->currTime) % 100 != 5 && (int)(spawner->currTime) % 100 != 10) {
         std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::RoundBlue, spawner->pos, BulletMovement::directionalBullet);
         glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
-        bullet->initializeCustomVars(BulletMovement::Speed{ 20.0f }, BulletMovement::Direction{ dir });
+        bullet->initializeCustomVars(Movement::Speed{ 20.0f }, Movement::Direction{ dir });
         bullet->setRotation(dir);
     }
 }
@@ -286,10 +286,11 @@ void Level1(GameLevel* level) {
     EnemyBuildDirector director; //Creates the director
     if (level->wait(30)) {
         std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-        //std::shared_ptr<Enemy> e = Enemy::spawnPreset(EnemyType::Fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc);
+        e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
     }
     if (level->wait(30)) {
         std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(500.0f, 100.0f), enemyFasterFunc);
+        e2->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
     }
     if (level->waitUntil(120)) {
         //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
@@ -437,13 +438,13 @@ void testFunc4(Bullet* b) {
 }
 
 void bulletSpawnerTestSpinning(BulletSpawner* spawner) {
-    if ((int)(spawner->currTime) % 4 == 0) {
+    if ((int)(spawner->currTime) % 7 == 0) {
         for (float offset = 0; offset < 360; offset += 72) {
             float angle = glm::radians(3.0f * spawner->currTime + offset);
             glm::vec2 dir{ cos(angle), sin(angle) };
             //std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, Bullet::spinningDirectionalBullet);
             //bullet->initializeCustomVars(spawner->pos.x, spawner->pos.y, 8.0f, 0.7f, 0.02f, 0.00f);
-            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::SpinningDirectionalBullet{ spawner->pos, 8.0f, 0.7f, 0.02f, 0.00f });
+            std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::SpinningDirectionalBullet{ spawner->pos, 6.0f, 0.7f, 0.02f, 0.00f });
         }
     }
 }

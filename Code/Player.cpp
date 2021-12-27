@@ -74,5 +74,5 @@ void Player::fire() {
 	bulletHitbox.radius = bulletSize/2.0f;
 	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[2], BulletMovement::homingBullet, glm::vec3(bulletSize));
 	bullet->firedByPlayer = true;
-	bullet->initializeCustomVars(BulletMovement::Speed{ 50.0f });
+	bullet->initializeCustomVars(Movement::Speed{ 50.0f });
 }

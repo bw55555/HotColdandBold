@@ -48,6 +48,12 @@ void Sprite::setRotation(glm::vec2 dir) {
 	rot = glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
 }
 
+bool Sprite::isOnScreen() {
+	//assumes that VAO is a square centered at 0. 
+	return -GameWindow::halfWidth < trans.x + scale.x && trans.x - scale.x < GameWindow::halfWidth && 
+		-GameWindow::halfHeight < trans.y + scale.y && trans.y - scale.y < GameWindow::halfHeight;
+}
+
 Sprite::~Sprite() {
 	//spriteList.erase(std::begin(spriteList));
 }

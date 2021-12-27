@@ -11,6 +11,11 @@
 #include "BulletMovement.h"
 #include "CollidableObject.h"
 
+struct DestroyFlags {
+    bool offScreen = true;
+    float destroyTime = -1;
+};
+
 class Bullet :
     public CollidableObject
 {
@@ -20,49 +25,16 @@ public:
     
 
     typedef void (*UpdateFunc)(Bullet*);
-    typedef BulletMovement::Direction Direction;
-    typedef BulletMovement::Speed Speed;
-
     
     UpdateFunc updatefunc;
-    std::vector<float> customFloats;
-    //use this if you want, not necessary
-    glm::vec2 dir = glm::vec2(0.0f, -1.0f);
-    //use this if you want, not necessary
-    float speed = 10.0f;
-
-
-    void initializeCustomVars(float x)
-    {
-        customFloats.push_back(x);
-    }
-
-    void initializeCustomVars(Direction x)
-    {
-        dir = x.dir;
-    }
-
-    void initializeCustomVars(Speed x)
-    {
-        speed = x.spd;
-    }
-
-    template<typename T, typename... Args>
-    void initializeCustomVars(T x, Args... args) // recursive variadic function
-    {
-        initializeCustomVars(x);
-        initializeCustomVars(args...);
-    }
-
-
-    
 
     float currTime;
-    float destroyTime;
     bool firedByPlayer = false;
     bool destroyed = false;
     Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(50.0f));
     void update();
     void destroy();
+    bool checkDestruction();
+    DestroyFlags destroyFlags;
 };
 

@@ -29,6 +29,7 @@ public:
 	void rotate(float angle);
 	void rotate(glm::vec2 dir);
 	void setRotation(glm::vec2 dir);
+	bool isOnScreen();
 	~Sprite();
 };
 
