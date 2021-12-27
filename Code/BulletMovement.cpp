@@ -5,6 +5,22 @@
 
 using namespace Movement;
 
+float Movement::oscillate(float min, float max, float spd, float currTime, float startPos) {
+
+    std::pair<float, float> boundspair = std::minmax(min, max);
+
+    float rem = startPos + spd * currTime;
+    float diff = boundspair.second - boundspair.first;
+    int numWraps = floor(rem / diff);
+    rem -= diff * numWraps;
+    if (numWraps % 2 == 0) {
+        return boundspair.first + rem;
+    }
+    else {
+        return boundspair.second - rem;
+    }
+};
+
 //set direction and speed, no customFloats
 void BulletMovement::directionalBullet(Bullet* bullet) {
     //bullet with constant speed in a direction

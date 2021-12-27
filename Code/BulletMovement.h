@@ -8,8 +8,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include <algorithm>
 
 class Bullet;
+namespace Movement {
+    //spd > 0, currTime should start at 0
+    float oscillate(float min, float max, float spd, float currTime, float startPos);
+    inline float oscillate(float min, float max, float spd, float currTime) {
+        return oscillate(min, max, spd, currTime, (max - min) / 2);
+    }
+};
 
 namespace BulletMovement {
     typedef void (*UpdateFunc)(Bullet*);

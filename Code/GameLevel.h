@@ -35,3 +35,7 @@ public:
 	void updateWaitTime();
 	//void setCheckpoint();
 };
+
+namespace Level {
+	void enemyTestFunc(Enemy* e);
+}

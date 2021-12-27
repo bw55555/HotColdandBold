@@ -119,6 +119,7 @@
     <ClCompile Include="GameLevel.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="EnemyBuilder.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />
+    <ClInclude Include="Level1.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>

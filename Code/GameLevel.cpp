@@ -59,3 +59,24 @@ void GameLevel::updateWaitTime() {
 	updatefunc(this);
 	runLevel = true;
 }
+
+void Level::enemyTestFunc(Enemy* enemy) {
+	//how to use void* like this?
+	if (enemy->customFloats.size() <= 0) {
+		std::cout << "Custom Floats not initialized" << std::endl;
+		return;
+	}
+	float xpos = enemy->getPos().x;
+	float spd = 10.0f;
+
+	if (xpos <= -800.0f) {
+		enemy->customFloats[0] = 1.0f;
+	}
+	if (xpos >= 800.0f) {
+		enemy->customFloats[0] = -1.0f;
+	}
+
+	float dir = enemy->customFloats[0];
+	//enemy->move(glm::vec2(dir * spd, 0.0f));
+
+}

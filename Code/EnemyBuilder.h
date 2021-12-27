@@ -13,12 +13,8 @@
 #include "Enemy.h"
 #include "BulletSpawner.h"
 #include "DropItem.h"
-#include "GameLevel.h"
 
-void enemyTestFunc(Enemy* enemy);
-void enemyFasterFunc(Enemy* enemy);
-void bulletSpawnerTestFunc(BulletSpawner* spawner);
-void bulletSpawnerTestSpinning(BulletSpawner* spawner);
+void doNothingFunc(Enemy* e) {};
 
 class EnemyBuilderInterface // An abstract enemy specification. Extend this in a subclass, and remember to implement all methods!
 	// If you aren't sure, check FairyBuilder or ping @KD on discord
@@ -28,7 +24,7 @@ private: // For consistency, all variables that should be implemented have been 
 	glm::vec2 position = glm::vec2(0.0f, 300.0f); // Where they begin. By default, x = 0 y = 500
 	unsigned int enemyTexture = 0; // Important for the loadTexture function
 public:
-	void (*func)(Enemy*) = enemyTestFunc; // The movement function for the enemy. By default, enemyTestFunc
+	void (*func)(Enemy*) = doNothingFunc; // The movement function for the enemy. By default, enemyTestFunc
 	virtual ~EnemyBuilderInterface() {}
 
 	// The following four functions have a default implementation but can be overwritten in subclasses
@@ -115,7 +111,7 @@ public:
 class EnemyBuildDirector // Called in .cpp, provides information to correct builder
 {
 public:
-	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc, unsigned int texture = GameWindow::enemyTextures[0]) {
+	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = doNothingFunc, unsigned int texture = GameWindow::enemyTextures[0]) {
 		// First parameter is the builder implementation to pass in
 		// Second is a vec2 that defaults to a location in the top/center of the screen
 		builder->setPosition(dir);
@@ -124,3 +120,4 @@ public:
 		return builder->createEnemy();
 	}
 };
+
