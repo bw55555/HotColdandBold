@@ -71,6 +71,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
+    static unsigned int enemyTextures[10]; // Why is this 10?
+    createEnemyTextures();
     level = std::make_shared<GameLevel>(Level1);
 }
 
@@ -176,6 +178,13 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     {
         std::cout << "Texture failed to load at path: " << filePath << std::endl;
     }
+}
+
+void GameWindow::createEnemyTextures() {
+    //This is not an ideal implementation! Simply a placeholder for now
+    //Add more textures here as you make more enemies, but ideally we're looping through everything in a file
+    loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTextures[0]);
+    loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTextures[1]);
 }
 
 void GameWindow::checkCollisions() {

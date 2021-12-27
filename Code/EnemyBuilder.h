@@ -16,6 +16,7 @@
 #include "GameLevel.h"
 
 void enemyTestFunc(Enemy* enemy);
+void enemyFasterFunc(Enemy* enemy);
 void bulletSpawnerTestFunc(BulletSpawner* spawner);
 void bulletSpawnerTestSpinning(BulletSpawner* spawner);
 
@@ -43,10 +44,18 @@ public:
 		GameWindow::loadTexture(filePath, texturePointer);
 	}
 
+	void setTexture(unsigned int goalTexture) {
+		this->enemyTexture = goalTexture;
+	}
+
+	unsigned int getTexture() {
+		return this->enemyTexture;
+	}
+
 	void setPosition(glm::vec2 dir) {
 		// Sets the starting position for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
-		position = dir;
+		this->position = dir;
 	}
 
 	glm::vec2 getPosition() {
@@ -54,10 +63,10 @@ public:
 		return position;
 	}
 
-	void setMovement(void (*func)(Enemy*)) {
+	void setMovement(void (*aFunc)(Enemy*)) {
 		// Sets the movement function for the enemy
 		// Remember, if you call this from checkEnemy it may override any passed in parameters!
-		this->func = func;
+		this->func = aFunc;
 	}
 
 	// Must be implemented!
@@ -71,14 +80,12 @@ private:
 	glm::vec2 position = glm::vec2(0.0f, 400.0f); //TODO: Fix the fact this seems to override inputs
 	unsigned int enemyTexture = 0;
 public:
-	void (*func)(Enemy*) = enemyTestFunc;
 
 	std::shared_ptr<Enemy> createEnemy() override {
 		setHitboxInfo(HitboxType::Circle, 50.0f);
 
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
-		loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTexture);
-		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), enemyTexture, this->func);
+		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), getTexture(), this->func);
 		e->customFloats.push_back(1.0f);
 		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestSpinning);
 		return e;
@@ -92,15 +99,13 @@ private:
 	glm::vec2 position = glm::vec2(0.0f, 100.0f);
 	unsigned int enemyTexture = 0;
 public:
-	void (*func)(Enemy*) = enemyTestFunc;
 
 	std::shared_ptr<Enemy> createEnemy() override {
 		setHitboxInfo(HitboxType::Circle, 5.0f);
 
 		// TODO: Add a function where you can pass in the img name and get a complete filepath back
-		loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTexture);
 
-		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), enemyTexture, func);
+		std::shared_ptr<Enemy> e = Enemy::makeEnemy(enemyHitbox, getPosition(), getTexture(), func);
 		e->customFloats.push_back(1.0f);
 		e->createBulletSpawner(glm::vec2(0, 0), bulletSpawnerTestFunc);
 		return e;
@@ -110,11 +115,12 @@ public:
 class EnemyBuildDirector // Called in .cpp, provides information to correct builder
 {
 public:
-	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc) {
+	std::shared_ptr<Enemy> buildEnemy(class EnemyBuilderInterface* builder, glm::vec2 dir = glm::vec2(0.0f, 500.0f), void (*func)(Enemy*) = enemyTestFunc, unsigned int texture = GameWindow::enemyTextures[0]) {
 		// First parameter is the builder implementation to pass in
 		// Second is a vec2 that defaults to a location in the top/center of the screen
 		builder->setPosition(dir);
 		builder->setMovement(func);
+		builder->setTexture(texture);
 		return builder->createEnemy();
 	}
 };

@@ -40,6 +40,7 @@ public:
 	static void loadTexture(std::string filePath, unsigned int* texturePointer);
 	void clearScreen();
 	void checkCollisions();
+	void createEnemyTextures();
 };
 
 void enemyTestFunc(Enemy* enemy);
