@@ -27,8 +27,8 @@ public:
 	static unsigned int enemyTextures[10];
 	static const glm::vec2 normalized_coordinate_axes; //set in main.cpp
 	
-	static float halfWidth;
-	static float halfHeight;
+	static const float halfWidth;
+	static const float halfHeight;
 
 	glm::mat4 projectionMatrix;
 	std::shared_ptr<GameLevel> level = nullptr;
