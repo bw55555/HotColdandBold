@@ -13,9 +13,19 @@
 class Bullet;
 namespace Movement {
     //spd > 0, currTime should start at 0
-    float oscillate(float min, float max, float spd, float currTime, float startPos);
-    inline float oscillate(float min, float max, float spd, float currTime) {
-        return oscillate(min, max, spd, currTime, (max - min) / 2);
+    float oscillate(float currTime, float min, float max, float spd, float startPos);
+    inline float oscillate(float currTime, float min, float max, float spd) {
+        return oscillate(currTime, min, max, spd, (max - min) / 2);
+    }
+    float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime, bool reverseFlag);
+    inline float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime) {
+        return linearAcceleration(currTime, acceleration, maxVelocity, maxTime, false);
+    }
+    inline float linearAcceleration(float currTime, float acceleration, float maxVelocity) {
+        return linearAcceleration(currTime, acceleration, maxVelocity, -1.0f, false);
+    }
+    inline float linearAcceleration(float currTime, float acceleration) {
+        return linearAcceleration(currTime, acceleration, -1.0f, -1.0f, false);
     }
 };
 

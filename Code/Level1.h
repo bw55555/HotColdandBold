@@ -10,6 +10,8 @@ class Level1 :
 
 namespace Level {
     void bs1(BulletSpawner* spawner);
+    void bs2(BulletSpawner* spawner);
+    void bs_1(BulletSpawner* spawner);
 
     void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);
