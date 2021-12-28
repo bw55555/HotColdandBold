@@ -115,15 +115,19 @@ void GameWindow::update() {
 
     //update player, enemy, spawners, bullets
     player->update(window);
+
+    //update bullets before enemies so that spawned bullets are not updated on the same frame
+    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
+        bullet->update();
+    }
+
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
         for (int i = 0; i < enemy->spawners.size(); i++) {
             enemy->spawners[i]->update();
         }
     }
-    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->update();
-    }
+    
     checkCollisions();
 
     //check for and destroy bullets with a true destroyed tag at the end

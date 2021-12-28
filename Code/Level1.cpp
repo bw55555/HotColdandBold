@@ -2,9 +2,24 @@
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
 
+
+//to use this macro, make sure your bulletspawner is named s
 #define every(interval) if (s->every(interval))
 
+//i is the variable name to insert
+#define ring(i, num) for (float i = 0; i < 360.0; i += 360.0f/num)
+#define stack(i, minspd, incr, num) for (float i = minspd; i<num * incr + minspd; i += incr)
+#define avec(i, angle) glm::vec2 i{cos(angle), sin(angle)}
+
+//idk maybe I just want to be lazy
+#define bfs [](BulletSpawner* s)
+#define bf(name) [](BulletSpawner* name)
+
+
 namespace Level {
+    typedef BulletSpawner* BSp;
+    typedef Bullet* Bp;
+
     float operator"" _s(long double val) {
         return val * 60.0f;
     };
@@ -22,16 +37,16 @@ namespace Level {
         EnemyBuildDirector director; //Creates the director
         if (level->wait(0.5_s)) {
             std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-            e->createBulletSpawner(glm::vec2(0, 0), stackingTest);
+            e->createBulletSpawner(glm::vec2(0, 0), macroExample);
         }
         if (level->wait(1.5_s)) {
             //force you to unfocus, must keep player at the bottom of the screen
-            /*
+            
             std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
             e2->createBulletSpawner(glm::vec2(0, 0), [](BulletSpawner* s) {
                 every(4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
             });
-            */
+            
         }
         if (level->waitUntil(120)) {
             //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
@@ -40,14 +55,13 @@ namespace Level {
         delete dopple;
     }
 
-    void stackingTest(BulletSpawner* s) {
-        every(17) {
-            for (float offset = 0; offset < 360; offset += 45) {
-                for (int i = 0; i < 3; i++) {
+    void macroExample(BSp s) { //BSp is short for BulletSpawner*
+        every(17) { //every 17 frames...
+            ring(offset, 8) { //create a ring of 8 bullets, variable name offset (this is the angle offset for each bullet in the ring)
+                stack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
                     float angle = glm::radians(s->currTime/2 + offset);
-                    glm::vec2 dir{ cos(angle), sin(angle) };
-                    float spd = 5.0f + i * 3.0f;
-                    std::shared_ptr<Bullet> bullet = s->spawnPreset(BulletType::Knife, s->pos + dir, BulletMovement::DirectionalBullet{ dir, spd });
+                    avec(dir, angle); //initialize variable dir to be a vec2 pointing at angle
+                    std::ignore = s->spawnPreset(BulletType::Knife, s->pos, BulletMovement::DirectionalBullet{ dir, spd });
                 }
             }
         }
@@ -58,7 +72,7 @@ namespace Level {
             for (float offset = 0; offset < 360; offset += 45) {
                 float angle = glm::radians(360.0f * oscillate(spawner->currTime, -1, 1, 0.04f) + offset + 0.25f * spawner->currTime);
                 glm::vec2 dir{ cos(angle), sin(angle) };
-                std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
+                std::ignore = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
             }
         }
     }
@@ -91,7 +105,7 @@ namespace Level {
             return;
         }
         float xpos = enemy->getPos().x;
-        float spd = 5.0f;
+        float spd = 2.0f;
 
         if (xpos <= -800.0f) {
             enemy->customFloats[0] = 1.0f;
