@@ -18,7 +18,7 @@ class EnemyBuilderInterface // An abstract enemy specification. Extend this in a
 private: // For consistency, all variables that should be implemented have been defined here
 	Hitbox enemyHitbox; // The hitbox to give the enemy
 	glm::vec2 position = glm::vec2(0.0f, 300.0f); // Where they begin. By default, x = 0 y = 500
-	unsigned int enemyTexture = 0; // Important for the loadTexture function
+	unsigned int enemyTexture = 0; // Image loaded somewhere else
 public:
 	void (*func)(Enemy*) = doNothingFunc; // The movement function for the enemy. By default, enemyTestFunc
 	virtual ~EnemyBuilderInterface() {}
@@ -29,11 +29,6 @@ public:
 		// Other properties are welcome to be set in createEnemy()
 		this->enemyHitbox.type = type;
 		this->enemyHitbox.radius = radius;
-	}
-
-	void loadTexture(std::string filePath, unsigned int* texturePointer) {
-		// Simply calls GameWindow's loadTexture function
-		GameWindow::loadTexture(filePath, texturePointer);
 	}
 
 	void setTexture(unsigned int goalTexture) {

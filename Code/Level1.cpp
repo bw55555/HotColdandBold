@@ -42,6 +42,9 @@
 namespace Level {
     typedef BulletSpawner* BSp;
     typedef Bullet* Bp;
+    typedef std::shared_ptr<Enemy> Esp;
+    typedef std::shared_ptr<Bullet> Bsp;
+    typedef std::shared_ptr<BulletSpawner> BSsp;
 
     float operator"" _s(long double val) {
         return val * 60.0f;
@@ -58,13 +61,13 @@ namespace Level {
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         wf(l, 0.5_s) {
-            std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+            Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             e->createBulletSpawner(glm::vec2(0, 0), macroExample);
         }
         wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen
             
-            std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
+            Esp e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
             e2->createBulletSpawner(glm::vec2(0, 0), [](BSp s) {
                 every(s, 4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
             });
