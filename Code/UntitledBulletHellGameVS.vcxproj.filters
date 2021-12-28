@@ -60,6 +60,9 @@
     <ClCompile Include="glad_wgl.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Movement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\SpriteShader_U.frag">
@@ -110,6 +113,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UpdateTime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Movement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

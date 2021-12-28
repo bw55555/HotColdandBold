@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include "GameWindow.h"
+#include <Shader.h>
 
 Sprite::Sprite(unsigned int textureID, glm::vec3 scaling, glm::vec3 offset, float rotation) {
 	scale = scaling;

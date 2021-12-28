@@ -1,5 +1,6 @@
 #pragma once
 #include "GameLevel.h"
+#include "Movement.h"
 
 namespace Level {
     void bs1(BulletSpawner* spawner);
@@ -7,7 +8,7 @@ namespace Level {
     void bs_1(BulletSpawner* spawner);
     void macroExample(BulletSpawner* s);
 
-    //void enemyTestFunc(Enemy* enemy);
+    void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);
     void Level1(GameLevel* level);
 

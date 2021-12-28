@@ -2,7 +2,6 @@
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
 
-
 //please do not use namespace std... you will probably break some of these macros
 
 //better name plz...

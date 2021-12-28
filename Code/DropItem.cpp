@@ -1,9 +1,7 @@
 #include "DropItem.h"
 
-DropItem::DropItem(Hitbox collisionbox, glm::vec2 initialPos, DropItemType type, void (*func)(DropItem*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, itemTextures[static_cast<int>(type)], scaling) {
-	currTime = 0.0f;
+DropItem::DropItem(Hitbox collisionbox, glm::vec2 initialPos, DropItemType type, void (*func)(DropItem*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, itemTextures[static_cast<int>(type)], scaling), UpdateTime<DropItem>(func) {
 	itemType = type;
-	updatefunc = func;
 }
 
 std::shared_ptr<DropItem> DropItem::makeDropItem(Hitbox collisionbox, glm::vec2 initialPos, DropItemType type, void (*func)(DropItem*), glm::vec3 scaling) {

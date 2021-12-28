@@ -1,15 +1,14 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "stb_image.h"
 #include <iostream>
-#include <Shader.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/vector_angle.hpp>
 #include <vector>
+
+class Shader; //included in cpp file
 
 class Sprite
 {
