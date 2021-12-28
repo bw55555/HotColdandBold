@@ -64,7 +64,7 @@ namespace Level {
                 stack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
                     float angle = rad(t/2 + offset); //rad is short for glm::radians, t is short for s->currTime
                     avec(dir, angle); //initialize variable dir to be a vec2 pointing at angle
-                    std::ignore = s->spawnPreset(BulletType::Knife, s->pos, BulletMovement::DirectionalBullet{ dir, spd });
+                    s->spawnPreset(BulletType::Knife, s->pos, BulletMovement::DirectionalBullet{ dir, spd });
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Level {
             for (float offset = 0; offset < 360; offset += 45) {
                 float angle = glm::radians(360.0f * oscillate(spawner->currTime, -1, 1, 0.04f) + offset + 0.25f * spawner->currTime);
                 glm::vec2 dir{ cos(angle), sin(angle) };
-                std::ignore = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
+                spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
             }
         }
     }
