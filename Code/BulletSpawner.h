@@ -38,9 +38,5 @@ public:
 		iFunc.init(b);
 		return b;
 	}
-
-	inline bool every(int interval, int offset = 0) {
-		return (int)currTime % interval == offset;
-	}
 };
 

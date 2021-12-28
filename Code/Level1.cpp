@@ -5,13 +5,34 @@
 
 //please do not use namespace std... you will probably break some of these macros
 
-//to use this macro, make sure your bulletspawner is named s
-#define every(interval) if (s->every(interval))
+//better name plz...
+//For X frames Every Y frames
+#define fxey(obj, x, y) if (obj->frameInterval(x, 0, y))
 
-//i is the variable name to insert
-#define ring(i, num) for (float i = 0; i < 360.0; i += 360.0f/num)
-#define stack(i, minspd, incr, num) for (float i = minspd; i<num * incr + minspd; i += incr)
-#define avec(i, angle) glm::vec2 i{cos(angle), sin(angle)}
+//every interval frames
+#define every(obj, interval) if (obj->frameInterval(interval))
+
+//wait for
+#define wf(obj, time) if (obj->wait(time))
+
+//wait for, returns true n times
+#define wf2(obj, time, n) if (obj->wait(time, n))
+
+//wait until
+#define wu(obj, time) if (obj->waitUntil(time))
+
+//wait until, returns true n times
+#define wu2(obj, time, n) if (obj->waitUntil(time, n))
+
+//bullet ring, vname is the variable name to insert
+#define ring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
+
+//dangerous! reserved name :(, should probably change
+//bullet stack, vname is the variable name to insert
+#define stack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
+
+//get vector from angle, i is the variable name to insert
+#define avec(vname, angle) glm::vec2 vname{cos(angle), sin(angle)}
 
 //idk maybe I just want to be lazy
 #define bfs [](BulletSpawner* s)
@@ -33,25 +54,24 @@ namespace Level {
 
     using namespace Movement;
     using namespace BulletMovement;
-    void Level1(GameLevel* level) {
-        float ct = level->currTime;
+    void Level1(GameLevel* l) {
         FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
-        if (level->wait(0.5_s)) {
+        wf(l, 0.5_s) {
             std::shared_ptr<Enemy> e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             e->createBulletSpawner(glm::vec2(0, 0), macroExample);
         }
-        if (level->wait(1.5_s)) {
+        wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen
             
             std::shared_ptr<Enemy> e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
-            e2->createBulletSpawner(glm::vec2(0, 0), [](BulletSpawner* s) {
-                every(4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
+            e2->createBulletSpawner(glm::vec2(0, 0), [](BSp s) {
+                every(s, 4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
             });
             
         }
-        if (level->waitUntil(120)) {
+        wu(l, 4.0_s) {
             //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
         }
         delete fairy;
@@ -59,7 +79,7 @@ namespace Level {
     }
 
     void macroExample(BSp s) { //BSp is short for BulletSpawner*
-        every(17) { //every 17 frames...
+        every(s, 17) { //every 17 frames...
             ring(offset, 8) { //create a ring of 8 bullets, variable name offset (this is the angle offset for each bullet in the ring)
                 stack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
                     float angle = rad(t/2 + offset); //rad is short for glm::radians, t is short for s->currTime
