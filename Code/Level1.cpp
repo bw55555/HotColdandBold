@@ -3,6 +3,8 @@
 #include "EnemyBuilder.h"
 
 
+//please do not use namespace std... you will probably break some of these macros
+
 //to use this macro, make sure your bulletspawner is named s
 #define every(interval) if (s->every(interval))
 
@@ -14,7 +16,8 @@
 //idk maybe I just want to be lazy
 #define bfs [](BulletSpawner* s)
 #define bf(name) [](BulletSpawner* name)
-
+#define rad glm::radians
+#define t s->currTime
 
 namespace Level {
     typedef BulletSpawner* BSp;
@@ -59,7 +62,7 @@ namespace Level {
         every(17) { //every 17 frames...
             ring(offset, 8) { //create a ring of 8 bullets, variable name offset (this is the angle offset for each bullet in the ring)
                 stack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
-                    float angle = glm::radians(s->currTime/2 + offset);
+                    float angle = rad(t/2 + offset); //rad is short for glm::radians, t is short for s->currTime
                     avec(dir, angle); //initialize variable dir to be a vec2 pointing at angle
                     std::ignore = s->spawnPreset(BulletType::Knife, s->pos, BulletMovement::DirectionalBullet{ dir, spd });
                 }
@@ -80,7 +83,7 @@ namespace Level {
     void bs_1(BulletSpawner* spawner) {
         if ((int)(spawner->currTime) % 2 == 0) {
             for (float offset = 0; offset < 360; offset += 45) {
-                float angle = glm::radians(360.0f * oscillate(-1, 1, 0.04f, spawner->currTime) + offset + 0.25f * spawner->currTime);
+                float angle = rad(360.0f * oscillate(-1, 1, 0.04f, spawner->currTime) + offset + 0.25f * spawner->currTime);
                 glm::vec2 dir{ cos(angle), sin(angle) };
                 std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::Knife, spawner->pos + dir, BulletMovement::DirectionalBullet{ dir, 10.0f });
             }
