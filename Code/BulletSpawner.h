@@ -10,30 +10,25 @@
 #include <vector>
 
 #include "Bullet.h"
+#include "UpdateTime.h"
 
 class Enemy;
 
 enum class BulletType { RoundBlue, Knife, RoundRed };
 
-class BulletSpawner
+class BulletSpawner : public UpdateTime<BulletSpawner>
 {
 public:
 	static unsigned int bulletPresetTextures[];
 
-	typedef void (*UpdateFunc)(BulletSpawner*);
-	UpdateFunc updatefunc;
-	std::vector<float> customFloats;
-
 	glm::vec2 localPos;
 	glm::vec2 pos;
-	float currTime;
 	std::weak_ptr<Enemy> parent;
 
 	BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*));
-	BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec3 initialPos, void (*func)(BulletSpawner*));
 	void update();
 
-	void spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
+	std::shared_ptr<Bullet> spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
 	std::shared_ptr<Bullet> spawnPreset(BulletType type, glm::vec2 pos, void (*func)(Bullet*));
 	
 	template<class T>

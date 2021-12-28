@@ -1,8 +1,6 @@
 #include "Bullet.h"
-Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling) {
+Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Bullet>(func) {
     //never use this, it screws with shared pointers! use makeBullet instead
-    currTime = 0.0f;
-	updatefunc = func;
 }
 
 std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) {
@@ -13,8 +11,7 @@ std::shared_ptr<Bullet> Bullet::makeBullet(Hitbox collisionbox, glm::vec2 initia
 
 void Bullet::update() {
     if (checkDestruction()) { return; }
-	currTime += 1.0f;
-	updatefunc(this);
+    frameUpdate(this);
 }
 
 bool Bullet::checkDestruction() {

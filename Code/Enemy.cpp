@@ -1,9 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling) {
+Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Enemy>(func) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
-	currTime = 0.0f;
-	updatefunc = func;
+	destroyed = false;
 }
 
 std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
@@ -26,8 +25,7 @@ std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
 }
 
 void Enemy::update() {
-	currTime += 1.0f;
-	updatefunc(this);
+	frameUpdate(this);
 }
 
 void Enemy::destroy() {
@@ -37,7 +35,7 @@ void Enemy::destroy() {
 }
 
 Enemy::~Enemy() {
-	//should delete the pointer in the enemies vector
+	//should delete the pointers in the spawners vector
 	spawners.clear();
 }
 

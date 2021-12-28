@@ -12,21 +12,6 @@
 #include "Sprite.h"
 #include "BulletMovement.h"
 
-namespace Movement {
-    struct Direction {
-        glm::vec2 dir;
-        Direction() : dir(glm::vec2(0.0f, -1.0f)) {}
-        Direction(float x, float y) { dir = glm::vec2(x, y); }
-        Direction(glm::vec2 aDir) { dir = aDir; }
-    };
-
-    struct Speed {
-        float spd;
-        Speed() : spd(10.0f) {}
-        Speed(float aSpd) { spd = aSpd; }
-    };
-}
-
 class GameWindow;
 
 enum class HitboxType {Circle, Box};
@@ -55,37 +40,6 @@ public:
     bool checkCollision(std::shared_ptr<CollidableObject> other);
     void move(glm::vec2 movement);
     void move(glm::vec2 movement, glm::vec4 clampBox);
-
-    std::vector<float> customFloats;
-    //use this if you want, not necessary
-    glm::vec2 dir = glm::vec2(0.0f, -1.0f);
-    //use this if you want, not necessary
-    float speed = 10.0f;
-
-    typedef Movement::Direction Direction;
-    typedef Movement::Speed Speed;
-
-    void initializeCustomVars(float x)
-    {
-        customFloats.push_back(x);
-    }
-
-    void initializeCustomVars(Direction x)
-    {
-        dir = x.dir;
-    }
-
-    void initializeCustomVars(Speed x)
-    {
-        speed = x.spd;
-    }
-
-    template<typename T, typename... Args>
-    void initializeCustomVars(T x, Args... args) // recursive variadic function
-    {
-        initializeCustomVars(x);
-        initializeCustomVars(args...);
-    }
 
     glm::vec2 getPos();
     void setPos(glm::vec2 aPos);

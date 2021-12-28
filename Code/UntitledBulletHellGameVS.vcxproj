@@ -148,6 +148,7 @@
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBuilder.h" />
+    <ClInclude Include="UpdateTime.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Level1.h" />

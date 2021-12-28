@@ -23,8 +23,8 @@ extern std::string PATH_START = "";
 GameWindow* gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 1600;
-const unsigned int SCR_HEIGHT = 2000;
+const unsigned int SCR_WIDTH = 800;
+const unsigned int SCR_HEIGHT = 1000;
 
 unsigned int Player::hitboxTexture;
 unsigned int DropItem::itemTextures[10];

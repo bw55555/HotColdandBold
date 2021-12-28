@@ -10,6 +10,7 @@
 #include <vector>
 #include "BulletMovement.h"
 #include "CollidableObject.h"
+#include "UpdateTime.h"
 
 struct DestroyFlags {
     bool offScreen = true;
@@ -17,18 +18,12 @@ struct DestroyFlags {
 };
 
 class Bullet :
-    public CollidableObject
+    public CollidableObject, public UpdateTime<Bullet>
 {
 public:
     static std::vector<std::shared_ptr<Bullet>> bullets;
     static std::shared_ptr<Bullet> makeBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(50.0f));
-    
 
-    typedef void (*UpdateFunc)(Bullet*);
-    
-    UpdateFunc updatefunc;
-
-    float currTime;
     bool firedByPlayer = false;
     bool destroyed = false;
     Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling = glm::vec3(50.0f));
