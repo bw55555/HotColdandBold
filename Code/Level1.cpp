@@ -24,24 +24,40 @@
 #define wu2(obj, time, n) if (obj->waitUntil(time, n))
 
 //bullet ring, vname is the variable name to insert
-#define ring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
+#define nring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
 
-//dangerous! reserved name :(, should probably change
 //bullet stack, vname is the variable name to insert
-#define stack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
+#define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
+
+//unfortunate that you cant declare i as an int but it'll have to do
+#define nstacki(vname, i, minspd, incr, num) for (float vname = minspd, i = 0; vname<num * incr + minspd; vname += incr, i+=1)
+
+//bullet spread, vname is the variable name to insert, assumes num > 1
+#define nspread(vname, center, range, num) for (float vname = center-range/2; vname < center + range/2 + range/num; vname += range/(num-1))
+
+#define rad glm::radians
 
 //get vector from angle, i is the variable name to insert
 #define avec(vname, angle) glm::vec2 vname{cos(angle), sin(angle)}
 
+#define avecd(angle) glm::vec2(cos(rad(angle)), sin(rad(angle)))
+
 //idk maybe I just want to be lazy
-#define bfs [](BulletSpawner* s)
-#define bf(name) [](BulletSpawner* name)
-#define rad glm::radians
-#define t s->currTime
+#define sfs [](BulletSpawner* s)
+#define sf(name) [](BulletSpawner* name)
+
+
+#define t(obj) obj->currTime
+
+//reduce time
+#define rt(obj, n) static_cast<float>(static_cast<int>(t(obj)) % static_cast<int>(n))
+
+#define initwait(obj, time) if (t(obj) < static_cast<float>(time)) {return;}
 
 namespace Level {
     typedef BulletSpawner* BSp;
     typedef Bullet* Bp;
+    typedef Enemy* Ep;
     typedef std::shared_ptr<Enemy> Esp;
     typedef std::shared_ptr<Bullet> Bsp;
     typedef std::shared_ptr<BulletSpawner> BSsp;
@@ -61,17 +77,45 @@ namespace Level {
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         wf(l, 0.5_s) {
-            Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-            e->createBulletSpawner(glm::vec2(0, 0), macroExample);
+            //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
+            //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
+            Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), [](Ep e) {
+                initwait(e, 30);
+                every(e, 60) e->dir = randomDir();
+                fxey(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+            });
+            e->createBulletSpawner(glm::vec2(0, 0), sf(s) {
+                
+                every(s, 7) {
+                    nring(o, 4) {
+                        nspread(a, o, 10, 2)
+                        s->spawnPreset(BulletType::Knife, s->pos, DirectionalBullet{ avecd(a), 10.0f });
+                    }
+                }
+                every(s, 5) {
+                    nring(o, 4) {
+                        s->spawnPreset(BulletType::RoundBlue, s->pos, DirectionalBullet{ avecd(o + 45 + oscillate(t(s), -40, 40, 0.6)), 10.0f });
+                        s->spawnPreset(BulletType::RoundBlue, s->pos, DirectionalBullet{ avecd(o - 45 - oscillate(t(s), -40, 40, 0.6)), 10.0f });
+                        s->spawnPreset(BulletType::RoundRed, s->pos, DirectionalBullet{ avecd(o + 45 + oscillate(t(s), -40, 40, 0.6, -40)), 10.0f });
+                        s->spawnPreset(BulletType::RoundRed, s->pos, DirectionalBullet{ avecd(o - 45 - oscillate(t(s), -40, 40, 0.6, -40)), 10.0f });
+                    }
+                }
+                every(s, 60) {
+                    nring(o, 16) {
+                        avec(dir, o + t(s)/10);
+                        //s->spawnPreset(BulletType::Knife, s->pos + dir, SpinningDirectionalBullet(s->pos, 3.0f, 0.5f, 0.02f, 0.0f));
+                    }
+                }
+            });
         }
         wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen
-            
+            /*
             Esp e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
             e2->createBulletSpawner(glm::vec2(0, 0), [](BSp s) {
                 every(s, 4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
             });
-            
+            */
         }
         wu(l, 4.0_s) {
             //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
@@ -82,9 +126,9 @@ namespace Level {
 
     void macroExample(BSp s) { //BSp is short for BulletSpawner*
         every(s, 17) { //every 17 frames...
-            ring(offset, 8) { //create a ring of 8 bullets, variable name offset (this is the angle offset for each bullet in the ring)
-                stack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
-                    float angle = rad(t/2 + offset); //rad is short for glm::radians, t is short for s->currTime
+            nring(offset, 8) { //create a ring of 8 bullets, variable name offset (this is the angle offset for each bullet in the ring)
+                nstack(spd, 5.0f, 3.0f, 3) { //create a stack of 3 bullets, speed of first bullet is 5.0f, second bullet is 5.0f + 3.0f, third bullet is 5.0f + 2 * 3.0f
+                    float angle = rad(t(s)/2 + offset); //rad is short for glm::radians, t is short for s->currTime
                     avec(dir, angle); //initialize variable dir to be a vec2 pointing at angle
                     s->spawnPreset(BulletType::Knife, s->pos, BulletMovement::DirectionalBullet{ dir, spd });
                 }

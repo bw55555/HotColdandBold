@@ -17,6 +17,8 @@ namespace BulletMovement {
     void spinningDirectionalBullet(Bullet* bullet);
     void spinningDirectionalBullet2(Bullet* bullet);
 
+    glm::vec2 targetPlayer(Bullet* b, glm::vec2 playerOffset = glm::vec2(0.0f));
+
     struct BulletInitializer {
         UpdateFunc f;
         BulletInitializer() : f(directionalBullet) {}

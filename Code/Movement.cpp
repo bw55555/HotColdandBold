@@ -1,7 +1,21 @@
 #include "Movement.h"
+#include <random>
+
+glm::vec2 Movement::randomDir(float minAngle, float maxAngle) {
+    float angle = glm::radians(minAngle + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxAngle - minAngle))));
+    return glm::vec2(cos(angle), sin(angle));
+}
+
+float Movement::linearBurst(float currTime, float initialVelocity, float deceleration, float maxTime) {
+    float decelTime = initialVelocity / deceleration;
+    //std::cout << decelTime << " " << currTime << " " << initialVelocity - deceleration * (currTime - (maxTime - decelTime)) << std::endl;
+    if (currTime > maxTime) { return 0.0f; }
+    else if (currTime > maxTime - decelTime) { return initialVelocity - deceleration * (currTime - (maxTime - decelTime)); }
+    else if (currTime > 0) { return initialVelocity; }
+    else { return 0.0f; }
+}
 
 float Movement::oscillate(float currTime, float min, float max, float spd, float startPos) {
-
     std::pair<float, float> boundspair = std::minmax(min, max);
 
     float rem = startPos + spd * currTime;

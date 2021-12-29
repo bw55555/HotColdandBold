@@ -19,10 +19,16 @@ namespace Movement {
         Speed() : spd(10.0f) {}
         Speed(float aSpd) { spd = aSpd; }
     };
+
+    glm::vec2 randomDir(float minAngle = 0.0f, float maxAngle = 360.0f);
+
+    //oscillate and linearAccel does not return a movement speed, but a distance
+    //likely should be in a different namespace, but what to name that namespace?
+
     //spd > 0, currTime should start at 0
     float oscillate(float currTime, float min, float max, float spd, float startPos);
     inline float oscillate(float currTime, float min, float max, float spd) {
-        return oscillate(currTime, min, max, spd, (max - min) / 2);
+        return oscillate(currTime, min, max, spd, (max + min) / 2);
     }
     float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime, bool reverseFlag);
     inline float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime) {
@@ -34,4 +40,7 @@ namespace Movement {
     inline float linearAcceleration(float currTime, float acceleration) {
         return linearAcceleration(currTime, acceleration, -1.0f, -1.0f, false);
     }
+
+    //returns a speed, quick deceleration at the end
+    float linearBurst(float currTime, float initialVelocity, float deceleration, float maxTime);
 };

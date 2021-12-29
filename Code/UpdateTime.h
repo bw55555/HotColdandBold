@@ -81,6 +81,9 @@ public:
 			numWaitTrue += 1;
 		}
 		//std::cout << currTime << " " << waitTime << std::endl;
+		if (currTime >= waitTime && numTrue == -1.0f) {
+			return shouldRun;
+		}
 		if (currTime < waitTime + numTrue && currTime >= waitTime && numWaits <= numWaitTrue) {
 			return shouldRun;
 		}
