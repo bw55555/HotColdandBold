@@ -139,6 +139,14 @@ void GameWindow::update() {
         
     }
 
+    if (Enemy::enemies.size() > 0) {
+
+        Enemy::enemies.erase(std::remove_if(Enemy::enemies.begin(), Enemy::enemies.end(), [](const std::shared_ptr<Enemy>& enemy) {
+            return enemy->destroyed;
+            }), Enemy::enemies.end());
+
+    }
+
     if (DropItem::dropItems.size() > 0) {
 
         DropItem::dropItems.erase(std::remove_if(DropItem::dropItems.begin(), DropItem::dropItems.end(), [](const std::shared_ptr<DropItem>& dropItem) {
