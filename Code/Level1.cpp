@@ -72,27 +72,25 @@ namespace Level {
     void bossPattern2(BSp s) {
         int spawnInterval = 90; //probably too hard
         spawnInterval = 120; //this is a lot easier...
-        fyex(s, spawnInterval, 24) {
-            every(s, 2) {
-                nring(o, 6) {
-                    nstacki(spd, i, 4, 2, 5) {
-                        BulletType bt = (int)t(s) % (spawnInterval * 2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed;
-                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2*o + 3.7385f * t(s) + 26.0f * i), [](Bp b) {
+        fyex(s, spawnInterval, 24) { //executes 24 frames in a row every spawnInterval frames
+            every(s, 2) { //every 2 frames
+                nring(o, 6) { //6 bullets in a ring
+                    nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
+                        BulletType bt = (int)t(s) % (spawnInterval * 2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed; //alternate bullet type
+                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2 * o + 3.7385f * t(s) + 26.0f * i), [](Bp b) { //choose a starting direction
+                            //the time system I created is pretty complicated... but basically you should put everything in a time block like this
                             during(b, 29) {
-                                spinningDirectionalBullet(b);
+                                spinningDirectionalBullet(b); //creates that spinning effect at the beginning
                             }
-                            wf(b, 60) {
-                                b->customFloats[5] = 0.0f;
-                                b->customFloats[4] = 0.0f;
-                                b->rotateDir(90 * b->customFloats[6]);
+                            wf(b, 60) { //do this at 60 frames (wf stands for waitfor)
+                                b->rotateDir(90 * b->customFloats[6]); //rotate the bullets and shoot them out, but slower
                                 b->speed *= 0.8f;
                             }
-                            forever(b) {
+                            forever(b) { //do this forever after 60 frames
                                 directionalBullet(b);
-                                
                             }
                             });
-                        b->initializeCustomVars(s->pos, spd, 3.0f, 0.0f, 0.0f, (int)(t(s) / 120));
+                        b->initializeCustomVars(s->pos, spd, 3.0f, 0.0f, 0.0f, (int)(t(s) / 120)); //intialize the values for spinningDirectionalBullet
                     }
                 }
             }
