@@ -5,7 +5,8 @@ template <class T>
 class UpdateTime
 {
 private:
-	float waitTime;
+	float timeWaited = 0;
+	float waitTime = 0;
 	int numWaits = 0;
 	int numWaitTrue = 0;
 public:
@@ -17,12 +18,22 @@ public:
 	//use this if you want, not necessary
 	float speed = 10.0f;
 
+	void rotateDir(float angle) {
+		float newAngle = glm::radians(angle) + glm::orientedAngle(glm::vec2(1, 0), glm::normalize(dir));
+		dir = glm::vec2(glm::cos(newAngle), glm::sin(newAngle));
+	}
+
 	typedef Movement::Direction Direction;
 	typedef Movement::Speed Speed;
 
 	void initializeCustomVars(float x)
 	{
 		customFloats.push_back(x);
+	}
+
+	void initializeCustomVars(int x)
+	{
+		customFloats.push_back((float)x);
 	}
 
 	void initializeCustomVars(Direction x)
@@ -35,6 +46,11 @@ public:
 		speed = x.spd;
 	}
 
+	void initializeCustomVars(glm::vec2 vec)
+	{
+		customFloats.push_back(vec.x);
+		customFloats.push_back(vec.y);
+	}
 	template<typename T, typename... Args>
 	void initializeCustomVars(T x, Args... args) // recursive variadic function
 	{
@@ -43,55 +59,51 @@ public:
 	}
 
 	float currTime;
-	bool shouldRun = false;
+	bool shouldRun = true;
 	
 	UpdateTime(UpdateFunc func) {
 		updatefunc = func;
 		currTime = 0;
-		waitTime = 0;
+		timeWaited = 0;
+		numWaitTrue = 0;
 	}
 
 	void frameUpdate(T* derivedpointer) {
 		currTime += 1.0f;
 		numWaits = 0;
+		waitTime = 0;
 		updatefunc(derivedpointer);
 	}
 
 	void setCurrentTime(float time) {
 		currTime = time;
 	}
+
+	//do not nest waits. This will break things
 	bool wait(float time, float numTrue = 1.0f) {
 		numWaits += 1;
-		if (currTime >= time + waitTime && numWaits > numWaitTrue) {
-			waitTime += time;
+		waitTime += time;
+		//std::cout << currTime << " " << timeWaited << " " << numTrue << " " << numWaits << " " << numWaitTrue << "\n";
+		if (currTime >= timeWaited + time && currTime >= waitTime && numWaits > numWaitTrue) {
+			timeWaited += time;
 			numWaitTrue += 1;
 		}
-		//std::cout << currTime << " " << waitTime << std::endl;
+		if (currTime >= waitTime && numTrue == -1.0f && numWaits <= numWaitTrue) {
+			return shouldRun;
+		}
 		if (currTime < waitTime + numTrue && currTime >= waitTime && numWaits <= numWaitTrue) {
-			return true;
+			return shouldRun;
 		}
 		else {
 			return false;
 		}
 	}
+
 	bool waitUntil(float time, float numTrue = 1.0f) {
-		numWaits += 1;
-		if (currTime >= time && numWaits > numWaitTrue) {
-			waitTime = time;
-			numWaitTrue += 1;
-		}
-		//std::cout << currTime << " " << waitTime << std::endl;
-		if (currTime >= waitTime && numTrue == -1.0f) {
-			return shouldRun;
-		}
-		if (currTime < waitTime + numTrue && currTime >= waitTime && numWaits <= numWaitTrue) {
-			return shouldRun;
-		}
-		else {
-			return false;
-		}
+		return wait(time - timeWaited, numTrue);
 	}
 	void updateWaitTime(T* derivedpointer) {
+		numWaitTrue = 0;
 		shouldRun = false;
 		updatefunc(derivedpointer);
 		shouldRun = true;

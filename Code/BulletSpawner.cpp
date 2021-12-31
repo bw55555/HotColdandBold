@@ -31,7 +31,7 @@ std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 po
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[0], func);
 	}
-	if (type == BulletType::Knife) {
+	if (type == BulletType::KnifeBlue) {
 		Hitbox h;
 		h.type = HitboxType::Circle;
 		h.radius = 15.0f;
@@ -44,6 +44,13 @@ std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 po
 		h.radius = 25.0f;
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[2], func);
+	}
+	if (type == BulletType::KnifeRed) {
+		Hitbox h;
+		h.type = HitboxType::Circle;
+		h.radius = 15.0f;
+		//hitbox whatevers
+		return Bullet::makeBullet(h, pos, bulletPresetTextures[3], func);
 	}
 	return std::shared_ptr<Bullet>(nullptr);
 }

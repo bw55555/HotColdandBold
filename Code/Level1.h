@@ -9,6 +9,7 @@ namespace Level {
     void bs_1(BulletSpawner* spawner);
     void macroExample(BulletSpawner* s);
     void bossPattern1(BulletSpawner* s);
+    void bossPattern2(BulletSpawner* s);
 
     void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);
@@ -21,7 +22,6 @@ namespace Level {
     void spinningDirectionalBulletDisplay(Bullet* b);
 
     void bulletSpawnerTestSpinning(BulletSpawner* spawner);
-    void spinningDirectionalBullet(Bullet* b);
 
     void bulletSpawnerTest3(BulletSpawner* spawner);
     void testFunc3(Bullet* b);

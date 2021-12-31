@@ -53,7 +53,10 @@ void BulletMovement::spinningDirectionalBullet(Bullet* b) {
     float incrAngle = angle + b->customFloats[3];
     float incrRadius = glm::length(radius) + b->customFloats[2] * (1 + b->currTime * b->customFloats[4]);
     glm::vec2 radiusEx = glm::vec2(incrRadius * cos(glm::radians(incrAngle)), incrRadius * sin(glm::radians(incrAngle)));
+    
     b->setRotation(glm::normalize(radius + radiusEx));
+    b->dir = glm::normalize(radius + radiusEx);
+    b->speed = glm::length(radius + radiusEx);
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[5]));
 }
 
@@ -83,6 +86,8 @@ void BulletMovement::spinningDirectionalBullet2(Bullet* b) {
     float incrRadius = glm::length(radius) + b->customFloats[2] * (1 + b->currTime * b->customFloats[5]);
     glm::vec2 radiusEx = glm::vec2(incrRadius * cos(glm::radians(incrAngle)), incrRadius * sin(glm::radians(incrAngle)));
     b->setRotation(glm::normalize(radius + radiusEx));
+    b->dir = glm::normalize(radius + radiusEx);
+    b->speed = glm::length(radius + radiusEx);
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[6]));
 }
 

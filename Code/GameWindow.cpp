@@ -67,8 +67,9 @@ void GameWindow::initialize() {
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
-    loadTexture(PATH_START + "resources/textures/Knife.png", &BulletSpawner::bulletPresetTextures[1]);
+    loadTexture(PATH_START + "resources/textures/KnifeBlue.png", &BulletSpawner::bulletPresetTextures[1]);
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
     static unsigned int enemyTextures[10]; // Why is this 10?

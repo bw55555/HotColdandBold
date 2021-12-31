@@ -15,8 +15,6 @@ class GameLevel : public UpdateTime<GameLevel>
 {
 public:
 	GameLevel(void (*func)(GameLevel*));
-	
-	bool runLevel = true;
 	void update();
 	
 	//void setCheckpoint();

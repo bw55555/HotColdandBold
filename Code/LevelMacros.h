@@ -6,8 +6,8 @@
 //please do not use namespace std... you will probably break some of these macros
 
 //better name plz...
-//For X frames Every Y frames
-#define fxey(obj, x, y) if (obj->frameInterval(x, 0, y))
+//For Y frames Every X frames
+#define fyex(obj, x, y) if (obj->frameInterval(x, 0, y))
 
 //every interval frames
 #define every(obj, interval) if (obj->frameInterval(interval))
@@ -23,6 +23,11 @@
 
 //wait until, returns true n times
 #define wu2(obj, time, n) if (obj->waitUntil(time, n))
+
+//returns true for n frames
+#define during(obj, time) if (obj->wait(0, time))
+
+#define forever(obj) if (obj->wait(0, -1.0f))
 
 //bullet ring, vname is the variable name to insert
 #define nring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
@@ -54,3 +59,5 @@
 #define rt(obj, n) static_cast<float>(static_cast<int>(t(obj)) % static_cast<int>(n))
 
 #define initwait(obj, time) if (t(obj) < static_cast<float>(time)) {return;}
+
+#define onStart(obj) if (t(obj) == 1.0f)
