@@ -1,8 +1,8 @@
 #pragma once
 #include "CollidableObject.h"
-
-class GLFWwindow;
-class Shader;
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <Shader.h>
 
 class Player :
     public CollidableObject
