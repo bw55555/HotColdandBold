@@ -23,7 +23,7 @@ namespace Level {
         wf(l, 0.5_s) {
             //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
-            Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), [](Ep e) {
+            Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
                 delay(e, 30);
                 every(e, 60) e->dir = randomDir();
                 //fyex(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
@@ -111,7 +111,8 @@ namespace Level {
             //probably need a function to standardize times inside waits so this problem doesn't happen
 
             //wf(s, 10.0f) {} //wf or any other wait function will cause runtime errors that will cause problems somewhere
-            //nestedWait currently in development
+            //currently, best option is to use fyexo()
+            fyexo(s, 7, 2, -1) { std::cout << t(s) << " 3.5\n"; } //this executes at 69 and 70 frames. 
         }
         forever(s) {std::cout << t(s) << " 4ever\n"; } //executes forever from 66 frames to end of time
         wu(s, 65.0f) { std::cout << "Never\n"; } //the wait timer is currently 66 frames, so the code will never run. 
@@ -126,6 +127,11 @@ namespace Level {
         //the best alternative I have is to use both until() and delayTo(). It works, so don't complain
         //in fact, the only unique functions are wf2, wu2, and until. All other functions are just readability versions of these 3
         //basically all other functions can be implemented with just wf2, wu2 and until. 
+
+        //enclose every single statement in at least one time/wait function. 
+        //even if you want code to run every frame, use every(s, 1) (to ignore wait timer) or forever(s) (to use the wait timer) instead of being lazy
+
+
 
         //this will execute every frame since it is top level
         every(s, 17) { //every 17 frames...

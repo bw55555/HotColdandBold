@@ -1,5 +1,4 @@
 #include "CollidableObject.h"
-#include "GameWindow.h"
 
 CollidableObject::CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling, float rotation) : Sprite(textureID, scaling, initialPos, rotation) {
 	hitbox = collisionBox;
