@@ -109,10 +109,6 @@ public:
 		return wait(0, time - waitTime + 1);
 	}
 
-	bool nestedWait(float time, float numTrue = 1.0f) {
-		
-	}
-
 	void updateWaitTime(T* derivedpointer) {
 		numWaitTrue = 0;
 		shouldRun = false;
