@@ -100,8 +100,19 @@ public:
 	}
 
 	bool waitUntil(float time, float numTrue = 1.0f) {
+		if (time < timeWaited) { return false; }
 		return wait(time - timeWaited, numTrue);
 	}
+
+	bool runUntil(float time) {
+		if (time < waitTime) { return false; }
+		return wait(0, time - waitTime);
+	}
+
+	bool nestedWait(float time, float numTrue = 1.0f) {
+		
+	}
+
 	void updateWaitTime(T* derivedpointer) {
 		numWaitTrue = 0;
 		shouldRun = false;
