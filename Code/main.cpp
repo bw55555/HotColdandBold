@@ -14,9 +14,6 @@
 #include <sys/types.h>
 #include <numeric>
 #include <functional>
-#include "BulletSpawner.h"
-#include "Enemy.h"
-#include "DropItem.h"
 
 
 extern std::string PATH_START = "";

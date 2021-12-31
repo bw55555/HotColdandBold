@@ -1,5 +1,12 @@
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <Shader.h>
+
 #include "Player.h"
 #include "GameWindow.h"
+#include "BulletSpawner.h"
+
+
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
 	speed = 25.0f;

@@ -1,17 +1,9 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include "stb_image.h"
-#include <iostream>
-#include <Shader.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <vector>
-#include "BulletSpawner.h"
-#include "Bullet.h"
-
 #include "CollidableObject.h"
+
+class GLFWwindow;
+class Shader;
+
 class Player :
     public CollidableObject
 {
