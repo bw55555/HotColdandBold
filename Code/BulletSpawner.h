@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
-
+#include <variant>
 #include "Bullet.h"
 #include "UpdateTime.h"
 
@@ -19,6 +19,8 @@ public:
 
 	glm::vec2 localPos;
 	glm::vec2 pos;
+	typedef std::variant<std::weak_ptr<Enemy>, std::weak_ptr<Bullet>> ParentPointer;
+	
 	std::weak_ptr<Enemy> parent;
 
 	BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*));

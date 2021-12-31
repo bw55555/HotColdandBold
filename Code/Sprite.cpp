@@ -42,10 +42,12 @@ void Sprite::rotate(float angle) {
 }
 
 void Sprite::rotate(glm::vec2 dir) {
+	if (isZeroVec(dir)) { return; }
 	rot += glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
 }
 
 void Sprite::setRotation(glm::vec2 dir) {
+	if (isZeroVec(dir)) { return; }
 	rot = glm::degrees(glm::orientedAngle(glm::vec2(0, 1), glm::normalize(dir)));
 }
 

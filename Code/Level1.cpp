@@ -220,7 +220,7 @@ namespace Level {
 
         if ((int)(spawner->currTime) % 5 == 0 && (int)(spawner->currTime) % 100 != 5 && (int)(spawner->currTime) % 100 != 10) {
             std::shared_ptr<Bullet> bullet = spawner->spawnPreset(BulletType::RoundBlue, spawner->pos, BulletMovement::directionalBullet);
-            glm::vec2 dir = glm::normalize(GameWindow::player->getPos() - bullet->getPos());
+            glm::vec2 dir = normalizeSafe(GameWindow::player->getPos() - bullet->getPos());
             bullet->initializeCustomVars(Movement::Speed{ 20.0f }, Movement::Direction{ dir });
             bullet->setRotation(dir);
         }
@@ -235,7 +235,7 @@ namespace Level {
             bullet->customFloats.push_back(10.0f);
             float angle = glm::radians(60 * spawner->currTime);
             glm::vec2 dir{ sin(angle), cos(angle) };
-            dir = glm::normalize(dir);
+            dir = normalizeSafe(dir);
             bullet->customFloats.push_back(spawner->pos.x);
             bullet->customFloats.push_back(spawner->pos.y);
             bullet->customFloats.push_back(dir.x);
@@ -248,8 +248,8 @@ namespace Level {
         //speed, centerX, centerY, directionX, directionY
 
         glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
-        glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x));
-        glm::vec2 finalDir = glm::normalize(1.1f * spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
+        glm::vec2 spinDir = normalizeSafe(glm::vec2(temp.y, -temp.x));
+        glm::vec2 finalDir = normalizeSafe(1.1f * spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
 
         if (b->currTime < 15) {
             b->move(glm::vec2(0.0f, -1.0f) * b->customFloats[0]);
@@ -266,7 +266,7 @@ namespace Level {
             bullet->customFloats.push_back(10.0f);
             float angle = glm::radians(63.017 * spawner->currTime);
             glm::vec2 dir{ sin(angle), cos(angle) };
-            dir = glm::normalize(dir);
+            dir = normalizeSafe(dir);
             bullet->customFloats.push_back(spawner->pos.x);
             bullet->customFloats.push_back(spawner->pos.y);
             bullet->customFloats.push_back(dir.x);
@@ -279,8 +279,8 @@ namespace Level {
         //speed, centerX, centerY, directionX, directionY
 
         glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
-        glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x));
-        glm::vec2 finalDir = glm::normalize(spinDir * 1.05f + glm::vec2(b->customFloats[3], b->customFloats[4]));
+        glm::vec2 spinDir = normalizeSafe(glm::vec2(temp.y, -temp.x));
+        glm::vec2 finalDir = normalizeSafe(spinDir * 1.05f + glm::vec2(b->customFloats[3], b->customFloats[4]));
 
         if (b->currTime < 15) {
             b->move(glm::vec2(b->customFloats[3], b->customFloats[4]) * b->customFloats[0]);
@@ -298,7 +298,7 @@ namespace Level {
             bullet->customFloats.push_back(10.0f);
             float angle = glm::radians(64.513f * spawner->currTime);
             glm::vec2 dir{ sin(angle), cos(angle) };
-            dir = glm::normalize(dir);
+            dir = normalizeSafe(dir);
             bullet->customFloats.push_back(spawner->pos.x);
             bullet->customFloats.push_back(spawner->pos.y);
             bullet->customFloats.push_back(dir.x);
@@ -311,7 +311,7 @@ namespace Level {
         //speed, centerX, centerY, directionX, directionY
 
         glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
-        glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x)) * (1 + b->currTime / 500);
+        glm::vec2 spinDir = normalizeSafe(glm::vec2(temp.y, -temp.x)) * (1 + b->currTime / 500);
         glm::vec2 finalDir = spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]);
 
         if (b->currTime < 15) {
@@ -337,7 +337,7 @@ namespace Level {
             bullet->customFloats.push_back(10.0f);
             float angle = glm::radians(64.513f * spawner->currTime);
             glm::vec2 dir{ sin(angle), cos(angle) };
-            dir = glm::normalize(dir);
+            dir = normalizeSafe(dir);
             bullet->customFloats.push_back(spawner->pos.x);
             bullet->customFloats.push_back(spawner->pos.y);
             bullet->customFloats.push_back(dir.x);
@@ -350,8 +350,8 @@ namespace Level {
         //speed, centerX, centerY, directionX, directionY
 
         glm::vec2 temp = glm::vec2(b->customFloats[1], b->customFloats[2]) - b->getPos();
-        glm::vec2 spinDir = glm::normalize(glm::vec2(temp.y, -temp.x));
-        glm::vec2 finalDir = glm::normalize(1.1f * spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
+        glm::vec2 spinDir = normalizeSafe(glm::vec2(temp.y, -temp.x));
+        glm::vec2 finalDir = normalizeSafe(1.1f * spinDir + glm::vec2(b->customFloats[3], b->customFloats[4]));
 
         if (b->currTime < 15) {
             b->move(glm::vec2(b->customFloats[3], b->customFloats[4]) * b->customFloats[0]);

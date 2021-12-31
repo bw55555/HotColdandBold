@@ -32,3 +32,10 @@ public:
 	~Sprite();
 };
 
+bool isZeroVec(glm::vec2 vec) {
+	return vec == glm::vec2(0.0f, 0.0f);
+}
+
+glm::vec2 normalizeSafe(glm::vec2 dir) {
+	return isZeroVec(dir) ? dir : glm::normalize(dir);
+}

@@ -19,7 +19,7 @@ public:
 	float speed = 10.0f;
 
 	void rotateDir(float angle) {
-		float newAngle = glm::radians(angle) + glm::orientedAngle(glm::vec2(1, 0), glm::normalize(dir));
+		float newAngle = isZeroVec(dir) ? glm::radians(angle) : glm::radians(angle) + glm::orientedAngle(glm::vec2(1, 0), glm::normalize(dir));
 		dir = glm::vec2(glm::cos(newAngle), glm::sin(newAngle));
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameLevel.h"
 #include "Movement.h"
+#include <tuple>
 
 //do not include this file in another header file...
 //please do not use namespace std... you will probably break some of these macros
@@ -94,19 +95,19 @@
 #define nring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
 
 //bullet ring, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nringi(vname, iname, num) for (float vname = 0, iname = 0; vname < 360.0; vname += 360.0f/num, iname+=1.0f)
+#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0; vname += 360.0f/num, iname+=1f)
 
 //bullet stack, vname is the variable name to insert
 #define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
 
 //bullet stack, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nstacki(vname, iname, minspd, incr, num) for (float vname = minspd, iname = 0; vname<num * incr + minspd; vname += incr, iname+=1)
+#define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{static_cast<float>(minspd), 0}; vname<num * incr + minspd; vname += incr, iname+=1)
 
 //bullet spread, vname is the variable name to insert, assumes num > 1
 #define nspread(vname, center, range, num) for (float vname = center-range/2; vname < center + range/2 + range/num; vname += range/(num-1))
 
 //bullet spread, vname is the variable name to insert, i is the index (also a variable name to insert) assumes num > 1
-#define nspreadi(vname, iname, center, range, num) for (float vname = center-range/2, iname = 0; vname < center + range/2 + range/num; vname += range/(num-1), iname+=1)
+#define nspreadi(vname, iname, center, range, num) for (auto [vname, iname] = std::tuple{static_cast<float>(center-range/2), 0}; vname < center + range/2 + range/num; vname += range/(num-1), iname+=1)
 
 #define rad glm::radians
 
