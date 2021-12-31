@@ -72,12 +72,12 @@ namespace Level {
     void bossPattern2(BSp s) {
         int spawnInterval = 90; //probably too hard
         spawnInterval = 120; //this is a lot easier...
-        fyex(s, spawnInterval, 20) {
+        fyex(s, spawnInterval, 24) {
             every(s, 2) {
                 nring(o, 6) {
-                    nstacki(spd, i, 4, 2.5, 4) {
+                    nstacki(spd, i, 4, 2, 5) {
                         BulletType bt = (int)t(s) % (spawnInterval * 2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed;
-                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(o + 3.9085f * t(s) + 26.0f * i), [](Bp b) {
+                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2*o + 3.7385f * t(s) + 26.0f * i), [](Bp b) {
                             during(b, 29) {
                                 spinningDirectionalBullet(b);
                             }
@@ -85,9 +85,11 @@ namespace Level {
                                 b->customFloats[5] = 0.0f;
                                 b->customFloats[4] = 0.0f;
                                 b->rotateDir(90 * b->customFloats[6]);
+                                b->speed *= 0.8f;
                             }
                             forever(b) {
                                 directionalBullet(b);
+                                
                             }
                             });
                         b->initializeCustomVars(s->pos, spd, 3.0f, 0.0f, 0.0f, (int)(t(s) / 120));
