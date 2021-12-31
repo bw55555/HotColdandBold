@@ -1,6 +1,8 @@
 #pragma once
-#include <iostream>
-
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <Shader.h>
+#include "stb_image.h"
 #include "Sprite.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -8,8 +10,6 @@
 #include "DropItem.h"
 #include "GameLevel.h"
 
-class GLFWwindow;
-class Shader;
 
 extern std::string PATH_START;
 
@@ -29,6 +29,7 @@ public:
 	glm::mat4 projectionMatrix;
 	std::shared_ptr<GameLevel> level = nullptr;
 	GameWindow(GLFWwindow* w, Shader* s);
+
 	void render();
 	void update();
 	void initialize();

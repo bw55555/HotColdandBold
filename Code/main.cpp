@@ -8,12 +8,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "GameWindow.h"
 #include <vector>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <numeric>
 #include <functional>
+#include "GameWindow.h"
+
 
 
 extern std::string PATH_START = "";
