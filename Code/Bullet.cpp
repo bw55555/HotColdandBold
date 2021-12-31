@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "BulletSpawner.h"
 Bullet::Bullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Bullet>(func) {
     //never use this, it screws with shared pointers! use makeBullet instead
 }
@@ -31,4 +32,9 @@ void Bullet::destroy() {
     destroyed = true;
     collisionEnabled = false;
     renderEnabled = false;
+}
+
+void Bullet::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
+    std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
+    spawners.push_back(std::move(s));
 }

@@ -8,13 +8,15 @@
 #include "CollidableObject.h"
 #include "UpdateTime.h"
 
+class BulletSpawner;
+
 struct DestroyFlags {
     bool offScreen = true;
     float destroyTime = -1;
 };
 
 class Bullet :
-    public CollidableObject, public UpdateTime<Bullet>
+    public CollidableObject, public UpdateTime<Bullet>, public std::enable_shared_from_this<Bullet>
 {
 public:
     static std::vector<std::shared_ptr<Bullet>> bullets;
@@ -27,5 +29,8 @@ public:
     void destroy();
     bool checkDestruction();
     DestroyFlags destroyFlags;
+
+    std::vector<std::unique_ptr<BulletSpawner>> spawners;
+    void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
 };
 

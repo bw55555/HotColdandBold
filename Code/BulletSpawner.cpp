@@ -8,14 +8,24 @@ BulletSpawner::BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 ini
 
 	pos = localPos + parentPointer->getPos();
 }
+
+BulletSpawner::BulletSpawner(std::shared_ptr<Bullet> parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*)) : UpdateTime<BulletSpawner>(func) {
+	parent = std::weak_ptr<Bullet>(parentPointer);
+	localPos = initialPos;
+
+	pos = localPos + parentPointer->getPos();
+}
 void BulletSpawner::update() {
-	auto p = parent.lock();
-	if (p) {
-		pos = localPos + p->getPos();
-	}
-	else {
-		pos = localPos;
-	}
+
+	pos = localPos + std::visit([](auto&& arg) -> glm::vec2 {
+		if (auto p = arg.lock(); p) {
+			return p->getPos();
+		}
+		else {
+			return glm::vec2(0);
+		}
+	}, parent);
+	
 	frameUpdate(this);
 }
 

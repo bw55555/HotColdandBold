@@ -28,7 +28,7 @@ namespace Level {
                 every(e, 60) e->dir = randomDir();
                 //fyex(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             });
-            e->createBulletSpawner(glm::vec2(0, 0), macroExample);
+            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
         }
         wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen

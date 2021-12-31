@@ -120,12 +120,15 @@ void GameWindow::update() {
     //update bullets before enemies so that spawned bullets are not updated on the same frame
     for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
         bullet->update();
+        for (auto& s : bullet->spawners) {
+            s->update();
+        }
     }
 
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
-        for (int i = 0; i < enemy->spawners.size(); i++) {
-            enemy->spawners[i]->update();
+        for (auto& s : enemy->spawners) {
+            s->update();
         }
     }
     
@@ -229,6 +232,14 @@ void GameWindow::checkCollisions() {
 }
 
 void GameWindow::clearScreen() {
-    Bullet::bullets.clear();
+    clearBullets();
+    clearEnemies();
 }
 
+void GameWindow::clearEnemies() {
+    Enemy::enemies.clear();
+}
+
+void GameWindow::clearBullets() {
+    Bullet::bullets.clear();
+}
