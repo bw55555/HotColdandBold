@@ -100,13 +100,13 @@ public:
 	}
 
 	bool waitUntil(float time, float numTrue = 1.0f) {
-		if (time < timeWaited) { return false; }
-		return wait(time - timeWaited, numTrue);
+		if (time < waitTime) { return false; }
+		return wait(time - waitTime, numTrue);
 	}
 
 	bool runUntil(float time) {
 		if (time < waitTime) { return false; }
-		return wait(0, time - waitTime);
+		return wait(0, time - waitTime + 1);
 	}
 
 	bool nestedWait(float time, float numTrue = 1.0f) {

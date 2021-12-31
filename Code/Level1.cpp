@@ -28,7 +28,7 @@ namespace Level {
                 every(e, 60) e->dir = randomDir();
                 //fyex(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             });
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
+            e->createBulletSpawner(glm::vec2(0, 0), macroExample);
         }
         wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen
@@ -99,26 +99,30 @@ namespace Level {
 
     void macroExample(BSp s) { //BSp is short for BulletSpawner*
         wf(s, 60.0f) { //executes once at 60 frames (1 second). Adds 60 to the wait timer
-            fyex(s, 7, 2) {} //this statement is useless because wf executes only once
+            std::cout << t(s) << " 1\n";
+            fyex(s, 7, 2) {
+                std::cout << "This never happens\n";
+            } //this statement is useless because wf executes only once
         } //the next statement will try to execute immediately not next update
         wf2(s, 6.0f, 5) { //executes 5 times at 66 to 70 frames. (not 6 to 10 frames, 60 is added by the wait timer) 
             //Adds 6 to the wait timer. note that executing 5 times does not add an extra 5 to the timer
-            fyex(s, 7, 2) {} //this statement will only execute once at 70 frames (why?)
+            std::cout << t(s) << " 2\n";
+            fyex(s, 7, 2) { std::cout << t(s) << " 3\n"; } //this statement will only execute once at 70 frames (why?)
             //probably need a function to standardize times inside waits so this problem doesn't happen
 
             //wf(s, 10.0f) {} //wf or any other wait function will cause runtime errors that will cause problems somewhere
             //nestedWait currently in development
         }
-        forever(s) {/*some code here*/ } //executes forever from 66 frames to end of time
-        wu(s, 65.0f) {/*some code here*/} //the wait timer is currently 66 frames, so the code will never run. 
-        wu(s, 1.5_s) {} //executes once at 90 frames (_s is short for 60 frames). This does not stop forever() from running
+        forever(s) {std::cout << t(s) << " 4ever\n"; } //executes forever from 66 frames to end of time
+        wu(s, 65.0f) { std::cout << "Never\n"; } //the wait timer is currently 66 frames, so the code will never run. 
+        wu(s, 1.5_s) { std::cout << t(s) << " 5\n"; } //executes once at 90 frames (_s is short for 60 frames). This does not stop forever() from running
         delay(s, 1_s) { //basically adds 1 second to the wait timer. Not very useful since wf exists, but hey readability
-            //does not need brackets, but it is not an error to provide them anyway
-            every(s, 1) {/*code*/ } //this executes every frame since it is considered top level...
+            //does not need brackets, but it is not an error to provide them anyway so be careful
+            every(s, 1) { std::cout << t(s) << " tl6\n"; } //this executes every frame since it is considered top level...
         }
-        until(s, 3_s) {/*some code here*/ } //executes every frame from 150 frames to 180 frames inclusive
-        once(s) {} //executes once at 150 frames not 180 frames since until does not increase the wait timer. 
-        delayTo(s, 3_s) {} //its surprisingly hard to create a function that increases the wait timer while having the same functionality as until. 
+        until(s, 3_s) { std::cout << t(s) << " 7\n"; } //executes every frame from 150 frames inclusive to 180 frames inclusive
+        once(s) { std::cout << t(s) << " 8\n"; } //executes once at 150 frames not 180 frames since until does not increase the wait timer. 
+        delayTo(s, 3_s); //its surprisingly hard to create a function that increases the wait timer while having the same functionality as until. 
         //the best alternative I have is to use both until() and delayTo(). It works, so don't complain
         //in fact, the only unique functions are wf2, wu2, and until. All other functions are just readability versions of these 3
         //basically all other functions can be implemented with just wf2, wu2 and until. 

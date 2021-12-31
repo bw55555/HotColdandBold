@@ -76,7 +76,7 @@
 #define sleep(obj, time) if (obj->wait(0, time)) {return;}
 
 //do nothing for time frames. Increases the wait timer by time.
-#define delay(obj, time) if (obj->wait(time)) {return;}
+#define delay(obj, time) if (obj->wait(time)) {}
 
 //do nothing until time frames. Increases the wait timer to time.
 #define delayTo(obj, time) if (obj->waitUntil(time)) {return;}
