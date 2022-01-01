@@ -111,6 +111,10 @@ void BulletMovement::SpinningDirectionalBullet::init(std::shared_ptr<Bullet> b) 
     b->initializeCustomVars(center.x, center.y, radiusChange, angleChange, acceleration, spinAcceleration);
 }
 
+glm::vec2 BulletMovement::targetPlayer(glm::vec2 initialPos, glm::vec2 playerOffset) {
+    return normalizeSafe(GameWindow::player->getPos() + playerOffset - initialPos);
+}
+
 glm::vec2 BulletMovement::targetPlayer(Bullet* b, glm::vec2 playerOffset) {
     return normalizeSafe(GameWindow::player->getPos() + playerOffset - b->getPos());
 }

@@ -7,11 +7,18 @@
 #include <algorithm>
 
 namespace Movement {
+    struct Velocity {
+        glm::vec2 vel;
+        Velocity() : vel(glm::vec2(0.0f, -1.0f)) {}
+        Velocity(float x, float y) { vel = glm::vec2(x, y); }
+        Velocity(glm::vec2 aVel) { vel = aVel; }
+    };
+
     struct Direction {
         glm::vec2 dir;
         Direction() : dir(glm::vec2(0.0f, -1.0f)) {}
-        Direction(float x, float y) { dir = glm::vec2(x, y); }
-        Direction(glm::vec2 aDir) { dir = aDir; }
+        Direction(float x, float y) { dir = glm::normalize(glm::vec2(x, y)); }
+        Direction(glm::vec2 aDir) { dir = glm::normalize(aDir); }
     };
 
     struct Speed {
@@ -19,7 +26,7 @@ namespace Movement {
         Speed() : spd(10.0f) {}
         Speed(float aSpd) { spd = aSpd; }
     };
-
+    float randomFloat(float low, float high);
     glm::vec2 randomDir(float minAngle = 0.0f, float maxAngle = 360.0f);
 
     //oscillate and linearAccel does not return a movement speed, but a distance

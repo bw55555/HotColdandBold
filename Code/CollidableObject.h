@@ -7,6 +7,8 @@ class GameWindow;
 
 enum class HitboxType {Circle, Box};
 
+enum class WallDirection { Left, Right, Up, Down, AnyHorizontal, AnyVertical, Any };
+
 //yeah this is bad design but idc bite me
 struct Hitbox {
     //note that the hitbox should be localized. 
@@ -23,6 +25,7 @@ class CollidableObject :
 private:
     glm::vec2 pos;
 public:
+    virtual ~CollidableObject() {};
     bool collisionEnabled;
     Hitbox hitbox;
     CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling = glm::vec3(1000.0f), float rotation = 0.0f);
@@ -36,5 +39,7 @@ public:
     void setPos(glm::vec2 aPos);
     float getX();
     float getY();
+
+    bool touchingWall(WallDirection dir);
 };
 

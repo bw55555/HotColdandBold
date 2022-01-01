@@ -62,5 +62,12 @@ std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 po
 		//hitbox whatevers
 		return Bullet::makeBullet(h, pos, bulletPresetTextures[3], func);
 	}
+	if (type == BulletType::BallBlackBorder) {
+		Hitbox h;
+		h.type = HitboxType::Circle;
+		h.radius = 40.0f;
+		//hitbox whatevers
+		return Bullet::makeBullet(h, pos, bulletPresetTextures[4], func, glm::vec3(100.0f));
+	}
 	return std::shared_ptr<Bullet>(nullptr);
 }

@@ -18,13 +18,17 @@ public:
 	//use this if you want, not necessary
 	float speed = 10.0f;
 
+	glm::vec2 getVelocity() { return dir * speed; }
+	void setVelocity(glm::vec2 vel) { dir = normalizeSafe(vel); speed = glm::length(vel); }
+
 	void rotateDir(float angle) {
-		float newAngle = isZeroVec(dir) ? glm::radians(angle) : glm::radians(angle) + glm::orientedAngle(glm::vec2(1, 0), glm::normalize(dir));
+		float newAngle = glm::radians(angle) + getRadians(dir);
 		dir = glm::vec2(glm::cos(newAngle), glm::sin(newAngle));
 	}
 
 	typedef Movement::Direction Direction;
 	typedef Movement::Speed Speed;
+	typedef Movement::Velocity Velocity;
 
 	void initializeCustomVars(float x)
 	{
@@ -34,6 +38,11 @@ public:
 	void initializeCustomVars(int x)
 	{
 		customFloats.push_back((float)x);
+	}
+
+	void initializeCustomVars(Velocity x)
+	{
+		setVelocity(x.vel);
 	}
 
 	void initializeCustomVars(Direction x)

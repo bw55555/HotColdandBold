@@ -1,7 +1,7 @@
-// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
-// such as names of functions and macros.
-// For more information see https://go.microsoft.com/fwlink/?linkid=865984
-
+#pragma once
+#include "GameLevel.h"
+#include "Movement.h"
+#include <tuple>
 
 //do not include this file in another header file...
 //please do not use namespace std... you will probably break some of these macros
@@ -76,7 +76,7 @@
 #define sleep(obj, time) if (obj->wait(0, time)) {return;}
 
 //do nothing for time frames. Increases the wait timer by time.
-#define delay(obj, time) if (obj->wait(time)) {return;}
+#define delay(obj, time) if (obj->wait(time)) {}
 
 //do nothing until time frames. Increases the wait timer to time.
 #define delayTo(obj, time) if (obj->waitUntil(time)) {return;}
@@ -92,29 +92,29 @@
 
 
 //bullet ring, vname is the variable name to insert
-#define nring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
+#define nring(vname, num) for (float vname = 0; vname < 360.0f; vname += 360.0f/num)
 
 //bullet ring, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nringi(vname, iname, num) for (float vname = 0, iname = 0; vname < 360.0; vname += 360.0f/num, iname+=1.0f)
+#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0f; vname += 360.0f/num, iname+=1f)
 
 //bullet stack, vname is the variable name to insert
 #define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
 
 //bullet stack, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nstacki(vname, iname, minspd, incr, num) for (float vname = minspd, iname = 0; vname<num * incr + minspd; vname += incr, iname+=1)
+#define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{static_cast<float>(minspd), 0}; vname<num * incr + minspd; vname += incr, iname+=1)
 
 //bullet spread, vname is the variable name to insert, assumes num > 1
 #define nspread(vname, center, range, num) for (float vname = center-range/2; vname < center + range/2 + range/num; vname += range/(num-1))
 
 //bullet spread, vname is the variable name to insert, i is the index (also a variable name to insert) assumes num > 1
-#define nspreadi(vname, iname, center, range, num) for (float vname = center-range/2, iname = 0; vname < center + range/2 + range/num; vname += range/(num-1), iname+=1)
+#define nspreadi(vname, iname, center, range, num) for (auto [vname, iname] = std::tuple{static_cast<float>(center-range/2), 0}; vname < center + range/2 + range/num; vname += range/(num-1), iname+=1)
 
 #define rad glm::radians
 
 //get vector from angle, i is the variable name to insert
 #define avec(vname, angle) glm::vec2 vname{cos(angle), sin(angle)}
 
-#define avecd(angle) glm::vec2(cos(rad(angle)), sin(rad(angle)))
+#define avecd(angle) glm::vec2(cos(rad(static_cast<float>(angle))), sin(rad(static_cast<float>(angle))))
 
 //idk maybe I just want to be lazy
 #define sfs [](BulletSpawner* s)

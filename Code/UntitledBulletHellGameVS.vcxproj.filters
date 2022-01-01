@@ -74,7 +74,9 @@
     <None Include="..\.gitignore">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="cpp.hint" />
+    <None Include="cpp.hint">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">

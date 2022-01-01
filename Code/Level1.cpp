@@ -28,7 +28,10 @@ namespace Level {
                 every(e, 60) e->dir = randomDir();
                 //fyex(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             });
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
+            //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
+            
+            e->createBulletSpawner(glm::vec2(0, 0), bossPattern3);
+            
         }
         wf(l, 1.5_s) {
             //force you to unfocus, must keep player at the bottom of the screen
@@ -92,6 +95,37 @@ namespace Level {
                             });
                         b->initializeCustomVars(s->pos, spd, 3.0f, 0.0f, 0.0f, (int)(t(s) / 120)); //intialize the values for spinningDirectionalBullet
                     }
+                }
+            }
+        }
+    }
+
+    void bossPattern3(BSp s) {
+        every(s, 60) {
+            nspread(o, getAngle(targetPlayer(s->pos)), 40, 2) {
+                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos, DirectionalBullet(avecd(o), 5.0f));
+                b->createBulletSpawner(glm::vec2(0, 0), [](BSp s2) {
+                    every(s2, 1) if (s2->getParent<Bullet>()->touchingWall(WallDirection::Any)) {
+                        nspread(o, 90, 20, 4) {
+                            nstack(spd, 4.0f, 3.0f, 4) {
+                                //s2->spawnPreset(BulletType::KnifeBlue, s2->pos, DirectionalBullet(avecd(a), 10.0f));
+                                Bsp b = s2->spawnPresetwLambda(BulletType::RoundBlue, s2->pos, [](Bp b) {
+                                    glm::vec2 accel = glm::vec2(cf(b, 0), cf(b, 1));
+                                    b->setVelocity(b->getVelocity() + accel);
+                                    b->move();
+                                    });
+                                b->initializeCustomVars(Direction(avecd(o)), Speed(spd), glm::vec2(0, -0.1f));
+                            }
+                        }
+                        s2->getParent<Bullet>()->destroy();
+                    }
+                    });
+            }
+        }
+        every(s, 180) {
+            nspread(a, getAngle(targetPlayer(s->pos)), 4, 3) {
+                nstack(spd, 9.0f, 0.5f, 3) {
+                    s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(a), spd));
                 }
             }
         }

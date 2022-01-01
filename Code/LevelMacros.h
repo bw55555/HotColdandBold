@@ -91,11 +91,14 @@
 */
 
 
+//standard repeating
+#define repeat(vname, num) for (float vname = 0; vname < num; vname += 1)
+
 //bullet ring, vname is the variable name to insert
-#define nring(vname, num) for (float vname = 0; vname < 360.0; vname += 360.0f/num)
+#define nring(vname, num) for (float vname = 0; vname < 360.0f; vname += 360.0f/num)
 
 //bullet ring, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0; vname += 360.0f/num, iname+=1f)
+#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0f; vname += 360.0f/num, iname+=1f)
 
 //bullet stack, vname is the variable name to insert
 #define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
@@ -114,8 +117,10 @@
 //get vector from angle, i is the variable name to insert
 #define avec(vname, angle) glm::vec2 vname{cos(angle), sin(angle)}
 
-#define avecd(angle) glm::vec2(cos(rad(angle)), sin(rad(angle)))
+#define avecd(angle) glm::vec2(cos(rad(static_cast<float>(angle))), sin(rad(static_cast<float>(angle))))
 
 //idk maybe I just want to be lazy
 #define sfs [](BulletSpawner* s)
 #define sf(name) [](BulletSpawner* name)
+
+#define cf(obj, num) obj->customFloats[num]

@@ -38,3 +38,7 @@ void Bullet::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawne
     std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
     spawners.push_back(std::move(s));
 }
+
+Bullet::~Bullet() {
+    spawners.clear();
+}

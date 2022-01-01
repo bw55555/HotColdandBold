@@ -56,7 +56,3 @@ bool Sprite::isOnScreen() {
 	return -GameWindow::halfWidth < trans.x + scale.x && trans.x - scale.x < GameWindow::halfWidth && 
 		-GameWindow::halfHeight < trans.y + scale.y && trans.y - scale.y < GameWindow::halfHeight;
 }
-
-Sprite::~Sprite() {
-	//spriteList.erase(std::begin(spriteList));
-}

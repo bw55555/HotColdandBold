@@ -1,4 +1,5 @@
 #include "CollidableObject.h"
+#include "GameWindow.h"
 
 CollidableObject::CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling, float rotation) : Sprite(textureID, scaling, initialPos, rotation) {
 	hitbox = collisionBox;
@@ -81,4 +82,24 @@ float CollidableObject::getX() {
 
 float CollidableObject::getY() {
 	return pos.x;
+}
+
+bool CollidableObject::touchingWall(WallDirection dir) {
+	switch (dir) {
+	case WallDirection::Any:
+		return touchingWall(WallDirection::AnyHorizontal) || touchingWall(WallDirection::AnyVertical);
+	case WallDirection::AnyHorizontal:
+		return touchingWall(WallDirection::Left) || touchingWall(WallDirection::Right);
+	case WallDirection::AnyVertical:
+		return touchingWall(WallDirection::Up) || touchingWall(WallDirection::Down);
+	case WallDirection::Up:
+		return pos.y + scale.y > GameWindow::halfHeight;
+	case WallDirection::Down:
+		return pos.y - scale.y < -GameWindow::halfHeight;
+	case WallDirection::Right:
+		return pos.x + scale.x > GameWindow::halfWidth;
+	case WallDirection::Left:
+		return pos.x - scale.x < -GameWindow::halfWidth;
+	}
+	return 0;
 }

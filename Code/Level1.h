@@ -10,6 +10,7 @@ namespace Level {
     void macroExample(BulletSpawner* s);
     void bossPattern1(BulletSpawner* s);
     void bossPattern2(BulletSpawner* s);
+    void bossPattern3(BulletSpawner* s);
 
     void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);

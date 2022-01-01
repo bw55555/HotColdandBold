@@ -28,7 +28,7 @@ public:
 	void rotate(glm::vec2 dir);
 	void setRotation(glm::vec2 dir);
 	bool isOnScreen();
-	~Sprite();
+	virtual ~Sprite() {};
 };
 
 inline bool isZeroVec(glm::vec2 vec) {
@@ -37,4 +37,12 @@ inline bool isZeroVec(glm::vec2 vec) {
 
 inline glm::vec2 normalizeSafe(glm::vec2 dir) {
 	return isZeroVec(dir) ? dir : glm::normalize(dir);
+}
+
+inline float getAngle(glm::vec2 vec) {
+	return isZeroVec(vec) ? 0 : glm::degrees(glm::orientedAngle(glm::vec2(1, 0), glm::normalize(vec)));
+}
+
+inline float getRadians(glm::vec2 vec) {
+	return isZeroVec(vec) ? 0 : glm::orientedAngle(glm::vec2(1, 0), glm::normalize(vec));
 }

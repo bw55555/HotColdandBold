@@ -74,6 +74,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/KnifeBlue.png", &BulletSpawner::bulletPresetTextures[1]);
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
+    loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
 
     static unsigned int enemyTextures[10]; // Why is this 10?
@@ -114,7 +115,7 @@ void GameWindow::update() {
 
     //bomb!
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-        clearScreen();
+        clearBullets();
 
     level->update();
 
@@ -124,7 +125,11 @@ void GameWindow::update() {
     //update bullets before enemies so that spawned bullets are not updated on the same frame
     for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
         bullet->update();
-        for (auto& s : bullet->spawners) {
+    }
+
+    auto bulletsize = Bullet::bullets.size();
+    for (auto i = 0; i < bulletsize; i++) {
+        for (auto& s : Bullet::bullets[i]->spawners) {
             s->update();
         }
     }

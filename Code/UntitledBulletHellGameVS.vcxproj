@@ -111,6 +111,7 @@
     </Link>
     <ClCompile>
       <DisableSpecificWarnings>26451;6262</DisableSpecificWarnings>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

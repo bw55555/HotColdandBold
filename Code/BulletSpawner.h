@@ -6,7 +6,7 @@
 
 class Enemy;
 
-enum class BulletType { RoundBlue, KnifeBlue, RoundRed, KnifeRed };
+enum class BulletType { RoundBlue, KnifeBlue, RoundRed, KnifeRed, BallBlackBorder };
 
 class BulletSpawner : public UpdateTime<BulletSpawner>
 {
@@ -33,6 +33,11 @@ public:
 		std::shared_ptr<Bullet> b = spawnPreset(type, pos, iFunc.f);
 		iFunc.init(b);
 		return b;
+	}
+
+	template<typename T>
+	std::shared_ptr<T> getParent() {
+		return std::get<std::weak_ptr<T>>(parent).lock();
 	}
 };
 
