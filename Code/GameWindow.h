@@ -1,8 +1,4 @@
 #pragma once
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <Shader.h>
-#include "stb_image.h"
 #include "Sprite.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -10,6 +6,7 @@
 #include "DropItem.h"
 #include "GameLevel.h"
 
+typedef struct GLFWwindow GLFWwindow;
 
 extern std::string PATH_START;
 

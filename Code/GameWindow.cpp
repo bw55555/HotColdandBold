@@ -1,6 +1,9 @@
 #include "GameWindow.h"
 #include "Level1.h"
-
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <Shader.h>
+#include "stb_image.h"
 
 
 extern std::string PATH_START;
