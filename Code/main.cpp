@@ -21,7 +21,7 @@ extern std::string PATH_START = "";
 GameWindow* gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_WIDTH = 1500;
 const unsigned int SCR_HEIGHT = 1500;
 
 unsigned int Player::hitboxTexture;
@@ -34,7 +34,7 @@ std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
-const glm::vec2 GameWindow::normalized_coordinate_axes = glm::vec2(1000.0f, 1000.0f);
+glm::vec2 GameWindow::screenSize = glm::vec2(SCR_WIDTH, SCR_HEIGHT);
 const float GameWindow::halfWidth = 800.0f;
 const float GameWindow::halfHeight = 1000.0f;
 
@@ -85,7 +85,9 @@ int main() {
     }
     wglSwapIntervalEXT(1.0f);
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
+    Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
     gameWindow = new GameWindow(window, s);
+    gameWindow -> screenShader = screenShader;
     float currFrame = glfwGetTime();
 
     bool debugMode = false;
@@ -154,6 +156,5 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
-    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
-    glViewport(width/2 - height/2 /ratio, 0, height/ratio, height);
+    GameWindow::screenSize = glm::vec2(width, height);
 }

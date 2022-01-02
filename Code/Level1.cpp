@@ -30,7 +30,7 @@ namespace Level {
             });
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern3);
+            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
         }
         wf(l, 1.5_s) {
@@ -80,7 +80,7 @@ namespace Level {
                 nring(o, 6) { //6 bullets in a ring
                     nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
                         BulletType bt = rt(s, spawnInterval*2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed; //alternate bullet type
-                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2f * o + 3.7385f * t(s) + 26.0f * i), [](Bp b) { //choose a starting direction
+                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2f * o + 3.7385f * t(s) + 26.0f * i + randomFloat(0.0f, 2.0f)), [](Bp b) { //choose a starting direction
                             //the time system I created is pretty complicated... but basically you should put everything in a time block like this
                             during(b, 29) {
                                 spinningDirectionalBullet(b); //creates that spinning effect at the beginning

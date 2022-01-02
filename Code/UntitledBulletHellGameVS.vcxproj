@@ -143,6 +143,8 @@
   <ItemGroup>
     <None Include="..\.gitignore" />
     <None Include="cpp.hint" />
+    <None Include="resources\shaders\ScreenShader.frag" />
+    <None Include="resources\shaders\ScreenShader.vert" />
     <None Include="resources\shaders\SpriteShader_U.frag" />
     <None Include="resources\shaders\SpriteShader_U.vert" />
   </ItemGroup>

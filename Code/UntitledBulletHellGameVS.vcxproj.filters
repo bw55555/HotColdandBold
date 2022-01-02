@@ -77,6 +77,12 @@
     <None Include="cpp.hint">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="resources\shaders\ScreenShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\ScreenShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindow.h">

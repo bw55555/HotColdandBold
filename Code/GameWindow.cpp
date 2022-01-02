@@ -80,14 +80,36 @@ void GameWindow::initialize() {
     static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
     level = std::make_shared<GameLevel>(Level::Level1);
+
+
+
+    glGenFramebuffers(1, &fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+
+    
+
+    glGenTextures(1, &textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2 * halfWidth, 2 * halfHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // attach it to currently bound framebuffer object
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 }
 
 void GameWindow::render() {
+
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    
-    
-    
+    glViewport(0,0,2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
     for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
         sprite->draw(shader); 
     }
@@ -107,6 +129,21 @@ void GameWindow::render() {
     }
 
     glfwSwapBuffers(window);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+
+
+    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
+    glViewport(screenSize.x / 2 - screenSize.y / 2 / ratio, 0, screenSize.y / ratio, screenSize.y);
+    screenShader->use();
+    screenShader->setInt("screenTexture", 0);
+    glm::mat4 tmat = glm::mat4(1.0f);
+    tmat = glm::scale(tmat, glm::vec3(2.0f));
+    screenShader->setMat4("transform", tmat);
+    glBindVertexArray(Sprite::VAO);
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void GameWindow::update() {

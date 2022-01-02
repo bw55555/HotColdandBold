@@ -15,18 +15,22 @@ class GameWindow
 private:
 	GLFWwindow* window;
 	Shader* shader;
+	unsigned int fbo = 0;
+	unsigned int textureColorbuffer = 0;
 public:
 	static std::shared_ptr<Player> player;
 	static unsigned int enemyTextures[10];
-	static const glm::vec2 normalized_coordinate_axes; //set in main.cpp
+	static glm::vec2 screenSize; //set in main.cpp
 	
 	static const float halfWidth;
 	static const float halfHeight;
 
+	Shader* screenShader;
+
 	glm::mat4 projectionMatrix;
 	std::shared_ptr<GameLevel> level = nullptr;
 	GameWindow(GLFWwindow* w, Shader* s);
-
+	
 	void render();
 	void update();
 	void initialize();
