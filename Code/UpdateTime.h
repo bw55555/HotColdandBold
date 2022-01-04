@@ -129,5 +129,7 @@ public:
 	inline bool frameInterval(int interval, int offset = 0, int numTrue = 1) {
 		return shouldRun && ((int)currTime - offset) % interval < numTrue;
 	}
+
+	virtual ~UpdateTime() {};
 };
 

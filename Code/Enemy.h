@@ -22,5 +22,6 @@ public:
     void destroy();
     ~Enemy();
     void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
+    void createBulletSpawner(void (*func)(BulletSpawner*)) { return createBulletSpawner(glm::vec2(0, 0), func); }
 };
 

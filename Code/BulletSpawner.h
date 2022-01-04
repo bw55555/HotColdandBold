@@ -25,6 +25,8 @@ public:
 
 	std::shared_ptr<Bullet> spawnBullet(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Bullet*));
 	std::shared_ptr<Bullet> spawnPreset(BulletType type, glm::vec2 pos, void (*func)(Bullet*));
+	std::shared_ptr<Bullet> spawnPreset(BulletType type, void (*func)(Bullet*)) {return spawnPreset(type, pos, func);}
+	
 	inline std::shared_ptr<Bullet> spawnPresetwLambda(BulletType type, glm::vec2 pos, void (*func)(Bullet*)) { return spawnPreset(type, pos, func); };
 	
 	template<class T>
