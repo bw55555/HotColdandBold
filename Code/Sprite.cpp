@@ -34,6 +34,7 @@ void Sprite::draw(Shader* shader) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glBindVertexArray(VAO);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); //do this to forget about EBO
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
