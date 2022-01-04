@@ -26,11 +26,12 @@ namespace Level {
             Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
                 delay(e, 30);
                 every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
-                fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+                //fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+                wu(e, 30_s) { e->destroy(); }
             });
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern4);
+            e->createBulletSpawner(glm::vec2(0, 0), bossPattern5);
             
         }
         wf(l, 1.5_s) {
@@ -152,6 +153,37 @@ namespace Level {
                 }
             }
         }
+    }
+
+    void bossPattern5(BSp s) {
+        int spawnTimeA = 4;
+        every(s, spawnTimeA) {
+            nring(a, 6) {
+                float angle = a + linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
+                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(angle), 8.0f));
+            }
+        }
+        every(s, spawnTimeA) {
+            nring(a, 6) {
+                float angle = a - linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
+                s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(angle), 8.0f));
+            }
+        }
+        /*
+        every(s, 10) {
+            nring(a, 16) {
+                float wave = oscillate(t(s) / 10, -15, 15, 3);
+                s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(a + wave), 10.0f));
+            }
+        }
+        every(s, 10) {
+            nring(a, 16) {
+                float wave = oscillate(t(s) / 10, -15, 15, 3);
+                s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(a - wave), 10.0f));
+            }
+        }
+        */
+
     }
 
     void macroExample(BSp s) { //BSp is short for BulletSpawner*
