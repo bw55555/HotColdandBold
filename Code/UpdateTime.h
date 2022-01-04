@@ -72,7 +72,7 @@ public:
 	
 	UpdateTime(UpdateFunc func) {
 		updatefunc = func;
-		currTime = 0;
+		currTime = -1.0f;
 		timeWaited = 0;
 		numWaitTrue = 0;
 	}

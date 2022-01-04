@@ -37,6 +37,14 @@ public:
 		return b;
 	}
 
+	template<class T>
+	std::shared_ptr<Bullet> spawnPreset(BulletType type, T iFunc) {
+		//static_assert(std::is_base_of<Bullet::BulletInitializer, T>::value, "template type must be a derived class of BulletInitializer");
+		std::shared_ptr<Bullet> b = spawnPreset(type, pos, iFunc.f);
+		iFunc.init(b);
+		return b;
+	}
+
 	template<typename T>
 	std::shared_ptr<T> getParent() {
 		return std::get<std::weak_ptr<T>>(parent).lock();

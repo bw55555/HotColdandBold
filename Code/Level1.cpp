@@ -30,7 +30,7 @@ namespace Level {
             });
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
+            e->createBulletSpawner(glm::vec2(0, 0), bossPattern4);
             
         }
         wf(l, 1.5_s) {
@@ -126,6 +126,28 @@ namespace Level {
             nspread(a, getAngle(targetPlayer(s->pos)), 4, 3) {
                 nstack(spd, 9.0f, 0.5f, 3) {
                     s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(a), spd));
+                }
+            }
+        }
+    }
+
+    void bossPattern4(BSp s) {
+        every(s, 40) {
+            float rf = randomFloat(0.0f, 2.0f);
+            nring(a, 12) {
+                nstack(spd, 5, 0.4, 5) {
+                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(rf + a + 15 * t(s)/40), spd));
+                }
+            }
+        }
+        every(s, 60) {
+            s->dir = targetPlayer(s->pos);
+        }
+        fyex(s, 60, 18) {
+            every(s, 3) {
+                float a = rt(s, 60) + 1;
+                nspread(o, getAngle(s->dir), a, 2) {
+                    s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(o), 10.0f));
                 }
             }
         }
