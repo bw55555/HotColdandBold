@@ -240,6 +240,7 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     {
         std::cout << "Texture failed to load at path: " << filePath << std::endl;
     }
+    stbi_image_free(data);
 }
 
 void GameWindow::createEnemyTextures() {
