@@ -41,6 +41,5 @@ public:
     float getY();
 
     bool touchingWall(WallDirection dir);
-    virtual ~CollidableObject() {};
 };
 
