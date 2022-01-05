@@ -10,6 +10,7 @@ private:
 	int numWaits = 0;
 	int numWaitTrue = 0;
 public:
+	
 	typedef void (*UpdateFunc)(T*);
 	UpdateFunc updatefunc;
 	std::vector<float> customFloats;
@@ -122,6 +123,16 @@ public:
 		numWaitTrue = 0;
 		shouldRun = false;
 		updatefunc(derivedpointer);
+		shouldRun = true;
+	}
+
+	void reInitializeTime() {
+		timeWaited = 0;
+		waitTime = 0;
+		numWaits = 0;
+		numWaitTrue = 0;
+		customFloats.clear();
+		currTime = 0;
 		shouldRun = true;
 	}
 

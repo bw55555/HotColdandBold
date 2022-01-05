@@ -2,6 +2,7 @@
 #include "LevelMacros.h"
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
+#include "BossEnemy.h"
 
 namespace Level {
     
@@ -20,7 +21,11 @@ namespace Level {
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        once(l) {
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
+        }
         wf(l, 0.5_s) {
+            /*
             //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
             Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
@@ -32,6 +37,7 @@ namespace Level {
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
             e->createBulletSpawner(glm::vec2(0, 0), bossPattern5);
+            */
             
         }
         wf(l, 1.5_s) {
@@ -48,6 +54,32 @@ namespace Level {
         }
         delete fairy;
         delete dopple;
+    }
+
+    void bossUFunc(Enemy* e) {
+        float destroyTime = 3000.0f;
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
+            wf(e, destroyTime) { 
+                e->destroy(); 
+            }
+        }
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
     }
 
     void bossPattern1(BSp s) {

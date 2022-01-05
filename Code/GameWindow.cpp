@@ -173,6 +173,7 @@ void GameWindow::update() {
 
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
         enemy->update();
+        
         for (auto& s : enemy->spawners) {
             s->update();
         }

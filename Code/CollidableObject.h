@@ -17,6 +17,18 @@ struct Hitbox {
     HitboxType type = HitboxType::Circle;
     float radius = 0; //only for circle
     glm::vec2 half_extents = glm::vec2(0, 0); //only for box
+    static Hitbox Circle(float r) {
+        Hitbox h;
+        h.type = HitboxType::Circle;
+        h.radius = r;
+        return h;
+    }
+    static Hitbox Box(glm::vec2 _half_extents) {
+        Hitbox h;
+        h.type = HitboxType::Box;
+        h.half_extents = _half_extents;
+        return h;
+    }
 };
 
 class CollidableObject :

@@ -36,9 +36,10 @@ public:
 	void initialize();
 	static void loadTexture(const char* filePath, unsigned int* texturePointer);
 	static void loadTexture(std::string filePath, unsigned int* texturePointer);
-	void clearBullets();
-	void clearEnemies();
-	void clearScreen();
+	static void clearBullets();
+	static void clearEnemies();
+	static void clearScreen();
+
 	void checkCollisions();
 	void createEnemyTextures();
 };

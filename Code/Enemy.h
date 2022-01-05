@@ -18,10 +18,13 @@ public:
 
     std::vector<std::unique_ptr<BulletSpawner>> spawners;
     Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
-    void update();
-    void destroy();
+    virtual void update();
+    virtual void destroy();
     ~Enemy();
     void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
     void createBulletSpawner(void (*func)(BulletSpawner*)) { return createBulletSpawner(glm::vec2(0, 0), func); }
+
+    virtual void startNextPhase() {};
+    virtual bool onNextPhase() { return false; };
 };
 

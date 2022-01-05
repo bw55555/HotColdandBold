@@ -123,6 +123,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletMovement.cpp" />
     <ClCompile Include="BulletSpawner.cpp" />
@@ -149,6 +150,7 @@
     <None Include="resources\shaders\SpriteShader_U.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletMovement.h" />
     <ClInclude Include="BulletSpawner.h" />

@@ -40,6 +40,7 @@ Enemy::~Enemy() {
 }
 
 void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
+	
 	std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
 	spawners.push_back(std::move(s));
 }
