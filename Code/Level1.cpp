@@ -58,7 +58,7 @@ namespace Level {
     }
 
     void bossUFunc(Enemy* e) {
-        float destroyTime = 300.0f;
+        float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
             forever(e) {
@@ -71,6 +71,10 @@ namespace Level {
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
+            forever(e) {
+                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
+                fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+            }
             wf(e, destroyTime) { 
                 e->destroy(); 
             }
