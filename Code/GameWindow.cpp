@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <Shader.h>
 #include "stb_image.h"
+#include "Text.h"
 
 
 extern std::string PATH_START;
@@ -11,6 +12,8 @@ extern std::string PATH_START;
 GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
 	window = w;
     shader = s;
+    screenShader = nullptr;
+    textShader = nullptr;
 	initialize();
 }
 
@@ -79,6 +82,9 @@ void GameWindow::initialize() {
 
     static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
+
+    
+    Text::initializeFT();
     level = std::make_shared<GameLevel>(Level::Level1);
 
 
@@ -144,6 +150,9 @@ void GameWindow::render() {
     glBindVertexArray(Sprite::VAO);
     glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    std::unique_ptr<Text> t = std::make_unique<Text>("Test String", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+    t->draw(textShader);
 }
 
 void GameWindow::update() {

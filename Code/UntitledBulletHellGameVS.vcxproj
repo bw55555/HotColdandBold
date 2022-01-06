@@ -116,7 +116,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
@@ -140,6 +140,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
@@ -148,6 +149,8 @@
     <None Include="resources\shaders\ScreenShader.vert" />
     <None Include="resources\shaders\SpriteShader_U.frag" />
     <None Include="resources\shaders\SpriteShader_U.vert" />
+    <None Include="resources\shaders\TextShader.frag" />
+    <None Include="resources\shaders\TextShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossEnemy.h" />
@@ -160,6 +163,7 @@
     <ClInclude Include="EnemyBuilder.h" />
     <ClInclude Include="LevelMacros.h" />
     <ClInclude Include="Movement.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="UpdateTime.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />

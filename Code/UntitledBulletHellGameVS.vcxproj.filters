@@ -66,6 +66,9 @@
     <ClCompile Include="BossEnemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\SpriteShader_U.frag">
@@ -84,6 +87,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="resources\shaders\ScreenShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\TextShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resources\shaders\TextShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
@@ -134,6 +143,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BossEnemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

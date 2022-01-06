@@ -86,8 +86,10 @@ int main() {
     wglSwapIntervalEXT(1.0f);
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
     Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
+    Shader* textShader = Shader::makeShader(PATH_START + std::string("resources/shaders/TextShader.vert"), PATH_START + std::string("resources/shaders/TextShader.frag"));
     gameWindow = new GameWindow(window, s);
     gameWindow -> screenShader = screenShader;
+    gameWindow-> textShader = textShader;
     float currFrame = glfwGetTime();
 
     bool debugMode = false;

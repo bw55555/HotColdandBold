@@ -15,6 +15,7 @@ class GameWindow
 private:
 	GLFWwindow* window;
 	Shader* shader;
+	
 	unsigned int fbo = 0;
 	unsigned int textureColorbuffer = 0;
 public:
@@ -26,6 +27,7 @@ public:
 	static const float halfHeight;
 
 	Shader* screenShader;
+	Shader* textShader;
 
 	glm::mat4 projectionMatrix;
 	std::shared_ptr<GameLevel> level = nullptr;

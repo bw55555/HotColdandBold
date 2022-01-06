@@ -23,7 +23,7 @@ public:
 	glm::vec3 trans;
 	bool renderEnabled;
 	float rot;
-	void draw(Shader* shader);
+	virtual void draw(Shader* shader);
 	void rotate(float angle);
 	void rotate(glm::vec2 dir);
 	void setRotation(glm::vec2 dir);
