@@ -12,7 +12,6 @@ struct Character {
 class Text : public Sprite {
 public:
     static unsigned int textVAO;
-    static unsigned int textVBO;
 	static int initializeFT();
     std::string text;
     glm::vec3 color;

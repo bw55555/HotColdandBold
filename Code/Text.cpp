@@ -7,7 +7,6 @@
 #include "GameWindow.h"
 #include <Shader.h>
 
-unsigned int Text::textVBO;
 unsigned int Text::textVAO;
 std::unordered_map<char, Character> Character::Characters;
 
@@ -33,7 +32,8 @@ int Text::initializeFT() {
     }
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
 
-    for (unsigned char c = 0; c < 128; c++)
+    //note: definitely try to only use 1 texture!
+    for (unsigned char c = 32; c <= 122; c++)
     {
         // load character glyph 
         if (FT_Load_Char(face, c, FT_LOAD_RENDER))
@@ -69,16 +69,34 @@ int Text::initializeFT() {
             static_cast<unsigned int>(face->glyph->advance.x)
         };
         Character::Characters.insert(std::pair<char, Character>(c, character));
-
+        
         
     }
+    int texture_units;
+    //glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &texture_units);
+    //std::cout << "\n" << texture_units;
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
+    /*
+    float vertices[4][4] = {
+        { -0.5f, -0.5f, 0.0f, 1.0f },
+        { -0.5f, 0.5f, 0.0f, 0.0f },    
+        { 0.5f, -0.5f, 1.0f, 1.0f },
+        { 0.5f, 0.5f, 1.0f, 0.0f }
+    };
+    */
+    float vertices[4][4] = {
+        { 0.0f, 0.0f, 0.0f, 1.0f },
+        { 0.0f, 1.0f, 0.0f, 0.0f },
+        { 1.0f, 0.0f, 1.0f, 1.0f },
+        { 1.0f, 1.0f, 1.0f, 0.0f }
+    };
+    unsigned int textVBO;
     glGenVertexArrays(1, &textVAO);
     glGenBuffers(1, &textVBO);
     glBindVertexArray(textVAO);
     glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * 4, vertices, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -97,7 +115,9 @@ void Text::draw(Shader* s) {
     s->setVec3("textColor", color);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glm::mat4 projection = glm::ortho(-GameWindow::screenSize.x/2, GameWindow::screenSize.x/2, -GameWindow::screenSize.y/2, GameWindow::screenSize.y/2);
     glm::mat4 projection = glm::ortho(0.0f, GameWindow::screenSize.x, 0.0f, GameWindow::screenSize.y);
+    //glm::mat4 projection = 
     s->setMat4("projection", projection);
 
     glActiveTexture(GL_TEXTURE0);
@@ -115,24 +135,22 @@ void Text::draw(Shader* s) {
 
         float w = ch.Size.x * scale.x;
         float h = ch.Size.y * scale.y;
-        // update VBO for each character
-        float vertices[6][4] = {
-            { xpos,     ypos + h,   0.0f, 0.0f },
-            { xpos,     ypos,       0.0f, 1.0f },
-            { xpos + w, ypos,       1.0f, 1.0f },
 
-            { xpos,     ypos + h,   0.0f, 0.0f },
-            { xpos + w, ypos,       1.0f, 1.0f },
-            { xpos + w, ypos + h,   1.0f, 0.0f }
-        };
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, glm::vec3(xpos, ypos, 0.0f));
+        transform = glm::rotate(transform, glm::radians(rot), glm::vec3(0.0f, 0.0f, 1.0f));
+        transform = glm::scale(transform, glm::vec3(w, h, 1.0f));
+        
+        s->setMat4("transform", transform);
         // render glyph texture over quad
         glBindTexture(GL_TEXTURE_2D, ch.textureID);
         // update content of VBO memory
-        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ARRAY_BUFFER, textVBO);
+        //glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
         // render quad
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); //do this to forget about EBO
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.Advance >> 6) * scale.x; // bitshift by 6 to get value in pixels (2^6 = 64)
     }

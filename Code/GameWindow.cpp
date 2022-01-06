@@ -26,7 +26,7 @@ void GameWindow::initialize() {
     };
 
     unsigned int indices[] = {
-        0, 2, 1,
+        0, 1, 2,
         1, 2, 3
     };
 
@@ -151,7 +151,7 @@ void GameWindow::render() {
     glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-    std::unique_ptr<Text> t = std::make_unique<Text>("Test String", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f));
+    std::unique_ptr<Text> t = std::make_unique<Text>("Test", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(3.0f));
     t->draw(textShader);
 }
 

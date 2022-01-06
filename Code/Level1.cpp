@@ -127,7 +127,7 @@ namespace Level {
     void bossPattern2(BSp s) {
         int spawnInterval = 90; //probably too hard
         spawnInterval = 120; //this is a lot easier...
-        fyex(s, spawnInterval, 24) { //executes 24 frames in a row every spawnInterval frames
+        fyex(s, spawnInterval, 18) { //executes 18 frames in a row every spawnInterval frames
             every(s, 2) { //every 2 frames
                 nring(o, 6) { //6 bullets in a ring
                     nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
