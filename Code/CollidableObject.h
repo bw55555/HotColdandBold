@@ -46,6 +46,7 @@ public:
     bool checkCollision(std::shared_ptr<CollidableObject> other);
     void move(glm::vec2 movement);
     void move(glm::vec2 movement, glm::vec4 clampBox);
+    void moveTo(glm::vec2 dest, float numFramesLeft = 1);
 
     glm::vec2 getPos();
     void setPos(glm::vec2 aPos);

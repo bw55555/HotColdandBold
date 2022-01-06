@@ -18,6 +18,9 @@
 //time (in number of frames) as an integer
 #define ti(obj) static_cast<int>(obj->currTime)
 
+//time (in number of frames) inside the wait. Will be 0 first time the wait is executed. 
+#define nt(obj) obj->getNestedTime()
+
 //reduce time modulo n. Use this instead of c style casting time to an int
 #define rt(obj, n) static_cast<float>(static_cast<int>(t(obj)) % static_cast<int>(n))
 
@@ -25,7 +28,7 @@
 #define every(obj, interval) if (obj->frameInterval(interval))
 
 //every interval frames, with an offset
-#define every2(obj, interval, offset) if (obj->frameInterval(interval, offset))
+#define everyo(obj, interval, offset) if (obj->frameInterval(interval, offset))
 
 //better name plz...
 //For Y frames Every X frames
@@ -84,6 +87,12 @@
 //do this only once immediately (equivalent to wf(obj, 0))
 #define once(obj) if (obj->wait(0))
 
+//move over time to the destination. Does not increase wait timer.
+#define mot(obj, dest, numFrames) during(obj, numFrames) {obj->moveTo(dest, numFrames - nt(obj));}
+
+//move over time to the destination. Increases wait timer by numFrames. 
+#define motw(obj, dest, numFrames) mot(obj, dest, numFrames) delay(obj, numFrames)
+
 /*
 * ----------------
 * BULLET FUNCTIONS
@@ -124,3 +133,4 @@
 #define sf(name) [](BulletSpawner* name)
 
 #define cf(obj, num) obj->customFloats[num]
+

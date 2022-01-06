@@ -25,19 +25,20 @@ namespace Level {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
         wf(l, 0.5_s) {
-            /*
+            
             //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
+            /*
             Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
                 delay(e, 30);
                 every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
                 //fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
-                wu(e, 30_s) { e->destroy(); }
             });
+            */
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern5);
-            */
+            //e->createBulletSpawner(glm::vec2(0, 0), bossPattern6);
+            
             
         }
         wf(l, 1.5_s) {
@@ -57,26 +58,40 @@ namespace Level {
     }
 
     void bossUFunc(Enemy* e) {
-        float destroyTime = 3000.0f;
+        float destroyTime = 300.0f;
         if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
+            forever(e) {
+                enemyTestFunc(e);
+            }
+            wf(e, destroyTime) {
+                e->destroy();
+            }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
             wf(e, destroyTime) { 
                 e->destroy(); 
             }
         }
         if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
             wf(e, destroyTime) { e->destroy(); }
         }
@@ -218,6 +233,22 @@ namespace Level {
 
     }
 
+    void bossPattern6(BSp s) {
+        float sI = 30.0f;
+        every(s, sI) {
+            nringi(a, i, 30) {
+                float wave = 7 * oscillate(i + 1, -1, 1, 0.66666666, 0);
+                s->spawnPreset(BulletType::KnifeBlue, SwitchDirectionalBullet(avecd(a + 2.34653 * t(s) / sI * 1.03321), 15 + wave, 15.0f, 8 + randomFloat(0.0f, 1.0f)));
+            }
+        }
+        everyo(s, sI, sI/2) {
+            nringi(a, i, 30) {
+                float wave = 7 * oscillate(i + 1, -1, 1, 0.66666666, 0);
+                s->spawnPreset(BulletType::KnifeRed, SwitchDirectionalBullet(avecd(a - 2.34653 * t(s) / sI + 360/5/2), 15 + wave, 15.0f, 8 + randomFloat(0.0f, 1.0f)));
+            }
+        }
+    }
+
     void macroExample(BSp s) { //BSp is short for BulletSpawner*
         wf(s, 60.0f) { //executes once at 60 frames (1 second). Adds 60 to the wait timer
             std::cout << t(s) << " 1\n";
@@ -300,7 +331,7 @@ namespace Level {
     void enemyTestFunc(Enemy* enemy) {
         //how to use void* like this?
         if (enemy->customFloats.size() <= 0) {
-            std::cout << "Custom Floats not initialized" << std::endl;
+            enemy->customFloats.push_back(1.0f);
             return;
         }
         float xpos = enemy->getPos().x;

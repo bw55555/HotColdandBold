@@ -67,6 +67,10 @@ void CollidableObject::move(glm::vec2 movement, glm::vec4 clampBox) {
 	trans = glm::vec3(pos, 0.0f);
 }
 
+void CollidableObject::moveTo(glm::vec2 movement, float numFramesLeft) {
+	move((1.0f / numFramesLeft) * (movement - pos));
+}
+
 glm::vec2 CollidableObject::getPos() {
 	return pos;
 }

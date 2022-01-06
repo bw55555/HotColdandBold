@@ -136,9 +136,13 @@ public:
 		shouldRun = true;
 	}
 
+	float getNestedTime() {
+		return currTime - timeWaited;
+	}
+
 	//try to use macro instead, its easier, or find a shorter name for this function
 	inline bool frameInterval(int interval, int offset = 0, int numTrue = 1) {
-		return shouldRun && ((int)currTime - offset) % interval < numTrue;
+		return shouldRun && ((int)currTime - offset) % interval >= 0 && ((int)currTime - offset) % interval < numTrue;
 	}
 
 	virtual ~UpdateTime() {};
