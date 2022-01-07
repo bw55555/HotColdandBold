@@ -14,7 +14,7 @@
 #include <numeric>
 #include <functional>
 #include "GameWindow.h"
-
+#include "KeyInput.h"
 
 
 extern std::string PATH_START = "";
@@ -24,8 +24,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 const unsigned int SCR_WIDTH = 1500;
 const unsigned int SCR_HEIGHT = 1500;
 
+KeyInput::KeyMap KeyInput::keys;
+int KeyInput::currFrame = -1;
 std::shared_ptr<GameWindow> GameWindow::Instance;
-unsigned int Player::hitboxTexture;
+unsigned int Sprite::circleHitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
 std::shared_ptr<Player> GameWindow::player;
@@ -96,33 +98,31 @@ int main() {
     float currFrame = glfwGetTime();
 
     bool debugMode = false;
-    bool pressedP = false;
-    bool pressedAdvance = false;
     bool canAdvance = false;
+    KeyInput::track("ESC", GLFW_KEY_ESCAPE, -1);
+    KeyInput::track("P", GLFW_KEY_P, 1000000);
+    KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
+    KeyInput::track("DOWN", GLFW_KEY_DOWN, -1);
+    KeyInput::track("UP", GLFW_KEY_UP, -1);
+    KeyInput::track("LEFT", GLFW_KEY_LEFT, -1);
+    KeyInput::track("RIGHT", GLFW_KEY_RIGHT, -1);
+    KeyInput::track("Z", GLFW_KEY_Z, -1);
+    KeyInput::track("X", GLFW_KEY_X, 1000000);
+    KeyInput::track("ENTER", GLFW_KEY_ENTER, 1000000);
+    KeyInput::track("LSHIFT", GLFW_KEY_LEFT_SHIFT, -1);
     while (!glfwWindowShouldClose(window)) {
         currFrame = glfwGetTime();
         glfwPollEvents();
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        KeyInput::checkEvents();
+        if (KeyInput::isPressed("ESC"))
             glfwSetWindowShouldClose(window, true);
-        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-            if (!pressedP) {
-                pressedP = true;
-                debugMode = !debugMode;
-            }
-        }
-        else if (pressedP) {
-            pressedP = false;
+        if (KeyInput::isPressed("P")) {
+            
+            debugMode = !debugMode;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS) {
-            if (!pressedAdvance) {
-                pressedAdvance = true;
-                canAdvance = true;
-
-            }
-        }
-        else if (pressedAdvance) {
-            pressedAdvance = false;
+        if (KeyInput::isPressed("PERIOD")) {
+            canAdvance = true;
         }
 
         if (!canAdvance && debugMode) {

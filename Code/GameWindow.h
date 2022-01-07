@@ -5,6 +5,7 @@
 #include "BulletSpawner.h"
 #include "DropItem.h"
 #include "GameLevel.h"
+#include "KeyInput.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -25,6 +26,8 @@ public:
 	static const float halfHeight;
 
 	static std::shared_ptr<GameWindow> Instance;
+
+	static void quit();
 	
 	Shader* shader;
 	Shader* screenShader;

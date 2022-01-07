@@ -57,3 +57,33 @@ bool Sprite::isOnScreen() {
 	return -GameWindow::halfWidth < trans.x + scale.x && trans.x - scale.x < GameWindow::halfWidth && 
 		-GameWindow::halfHeight < trans.y + scale.y && trans.y - scale.y < GameWindow::halfHeight;
 }
+
+Hitbox Sprite::getHitbox() {
+	return Hitbox::None();
+}
+
+void Sprite::drawHitbox(Shader* shader) {
+	Hitbox hitbox = getHitbox();
+	if (hitbox.type == HitboxType::None) {
+		return;
+	}
+	if (hitbox.type == HitboxType::Circle) {
+		if (!renderEnabled) { return; }
+		shader->use();
+		shader->setInt("texture1", 0);
+		glm::mat4 transmatrix = glm::mat4(1.0f);
+		transmatrix = glm::translate(transmatrix, trans);
+		transmatrix = glm::scale(transmatrix, glm::vec3(hitbox.radius));
+		shader->setMat4("transformation", transmatrix);
+		glm::mat4 scaleMatrix = glm::mat4(1.0f);
+		scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f / GameWindow::halfWidth, 1.0f / GameWindow::halfHeight, 0.0f));
+		shader->setMat4("projection", scaleMatrix);
+		shader->setBool("shouldBlend", false);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, circleHitboxTexture);
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+	return;
+}

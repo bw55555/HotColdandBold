@@ -5,7 +5,7 @@
 
 class GameWindow;
 
-enum class HitboxType {Circle, Box};
+enum class HitboxType {Circle, Box, None};
 
 enum class WallDirection { Left, Right, Up, Down, AnyHorizontal, AnyVertical, Any };
 
@@ -27,6 +27,11 @@ struct Hitbox {
         Hitbox h;
         h.type = HitboxType::Box;
         h.half_extents = _half_extents;
+        return h;
+    }
+    static Hitbox None() {
+        Hitbox h;
+        h.type = HitboxType::None;
         return h;
     }
 };
@@ -54,5 +59,6 @@ public:
     float getY();
 
     bool touchingWall(WallDirection dir);
+    Hitbox getHitbox() { return hitbox; };
 };
 

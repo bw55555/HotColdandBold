@@ -2,10 +2,6 @@
 #include "GameWindow.h"
 #include "BulletSpawner.h"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <Shader.h>
-
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
 	speed = 25.0f;
@@ -19,30 +15,32 @@ void Player::update(GLFWwindow* window) {
 		lastFired -= 1;
 	}
 	checkMovement(window);
-	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
+	if (KeyInput::isPressed("Z"))
 		fire();
 }
 
 void Player::checkMovement(GLFWwindow* window) {
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) || glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS) {
-		speed = 10.0f;
+
+	//rshift?
+	if (KeyInput::isPressed("LSHIFT")) {
+		speed = 8.0f;
 		focus = true;
 	}
 	else {
-		speed = 25.0f;
+		speed = 20.0f;
 		focus = false;
 	}
 
 	float hMove = 0;
 	float vMove = 0;
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	if (KeyInput::isPressed("DOWN"))
 		vMove -= speed;
-	else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	else if (KeyInput::isPressed("UP"))
 		vMove += speed;
 
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+	if (KeyInput::isPressed("LEFT"))
 		hMove -= speed;
-	else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+	else if (KeyInput::isPressed("RIGHT"))
 		hMove += speed;
 	
 	glm::vec4 clampBox{0.0f - GameWindow::halfWidth + scale.x/2, 0.0f - GameWindow::halfHeight + scale.y/2, 0.0f + GameWindow::halfWidth - scale.x/2, 0.0f + GameWindow::halfHeight - scale.y/2};
@@ -50,24 +48,6 @@ void Player::checkMovement(GLFWwindow* window) {
 	move(glm::vec2(hMove, vMove), clampBox);
 }
 
-void Player::drawHitbox(Shader* shader) {
-	if (!renderEnabled) { return; }
-	shader->use();
-	shader->setInt("texture1", 0);
-	glm::mat4 transmatrix = glm::mat4(1.0f);
-	transmatrix = glm::translate(transmatrix, trans);
-	transmatrix = glm::scale(transmatrix, glm::vec3(hitbox.radius));
-	shader->setMat4("transformation", transmatrix);
-	glm::mat4 scaleMatrix = glm::mat4(1.0f);
-	scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f / GameWindow::halfWidth, 1.0f / GameWindow::halfHeight, 0.0f));
-	shader->setMat4("projection", scaleMatrix);
-	shader->setBool("shouldBlend", false);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, hitboxTexture);
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
 
 void Player::fire() {
 	if (lastFired > 0) {

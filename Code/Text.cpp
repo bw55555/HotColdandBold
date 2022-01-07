@@ -167,7 +167,6 @@ void Text::setPos(TextAlignH _hAlign, TextAlignV _vAlign, glm::vec2 pos) {
         Character ch = Character::Characters[*c];
         x += (ch.Advance >> 6) * scale.x;
     }
-    std::cout << x << " " << static_cast<int>(hAlign) << " " << (static_cast<int>(hAlign) - static_cast<int>(_hAlign)) << "\n";
     trans.x = pos.x + (static_cast<int>(hAlign) - static_cast<int>(_hAlign)) * x / 2;
     trans.y = pos.y + (static_cast<int>(vAlign) - static_cast<int>(_vAlign)) * scale.y / 2 * 35;
     hAlign = _hAlign;

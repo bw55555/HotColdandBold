@@ -78,7 +78,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
-    loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
+    loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
     static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
@@ -117,11 +117,11 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (KeyInput::isPressed("ESC"))
         glfwSetWindowShouldClose(window, true);
 
     //bomb!
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
+    if (KeyInput::isPressed("X"))
         clearScreen();
 
     scene->update();
@@ -232,3 +232,5 @@ void GameWindow::loadScene(SceneName name) {
         break;
     }
 }
+
+void GameWindow::quit() { glfwSetWindowShouldClose(GameWindow::Instance -> window, true); }

@@ -11,8 +11,8 @@ public:
 	bool selectButton(int newSelection);
 	void selectNext(int direction = 1);
 	inline void selectPrev() { return selectNext(-1); };
-	void createButton(std::string _text, Button::UseFunc useFunc, glm::vec3 scaling = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Left, TextAlignV _vAlign = VTA::Bottom);
-	//annoying... void createButton(std::string _text, glm::vec3 scaling = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f), TextAlignH _hAlign = HTA::Left, TextAlignV _vAlign = VTA::Bottom) { return createButton(_text, scaling, offset, 0.0f, _hAlign, _vAlign); }
+	void createButton(std::string _text, Button::UseFunc useFunc, glm::vec2 offset = glm::vec2(0.0f), glm::vec2 scaling = glm::vec2(1.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Center, TextAlignV _vAlign = VTA::Center);
+	
 	virtual void initialize() = 0;
 	virtual void render() = 0;
 	virtual void update() = 0;

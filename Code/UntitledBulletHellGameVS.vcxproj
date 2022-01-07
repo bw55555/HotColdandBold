@@ -135,6 +135,7 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="glad_wgl.c" />
+    <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBuilder.h" />
+    <ClInclude Include="KeyInput.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Scene.h" />
