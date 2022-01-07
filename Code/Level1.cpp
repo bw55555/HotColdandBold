@@ -60,6 +60,12 @@ namespace Level {
     void bossUFunc(Enemy* e) {
         float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern7); }
+            wf(e, destroyTime) {
+                e->destroy();
+            }
+        }
+        if (e->onNextPhase()) {
             once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
             forever(e) {
                 enemyTestFunc(e);
@@ -249,6 +255,72 @@ namespace Level {
             nringi(a, i, 30) {
                 float wave = 7 * oscillate(i + 1, -1, 1, 0.66666666, 0);
                 s->spawnPreset(BulletType::KnifeRed, SwitchDirectionalBullet(avecd(a - 2.34653 * t(s) / sI + 360/5/2), 15 + wave, 15.0f, 8 + randomFloat(0.0f, 1.0f)));
+            }
+        }
+    }
+
+    //spawns stars and throws them at you!
+    void bossPattern7(BSp s) {
+        every(s, 40.0f) {
+            float ro = randomFloat(0.0f, 360.0f);
+            nring(o, 32) {
+                s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(o + ro), 20.0f));
+            }
+        }
+        every(s, 180.0f) {
+            nring(o, 5) {
+                glm::vec2 dir = targetPlayer(s->pos);
+                float numBullets = 8.0f;
+                float radius = 400.0f;
+                float height = cos(glm::radians(72.0f)) * radius;
+
+                float angle = glm::degrees(acos(height / radius));
+                glm::vec2 firstPos = s->pos + radius * avecd(o + 90 + angle);
+                glm::vec2 secondPos = s->pos + radius * avecd(o + 90 - angle);
+                glm::vec2 diff = (secondPos - firstPos) / (numBullets);
+                nrep(i, numBullets) {
+                    glm::vec2 dest = firstPos + i * diff;
+                    Bsp b = s->spawnPresetwLambda(BulletType::RoundBlue, s->pos, [](Bp b) {
+                        motw(b, glm::vec2(cf(b, 0), cf(b, 1)), 30);
+                        forever(b) {
+                            b->move(b->dir * b->speed);
+                            glm::vec2 centerDest = glm::vec2(cf(b, 2), cf(b, 3)) + b->dir * b->speed;
+                            cf(b, 2) = centerDest.x;
+                            cf(b, 3) = centerDest.y;
+                            b->rotateAround(centerDest, 2);
+                            float x = oscillate(b->currTime - 30, -1, 1, 0.02);
+                            float sign = static_cast<float>((x > 0) - (x < 0));
+                            //b->move(glm::normalize(centerDest - b->getPos()) * sign * 1.0f);
+                        }
+                        });
+                    b->initializeCustomVars(dest, s->pos, Direction{ dir }, Speed{ 10.0f });
+                }
+            }
+        }
+    }
+
+    //it failed, but happy accidents
+    void bossPattern7Fail(BSp s) {
+        every(s, 3000.0f) {
+            nring(o, 7) {
+                float numBullets = 7.0f;
+                nrep(i, numBullets) {
+                    float height = 10.0f;
+                    float radius = 20.0f;
+                    float halflength = pow(pow(radius, 2) - pow(height, 2), 0.5);
+                    
+                    float l_incr = 2 * halflength / (numBullets - 1);
+                    float iLength = halflength - l_incr * i;
+                    float angle = glm::degrees(asin(iLength/radius));
+                    
+                    glm::vec2 dest = static_cast<float>(pow(pow(iLength, 2) + pow(height, 2), 0.5)) * avecd(o + angle);
+                    std::cout << halflength << " " << l_incr << " " << iLength << " A: " << angle << " Dest: " << dest.x << " " << dest.y << "\n";
+                    Bsp b = s->spawnPresetwLambda(BulletType::RoundBlue, s->pos, [](Bp b) {
+                        motw(b, glm::vec2(cf(b, 0), cf(b, 1)), 15);
+                        b->rotateAround(glm::vec2(cf(b, 2), cf(b, 3)), 2);
+                        });
+                    b->initializeCustomVars(s->pos + 15.0f * dest, s->pos);
+                }
             }
         }
     }

@@ -52,6 +52,7 @@ public:
     void move(glm::vec2 movement);
     void move(glm::vec2 movement, glm::vec4 clampBox);
     void moveTo(glm::vec2 dest, float numFramesLeft = 1);
+    glm::vec2 rotateAround(glm::vec2 center, float angle);
 
     glm::vec2 getPos();
     void setPos(glm::vec2 aPos);
