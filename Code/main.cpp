@@ -18,12 +18,13 @@
 
 
 extern std::string PATH_START = "";
-GameWindow* gameWindow;
+std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 const unsigned int SCR_WIDTH = 1500;
 const unsigned int SCR_HEIGHT = 1500;
 
+std::shared_ptr<GameWindow> GameWindow::Instance;
 unsigned int Player::hitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
@@ -49,7 +50,7 @@ int main() {
     else if (info.st_mode & S_IFDIR)  // S_ISDIR() doesn't exist on my windows 
         PATH_START = "";
     else
-        std::cout << "Welp something happened";
+        std::cout << "Welp something happened and the path is not recognized";
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -70,7 +71,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -87,9 +88,11 @@ int main() {
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
     Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
     Shader* textShader = Shader::makeShader(PATH_START + std::string("resources/shaders/TextShader.vert"), PATH_START + std::string("resources/shaders/TextShader.frag"));
-    gameWindow = new GameWindow(window, s);
+    gameWindow = std::make_shared<GameWindow>(window, s);
     gameWindow -> screenShader = screenShader;
     gameWindow-> textShader = textShader;
+    glViewport(0, 0, GameWindow::screenSize.x, GameWindow::screenSize.y);
+    GameWindow::Instance = gameWindow;
     float currFrame = glfwGetTime();
 
     bool debugMode = false;
@@ -159,4 +162,5 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     GameWindow::screenSize = glm::vec2(width, height);
+    glViewport(0, 0, width, height);
 }

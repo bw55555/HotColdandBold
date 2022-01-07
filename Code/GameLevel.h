@@ -1,17 +1,18 @@
 #pragma once
 
-#include "Sprite.h"
 #include "Enemy.h"
 #include "BulletSpawner.h"
 #include "DropItem.h"
 #include "UpdateTime.h"
+#include "Scene.h"
 
-class GameLevel : public UpdateTime<GameLevel>
+class GameLevel : public UpdateTime<GameLevel>, public Scene
 {
 public:
 	GameLevel(void (*func)(GameLevel*));
-	void update();
-	
+	void initialize() override;
+	void update() override;
+	void render() override;
 	//void setCheckpoint();
 };
 

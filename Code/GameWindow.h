@@ -13,12 +13,10 @@ extern std::string PATH_START;
 class GameWindow
 {
 private:
-	GLFWwindow* window;
-	Shader* shader;
 	
-	unsigned int fbo = 0;
-	unsigned int textureColorbuffer = 0;
 public:
+	GLFWwindow* window;
+	
 	static std::shared_ptr<Player> player;
 	static unsigned int enemyTextures[10];
 	static glm::vec2 screenSize; //set in main.cpp
@@ -26,11 +24,17 @@ public:
 	static const float halfWidth;
 	static const float halfHeight;
 
+	static std::shared_ptr<GameWindow> Instance;
+	
+	Shader* shader;
 	Shader* screenShader;
 	Shader* textShader;
 
+	unsigned int fbo = 0;
+	unsigned int textureColorbuffer = 0;
+
 	glm::mat4 projectionMatrix;
-	std::shared_ptr<GameLevel> level = nullptr;
+	std::shared_ptr<Scene> scene = nullptr;
 	GameWindow(GLFWwindow* w, Shader* s);
 	
 	void render();
@@ -41,6 +45,8 @@ public:
 	static void clearBullets();
 	static void clearEnemies();
 	static void clearScreen();
+
+	void loadScene(SceneName name);
 
 	void checkCollisions();
 	void createEnemyTextures();

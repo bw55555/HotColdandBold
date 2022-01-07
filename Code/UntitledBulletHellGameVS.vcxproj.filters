@@ -69,6 +69,15 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\shaders\SpriteShader_U.frag">
@@ -146,6 +155,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

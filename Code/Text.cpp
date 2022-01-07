@@ -10,6 +10,13 @@
 unsigned int Text::textVAO;
 std::unordered_map<char, Character> Character::Characters;
 
+Text::Text(std::string _text, glm::vec3 _color, glm::vec3 scaling, glm::vec3 offset, float rotation, TextAlignH _hAlign, TextAlignV _vAlign) : Sprite(0, scaling, offset, rotation) {
+    text = _text;
+    color = _color;
+    setAlignment(_hAlign, _vAlign);
+}
+
+
 int Text::initializeFT() {
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
@@ -70,7 +77,6 @@ int Text::initializeFT() {
         };
         Character::Characters.insert(std::pair<char, Character>(c, character));
         
-        
     }
     int texture_units;
     //glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &texture_units);
@@ -105,18 +111,13 @@ int Text::initializeFT() {
     return 0;
 }
 
-Text::Text(std::string _text, glm::vec3 _color, glm::vec3 scaling, glm::vec3 offset, float rotation) : Sprite(0, scaling, offset, rotation) {
-    text = _text;
-    color = _color;
-}
-
 void Text::draw(Shader* s) {
     s->use();
     s->setVec3("textColor", color);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    //glm::mat4 projection = glm::ortho(-GameWindow::screenSize.x/2, GameWindow::screenSize.x/2, -GameWindow::screenSize.y/2, GameWindow::screenSize.y/2);
-    glm::mat4 projection = glm::ortho(0.0f, GameWindow::screenSize.x, 0.0f, GameWindow::screenSize.y);
+    glm::mat4 projection = glm::ortho(-GameWindow::screenSize.x/2, GameWindow::screenSize.x/2, -GameWindow::screenSize.y/2, GameWindow::screenSize.y/2);
+    //glm::mat4 projection = glm::ortho(0.0f, GameWindow::screenSize.x, 0.0f, GameWindow::screenSize.y);
     //glm::mat4 projection = 
     s->setMat4("projection", projection);
 
@@ -124,9 +125,8 @@ void Text::draw(Shader* s) {
     glBindVertexArray(textVAO);
 
     // iterate through all characters
-    std::string::const_iterator c;
     int x = trans.x;
-    for (c = text.begin(); c != text.end(); c++)
+    for (auto c = text.begin(); c != text.end(); c++)
     {
         Character ch = Character::Characters[*c];
 
@@ -158,4 +158,18 @@ void Text::draw(Shader* s) {
     glBindTexture(GL_TEXTURE_2D, 0);
     
     glDisable(GL_BLEND);
+}
+
+void Text::setPos(TextAlignH _hAlign, TextAlignV _vAlign, glm::vec2 pos) {
+    float x = 0;
+    for (auto c = text.begin(); c != text.end(); c++)
+    {
+        Character ch = Character::Characters[*c];
+        x += (ch.Advance >> 6) * scale.x;
+    }
+    std::cout << x << " " << static_cast<int>(hAlign) << " " << (static_cast<int>(hAlign) - static_cast<int>(_hAlign)) << "\n";
+    trans.x = pos.x + (static_cast<int>(hAlign) - static_cast<int>(_hAlign)) * x / 2;
+    trans.y = pos.y + (static_cast<int>(vAlign) - static_cast<int>(_vAlign)) * scale.y / 2 * 35;
+    hAlign = _hAlign;
+    vAlign = _vAlign;
 }

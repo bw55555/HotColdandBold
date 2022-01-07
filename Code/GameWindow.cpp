@@ -5,7 +5,7 @@
 #include <Shader.h>
 #include "stb_image.h"
 #include "Text.h"
-
+#include "MainMenu.h"
 
 extern std::string PATH_START;
 
@@ -85,9 +85,9 @@ void GameWindow::initialize() {
 
     
     Text::initializeFT();
-    level = std::make_shared<GameLevel>(Level::Level1);
-
-
+    //scene = std::make_shared<GameLevel>(Level::Level1);
+    scene = std::make_shared<MainMenu>();
+    
 
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -112,47 +112,8 @@ void GameWindow::initialize() {
 
 void GameWindow::render() {
 
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0,0,2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
-    for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
-        sprite->draw(shader); 
-    }
-    
-    player->draw(shader);
-    player->drawHitbox(shader);
-    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-        enemy->draw(shader);
-    }
-    
-    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->draw(shader);
-    }
-    
-    for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
-        dropItem->draw(shader);
-    }
-
-    glfwSwapBuffers(window);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-
-    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
-    glViewport(screenSize.x / 2 - screenSize.y / 2 / ratio, 0, screenSize.y / ratio, screenSize.y);
-    screenShader->use();
-    screenShader->setInt("screenTexture", 0);
-    glm::mat4 tmat = glm::mat4(1.0f);
-    tmat = glm::scale(tmat, glm::vec3(2.0f));
-    screenShader->setMat4("transform", tmat);
-    glBindVertexArray(Sprite::VAO);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    std::unique_ptr<Text> t = std::make_unique<Text>("Test", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(3.0f));
-    t->draw(textShader);
+    scene->render();
+    glfwSwapBuffers(GameWindow::Instance->window);
 }
 
 void GameWindow::update() {
@@ -161,59 +122,9 @@ void GameWindow::update() {
 
     //bomb!
     if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-        clearBullets();
+        clearScreen();
 
-    level->update();
-
-    //update player, enemy, spawners, bullets
-    player->update(window);
-
-    //update bullets before enemies so that spawned bullets are not updated on the same frame
-    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->update();
-    }
-
-    auto bulletsize = Bullet::bullets.size();
-    for (auto i = 0; i < bulletsize; i++) {
-        for (auto& s : Bullet::bullets[i]->spawners) {
-            s->update();
-        }
-    }
-
-    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-        enemy->update();
-        
-        for (auto& s : enemy->spawners) {
-            s->update();
-        }
-    }
-    
-    checkCollisions();
-
-    //check for and destroy bullets with a true destroyed tag at the end
-    if (Bullet::bullets.size() > 0) {
-        
-        Bullet::bullets.erase(std::remove_if(Bullet::bullets.begin(), Bullet::bullets.end(), [](const std::shared_ptr<Bullet>& bullet) {
-            return bullet->destroyed;
-        }), Bullet::bullets.end());
-        
-    }
-
-    if (Enemy::enemies.size() > 0) {
-
-        Enemy::enemies.erase(std::remove_if(Enemy::enemies.begin(), Enemy::enemies.end(), [](const std::shared_ptr<Enemy>& enemy) {
-            return enemy->destroyed;
-            }), Enemy::enemies.end());
-
-    }
-
-    if (DropItem::dropItems.size() > 0) {
-
-        DropItem::dropItems.erase(std::remove_if(DropItem::dropItems.begin(), DropItem::dropItems.end(), [](const std::shared_ptr<DropItem>& dropItem) {
-            return dropItem->destroyed;
-            }), DropItem::dropItems.end());
-
-    }
+    scene->update();
 }
 
 void GameWindow::loadTexture(std::string filePath, unsigned int* texturePointer) {
@@ -294,9 +205,30 @@ void GameWindow::clearScreen() {
 }
 
 void GameWindow::clearEnemies() {
-    Enemy::enemies.clear();
+    for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+        e->destroy();
+    }
 }
 
 void GameWindow::clearBullets() {
-    Bullet::bullets.clear();
+    for (std::shared_ptr<Bullet> b : Bullet::bullets) {
+        b->destroy();
+    }
+}
+
+void GameWindow::loadScene(SceneName name) {
+    switch (name) {
+    case SceneName::MainMenu:
+        scene = std::make_shared<MainMenu>();
+        break;
+    case SceneName::Level1:
+        scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::Level2:
+        //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::Level3:
+        //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    }
 }
