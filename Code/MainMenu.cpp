@@ -30,7 +30,6 @@ void MainMenu::update() {
 		buttons[selectedButton]->use();
 	}
 	if (KeyInput::isPressed("DOWN", 10)) {
-		std::cout << "D";
 		selectNext();
 	}
 	if (KeyInput::isPressed("UP", 10)) {

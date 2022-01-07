@@ -2,7 +2,7 @@
 
 bool Menu::selectButton(int newSelection) {
 	if (buttons.size() == 0) { return false; }
-	newSelection = newSelection % buttons.size();
+	newSelection = newSelection % static_cast<int>(buttons.size());
 	while (newSelection < 0) { newSelection += buttons.size(); }
 	buttons[selectedButton]->deselect();
 	if (buttons[newSelection]->select()) {
