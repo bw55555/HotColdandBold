@@ -1,8 +1,5 @@
 #include "MainMenu.h"
 #include "GameWindow.h"
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <Shader.h>
 
 void MainMenu::initialize() {
 
@@ -22,13 +19,12 @@ void MainMenu::render() {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	for (auto& b : buttons) {
-		b->draw(GameWindow::Instance->textShader);
+		b->draw(GameWindow::textShader);
 	}
 }
 */
 
 void MainMenu::update() {
-	GLFWwindow* w = GameWindow::Instance->window;
 	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
 		buttons[selectedButton]->use();
 	}
@@ -57,13 +53,12 @@ void DifficultyMenu::render() {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	for (auto& b : buttons) {
-		b->draw(GameWindow::Instance->textShader);
+		b->draw(GameWindow::textShader);
 	}
 }
 */
 
 void DifficultyMenu::update() {
-	GLFWwindow* w = GameWindow::Instance->window;
 	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
 		buttons[selectedButton]->use();
 	}

@@ -9,7 +9,7 @@ GameLevel::GameLevel(void (*func)(GameLevel*)) : UpdateTime(func) {
 }
 
 void GameLevel::initialize() {
-
+    ui = std::make_unique<UI>();
 }
 
 void GameLevel::update() {
@@ -63,45 +63,37 @@ void GameLevel::update() {
             }), DropItem::dropItems.end());
 
     }
+    ui->update();
 }
 
 void GameLevel::render() {
 
-    glBindFramebuffer(GL_FRAMEBUFFER, GameWindow::Instance->fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, ui->fbo);
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    Shader* shader = GameWindow::Instance->shader;
     glViewport(0, 0, 2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
     for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
-        sprite->draw(shader);
+        sprite->draw();
     }
 
-    GameWindow::Instance->player->draw(shader);
-    GameWindow::Instance->player->drawHitbox(shader);
+    GameWindow::Instance->player->draw();
+    GameWindow::Instance->player->drawHitbox();
     for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-        enemy->draw(shader);
+        enemy->draw();
     }
 
     for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->draw(shader);
+        bullet->draw();
     }
 
     for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
-        dropItem->draw(shader);
+        dropItem->draw();
     }
     glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-
-    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
+    float ratio = UI::UIsize.y / UI::UIsize.x;
     glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
-    GameWindow::Instance->screenShader->use();
-    GameWindow::Instance->screenShader->setInt("screenTexture", 0);
-    glm::mat4 tmat = glm::mat4(1.0f);
-    tmat = glm::scale(tmat, glm::vec3(2.0f));
-    GameWindow::Instance->screenShader->setMat4("transform", tmat);
-    glBindVertexArray(Sprite::VAO);
-    glBindTexture(GL_TEXTURE_2D, GameWindow::Instance->textureColorbuffer);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    ui->render();
+
+
+    
 }

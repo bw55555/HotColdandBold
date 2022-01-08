@@ -23,9 +23,10 @@ public:
     HTA hAlign = HTA::Left;
     VTA vAlign = VTA::Bottom;
     std::string text;
-    glm::vec3 color;
-	Text(std::string _text, glm::vec3 _color, glm::vec3 scaling = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Left, TextAlignV _vAlign = VTA::Bottom);
-	void draw(Shader* s);
+    glm::vec4 color;
+	Text(std::string _text, glm::vec4 _color, glm::vec3 scaling = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Left, TextAlignV _vAlign = VTA::Bottom);
+	void draw();
+    void draw(glm::mat4 customProjection);
     void setAlignment(TextAlignV _vAlign) {
         return setPos(hAlign, _vAlign, glm::vec2(trans));
     }

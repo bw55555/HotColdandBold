@@ -15,14 +15,12 @@
 #include <functional>
 #include "GameWindow.h"
 #include "KeyInput.h"
+#include "UIRect.h"
 
 
 extern std::string PATH_START = "";
 std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-const unsigned int SCR_WIDTH = 1500;
-const unsigned int SCR_HEIGHT = 1500;
 
 KeyInput::KeyMap KeyInput::keys;
 int KeyInput::currFrame = -1;
@@ -30,6 +28,7 @@ std::shared_ptr<GameWindow> GameWindow::Instance;
 unsigned int Sprite::circleHitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
+unsigned int UIRect::UIVAO;
 std::shared_ptr<Player> GameWindow::player;
 std::vector<std::shared_ptr<DropItem>> DropItem::dropItems;
 std::vector<std::shared_ptr<Enemy>> Enemy::enemies;
@@ -37,7 +36,7 @@ std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
-glm::vec2 GameWindow::screenSize = glm::vec2(SCR_WIDTH, SCR_HEIGHT);
+glm::vec2 GameWindow::screenSize;
 const float GameWindow::halfWidth = 800.0f;
 const float GameWindow::halfHeight = 1000.0f;
 
@@ -64,7 +63,7 @@ int main() {
     std::cout << "Initializing GLFW window" << std::endl;
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x/2, UI::UIsize.y/2, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -90,10 +89,16 @@ int main() {
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
     Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
     Shader* textShader = Shader::makeShader(PATH_START + std::string("resources/shaders/TextShader.vert"), PATH_START + std::string("resources/shaders/TextShader.frag"));
-    gameWindow = std::make_shared<GameWindow>(window, s);
-    gameWindow -> screenShader = screenShader;
-    gameWindow-> textShader = textShader;
-    glViewport(0, 0, GameWindow::screenSize.x, GameWindow::screenSize.y);
+    Shader* rectShader = Shader::makeShader(PATH_START + std::string("resources/shaders/RectShader.vert"), PATH_START + std::string("resources/shaders/RectShader.frag"));
+    gameWindow = std::make_shared<GameWindow>(window);
+    GameWindow::shader = s;
+    GameWindow::screenShader = screenShader;
+    GameWindow::textShader = textShader;
+    GameWindow::rectShader = rectShader;
+    GameWindow::screenSize = UI::UIsize / 2.0f;
+    float ratio = UI::UIsize.y / UI::UIsize.x;
+    glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
+    UIRect::initializeVAO();
     GameWindow::Instance = gameWindow;
     float currFrame = glfwGetTime();
 
@@ -162,5 +167,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     GameWindow::screenSize = glm::vec2(width, height);
-    glViewport(0, 0, width, height);
+    float ratio = UI::UIsize.y / UI::UIsize.x;
+    glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
 }

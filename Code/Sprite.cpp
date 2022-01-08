@@ -17,8 +17,9 @@ std::shared_ptr<Sprite> Sprite::makeSprite(unsigned int textureID, glm::vec3 sca
 	return s;
 }
 
-void Sprite::draw(Shader* shader) {
+void Sprite::draw() {
 	if (!renderEnabled) { return; }
+	Shader* shader = GameWindow::shader;
 	shader->use();
 	shader->setInt("texture1", 0);
 	glm::mat4 transmatrix = glm::mat4(1.0f);
@@ -62,7 +63,8 @@ Hitbox Sprite::getHitbox() {
 	return Hitbox::None();
 }
 
-void Sprite::drawHitbox(Shader* shader) {
+void Sprite::drawHitbox() {
+	Shader* shader = GameWindow::shader;
 	Hitbox hitbox = getHitbox();
 	if (hitbox.type == HitboxType::None) {
 		return;

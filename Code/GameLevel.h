@@ -5,6 +5,7 @@
 #include "DropItem.h"
 #include "UpdateTime.h"
 #include "Scene.h"
+#include "UI.h"
 
 class GameLevel : public UpdateTime<GameLevel>, public Scene
 {
@@ -13,6 +14,8 @@ public:
 	void initialize() override;
 	void update() override;
 	void render() override;
+
+	std::unique_ptr<UI> ui;
 	//void setCheckpoint();
 };
 

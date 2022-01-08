@@ -35,10 +35,17 @@ void Menu::createButton(std::string _text, Button::UseFunc useFunc, glm::vec2 of
 }
 
 void Menu::render() {
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	for (auto& s : sprites) {
+		s->draw();
+	}
 	for (auto& b : buttons) {
-		b->draw(GameWindow::Instance->textShader);
+		b->draw();
+	}
+	for (auto& t : texts) {
+		t->draw();
 	}
 }

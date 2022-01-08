@@ -17,6 +17,9 @@ class GameWindow
 private:
 	
 public:
+	//static unsigned int screenFBO;
+	//static unsigned int screenFBOTexture;
+
 	GLFWwindow* window;
 
 	static Settings settings;
@@ -32,16 +35,13 @@ public:
 
 	static void quit();
 	
-	Shader* shader;
-	Shader* screenShader;
-	Shader* textShader;
-
-	unsigned int fbo = 0;
-	unsigned int textureColorbuffer = 0;
-
-	glm::mat4 projectionMatrix;
+	static Shader* shader;
+	static Shader* rectShader;
+	static Shader* screenShader;
+	static Shader* textShader;
+	
 	std::shared_ptr<Scene> scene = nullptr;
-	GameWindow(GLFWwindow* w, Shader* s);
+	GameWindow(GLFWwindow* w);
 	
 	void render();
 	void update();

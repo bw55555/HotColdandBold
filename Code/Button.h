@@ -16,10 +16,10 @@ public:
 	//use menu's createButton function instead
 	Button(std::string _text, UseFunc useFunc, glm::vec3 scaling = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Left, TextAlignV _vAlign = VTA::Bottom);
 	ButtonState state = ButtonState::Active;
-	typedef std::unordered_map<ButtonState, glm::vec3> ColorMap;
-	ColorMap colormap{ {ButtonState::Inactive, glm::vec3(0.7f)}, 
-		{ButtonState::Active, glm::vec3(0.0f, 0.0f, 0.0f)},
-		{ButtonState::Selected, glm::vec3(1.0f, 1.0f, 0.0f)} };
+	typedef std::unordered_map<ButtonState, glm::vec4> ColorMap;
+	ColorMap colormap{ {ButtonState::Inactive, glm::vec4(0.7f, 0.7f, 0.7f, 1.0f)}, 
+		{ButtonState::Active, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)},
+		{ButtonState::Selected, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)} };
 	void setColorMap(ColorMap c) { colormap = c; }
 	bool isSelected() {
 		return state == ButtonState::Selected;

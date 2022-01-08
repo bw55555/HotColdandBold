@@ -6,14 +6,23 @@
 #include "stb_image.h"
 #include "Text.h"
 #include "MainMenu.h"
+#include "UI.h"
 
 extern std::string PATH_START;
 
 Settings GameWindow::settings;
 
-GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
+Shader* GameWindow::shader;
+Shader* GameWindow::rectShader;
+Shader* GameWindow::screenShader;
+Shader* GameWindow::textShader;
+
+//unsigned int GameWindow::screenFBO;
+//unsigned int GameWindow::screenFBOTexture;
+
+
+GameWindow::GameWindow(GLFWwindow* w) {
 	window = w;
-    shader = s;
     screenShader = nullptr;
     textShader = nullptr;
 	initialize();
@@ -91,24 +100,45 @@ void GameWindow::initialize() {
     scene = std::make_shared<MainMenu>();
     
 
-    glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glGenFramebuffers(1, &UI::fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, UI::fbo);
 
     
 
-    glGenTextures(1, &textureColorbuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glGenTextures(1, &UI::textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, UI::textureColorbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2 * halfWidth, 2 * halfHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     // attach it to currently bound framebuffer object
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, UI::textureColorbuffer, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    /*
+    glGenFramebuffers(1, &screenFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
+
+
+
+    glGenTextures(1, &screenFBOTexture);
+    glBindTexture(GL_TEXTURE_2D, screenFBOTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2 * halfWidth, 2 * halfHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // attach it to currently bound framebuffer object
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screenFBOTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer2 is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    */
 
 }
 

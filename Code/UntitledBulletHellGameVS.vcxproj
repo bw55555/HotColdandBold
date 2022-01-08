@@ -140,16 +140,21 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="UIRect.cpp" />
     <ClCompile Include="Movement.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Text.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
     <None Include="cpp.hint" />
+    <None Include="resources\shaders\RectShader.frag" />
+    <None Include="resources\shaders\RectShader.vert" />
     <None Include="resources\shaders\ScreenShader.frag" />
     <None Include="resources\shaders\ScreenShader.vert" />
     <None Include="resources\shaders\SpriteShader_U.frag" />
@@ -170,11 +175,13 @@
     <ClInclude Include="KeyInput.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="UIRect.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="LevelMacros.h" />
     <ClInclude Include="Movement.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="UpdateTime.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />

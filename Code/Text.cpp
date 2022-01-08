@@ -10,7 +10,7 @@
 unsigned int Text::textVAO;
 std::unordered_map<char, Character> Character::Characters;
 
-Text::Text(std::string _text, glm::vec3 _color, glm::vec3 scaling, glm::vec3 offset, float rotation, TextAlignH _hAlign, TextAlignV _vAlign) : Sprite(0, scaling, offset, rotation) {
+Text::Text(std::string _text, glm::vec4 _color, glm::vec3 scaling, glm::vec3 offset, float rotation, TextAlignH _hAlign, TextAlignV _vAlign) : Sprite(0, scaling, offset, rotation) {
     text = _text;
     color = _color;
     setAlignment(_hAlign, _vAlign);
@@ -111,15 +111,19 @@ int Text::initializeFT() {
     return 0;
 }
 
-void Text::draw(Shader* s) {
+void Text::draw() {
+    return draw(UI::UIprojection);
+}
+
+void Text::draw(glm::mat4 customProjection) {
+    Shader* s = GameWindow::textShader;
     s->use();
-    s->setVec3("textColor", color);
+    s->setVec4("textColor", color);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glm::mat4 projection = glm::ortho(-GameWindow::screenSize.x/2, GameWindow::screenSize.x/2, -GameWindow::screenSize.y/2, GameWindow::screenSize.y/2);
     //glm::mat4 projection = glm::ortho(0.0f, GameWindow::screenSize.x, 0.0f, GameWindow::screenSize.y);
     //glm::mat4 projection = 
-    s->setMat4("projection", projection);
+    s->setMat4("projection", customProjection);
 
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(textVAO);
@@ -159,6 +163,8 @@ void Text::draw(Shader* s) {
     
     glDisable(GL_BLEND);
 }
+
+
 
 void Text::setPos(TextAlignH _hAlign, TextAlignV _vAlign, glm::vec2 pos) {
     float x = 0;
