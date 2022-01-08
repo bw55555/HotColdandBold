@@ -9,6 +9,8 @@
 
 extern std::string PATH_START;
 
+Settings GameWindow::settings;
+
 GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
 	window = w;
     shader = s;
@@ -121,9 +123,10 @@ void GameWindow::update() {
         glfwSetWindowShouldClose(window, true);
 
     //bomb!
-    if (KeyInput::isPressed("X"))
+    if (KeyInput::isPressed("X")) {
+        std::cout << "Bombed!";
         clearScreen();
-
+    }
     scene->update();
 }
 
@@ -220,6 +223,9 @@ void GameWindow::loadScene(SceneName name) {
     switch (name) {
     case SceneName::MainMenu:
         scene = std::make_shared<MainMenu>();
+        break;
+    case SceneName::DifficultyMenu:
+        scene = std::make_shared<DifficultyMenu>();
         break;
     case SceneName::Level1:
         scene = std::make_shared<GameLevel>(Level::Level1);

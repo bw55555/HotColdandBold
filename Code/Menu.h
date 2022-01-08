@@ -14,7 +14,7 @@ public:
 	void createButton(std::string _text, Button::UseFunc useFunc, glm::vec2 offset, glm::vec2 scaling = glm::vec2(1.0f), float rotation = 0.0f, TextAlignH _hAlign = HTA::Center, TextAlignV _vAlign = VTA::Center);
 	
 	virtual void initialize() = 0;
-	virtual void render() = 0;
+	virtual void render();
 	virtual void update() = 0;
 	virtual ~Menu() {};
 };

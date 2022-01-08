@@ -44,7 +44,6 @@ void BossEnemy::createBossHealthBar() {
 
 void BossEnemy::startNextPhase() {
 	currPhase += 1;
-	currTime = 0;
 	reInitializeTime();
 	spawners.clear();
 	//remember to reset health and stuff... or set to a default and let 

@@ -142,6 +142,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Movement.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Text.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="LevelMacros.h" />
     <ClInclude Include="Movement.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="UpdateTime.h" />
     <ClInclude Include="GameLevel.h" />

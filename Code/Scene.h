@@ -1,6 +1,6 @@
 #pragma once
 
-enum class SceneName { MainMenu, Level1, Level2, Level3 };
+enum class SceneName { MainMenu, DifficultyMenu, Level1, Level2, Level3 };
 
 class Scene {
 public:

@@ -1,4 +1,8 @@
 #include "Menu.h"
+#include "GameWindow.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <Shader.h>
 
 bool Menu::selectButton(int newSelection) {
 	if (buttons.size() == 0) { return false; }
@@ -28,4 +32,13 @@ void Menu::createButton(std::string _text, Button::UseFunc useFunc, glm::vec2 of
 	}
 	
 	buttons.push_back(std::move(b));
+}
+
+void Menu::render() {
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	for (auto& b : buttons) {
+		b->draw(GameWindow::Instance->textShader);
+	}
 }

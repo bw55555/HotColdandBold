@@ -6,6 +6,7 @@
 #include "DropItem.h"
 #include "GameLevel.h"
 #include "KeyInput.h"
+#include "Settings.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -17,7 +18,9 @@ private:
 	
 public:
 	GLFWwindow* window;
-	
+
+	static Settings settings;
+
 	static std::shared_ptr<Player> player;
 	static unsigned int enemyTextures[10];
 	static glm::vec2 screenSize; //set in main.cpp

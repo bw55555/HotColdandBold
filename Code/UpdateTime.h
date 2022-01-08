@@ -127,12 +127,12 @@ public:
 	}
 
 	void reInitializeTime() {
-		timeWaited = 0;
-		waitTime = 0;
+		timeWaited = 0.0f;
+		waitTime = 0.0f;
 		numWaits = 0;
 		numWaitTrue = 0;
 		customFloats.clear();
-		currTime = 0;
+		currTime = -1.0f;
 		shouldRun = true;
 	}
 
