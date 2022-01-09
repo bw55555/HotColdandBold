@@ -42,8 +42,14 @@ const float GameWindow::halfHeight = 1000.0f;
 
 struct stat info;
 
-std::vector<float> frameRateLog;
+float frameRateLog[60];
+int currFrameNum = 0;
+float currFrameRateSum = 1.0f;
 int main() {
+    for (int i = 0; i < 60; i++) {
+        frameRateLog[i] = 1.0f / 60.0f;
+    }
+
     if (stat("resources", &info) != 0) {
         std::cout << "Changed path";
         PATH_START = "../../";
@@ -127,6 +133,8 @@ int main() {
     KeyInput::track("2", GLFW_KEY_2, 1000000);
     KeyInput::track("3", GLFW_KEY_3, 1000000);
     KeyInput::track("4", GLFW_KEY_4, 1000000);
+
+
     while (!glfwWindowShouldClose(window)) {
         currFrame = glfwGetTime();
         glfwPollEvents();
@@ -155,15 +163,14 @@ int main() {
         }
         
         //_sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame) - 0.06f);
-        
-        frameRateLog.push_back(glfwGetTime() - currFrame);
-        if (frameRateLog.size() == 60) {
-            float sum = 0;
-            for (float v : frameRateLog) {
-                sum += v;
-            }
-            std::cout << "TFR: " << 60/sum << " B: " << Bullet::bullets.size() << std::endl;
-            frameRateLog.clear();
+        currFrameRateSum -= frameRateLog[currFrameNum];
+        frameRateLog[currFrameNum] = glfwGetTime() - currFrame;
+        currFrameRateSum += frameRateLog[currFrameNum];
+        currFrameNum += 1;
+        GameWindow::Instance->frameRate = 60.0f / currFrameRateSum;
+        if (currFrameNum == 60) {
+            currFrameNum = 0;
+            std::cout << "TFR: " << GameWindow::Instance->frameRate << " B: " << Bullet::bullets.size() << std::endl;
         }
         
     }

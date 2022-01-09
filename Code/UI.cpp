@@ -6,7 +6,7 @@
 
 unsigned int UI::fbo = 0;
 unsigned int UI::textureColorbuffer = 0;
-glm::vec2 UI::UIsize{2 * GameWindow::halfWidth + 1600, 2 * GameWindow::halfHeight + 200};
+glm::vec2 UI::UIsize{2 * GameWindow::halfWidth + 1600, 2 * GameWindow::halfHeight + 100};
 glm::mat4 UI::UIprojection = glm::ortho(-UI::UIsize.x / 2, UI::UIsize.x / 2, -UI::UIsize.y / 2, UI::UIsize.y / 2);
 
 void UI::initialize() {
@@ -15,6 +15,8 @@ void UI::initialize() {
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Bombs", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("100", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
+
+    makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
     //Reference X
     makeText("X", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f));
     makeRect(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f), Scale(UIsize.x, UIsize.y));
@@ -23,6 +25,7 @@ void UI::initialize() {
 void UI::update() {
     texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
+    texts[5]->text = std::to_string(static_cast<int>(10 * GameWindow::Instance->frameRate) / 10.0f);
 }
 
 void UI::render() {

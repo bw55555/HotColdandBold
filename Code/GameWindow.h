@@ -23,6 +23,8 @@ public:
 
 	GLFWwindow* window;
 
+	float frameRate;
+
 	static Settings settings;
 
 	static std::shared_ptr<Player> player;
