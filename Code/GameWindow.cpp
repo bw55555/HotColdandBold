@@ -220,6 +220,7 @@ void GameWindow::checkCollisions() {
                 //Collision detected between player and enemy bullet, do something!
                 //std::cout << "Got hit :(" << std::endl;
                 b->destroy();
+                player->takeDamage();
             }
         }
     }
@@ -228,6 +229,7 @@ void GameWindow::checkCollisions() {
         if (player->checkCollision(std::static_pointer_cast<CollidableObject>(e))) {
             //Collision detected between enemy and player, do something!
             std::cout << "Got hit by enemy :(" << std::endl;
+            player->takeDamage();
         }
     }
 }

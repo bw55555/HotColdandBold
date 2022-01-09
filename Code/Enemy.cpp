@@ -31,9 +31,9 @@ void Enemy::update() {
 }
 
 void Enemy::takeDamage() {
-	if (invTimer >= 3) {
+	if (invTimer <= 0) {
 		health -= 1;
-		invTimer = 0.0f;
+		invTimer = 180.0f;
 		if (health == 0) {
 			destroy();
 		}

@@ -19,5 +19,7 @@ public:
     void checkMovement(GLFWwindow* window);
     void fire();
     void update(GLFWwindow* window);
+    void takeDamage();
+    void destroy();
 };
 
