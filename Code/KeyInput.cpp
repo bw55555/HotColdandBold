@@ -45,8 +45,6 @@ bool KeyInput::isPressed(std::string keyName, int _inputDelay) {
 	}
 	*/
 
-	
-
 	if (keys[keyName]->currentlyPressed) {
 		int lp = keys[keyName]->lastPress;
 		if (currFrame == lp) { return true; }

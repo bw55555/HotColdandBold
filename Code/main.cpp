@@ -115,6 +115,18 @@ int main() {
     KeyInput::track("X", GLFW_KEY_X, 1000000);
     KeyInput::track("ENTER", GLFW_KEY_ENTER, 1000000);
     KeyInput::track("LSHIFT", GLFW_KEY_LEFT_SHIFT, -1);
+    KeyInput::track("A", GLFW_KEY_A, 1000000);
+    KeyInput::track("S", GLFW_KEY_S, 1000000);
+    KeyInput::track("D", GLFW_KEY_D, 1000000);
+    KeyInput::track("W", GLFW_KEY_W, 1000000);
+    KeyInput::track("-", GLFW_KEY_MINUS, 1000000);
+    KeyInput::track("=", GLFW_KEY_EQUAL, 1000000);
+    KeyInput::track("`", GLFW_KEY_GRAVE_ACCENT, 1000000);
+    KeyInput::track("0", GLFW_KEY_0, 1000000);
+    KeyInput::track("1", GLFW_KEY_1, 1000000);
+    KeyInput::track("2", GLFW_KEY_2, 1000000);
+    KeyInput::track("3", GLFW_KEY_3, 1000000);
+    KeyInput::track("4", GLFW_KEY_4, 1000000);
     while (!glfwWindowShouldClose(window)) {
         currFrame = glfwGetTime();
         glfwPollEvents();
@@ -129,12 +141,12 @@ int main() {
         if (KeyInput::isPressed("PERIOD")) {
             canAdvance = true;
         }
-
-        if (!canAdvance && debugMode) {
-            continue;
+        WindowVar::updatewvar();
+        if (canAdvance || !debugMode) {
+            canAdvance = false;
+            gameWindow->update();
         }
-        canAdvance = false;
-        gameWindow->update();
+        
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
         //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;

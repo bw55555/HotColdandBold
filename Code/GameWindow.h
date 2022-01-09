@@ -7,6 +7,7 @@
 #include "GameLevel.h"
 #include "KeyInput.h"
 #include "Settings.h"
+#include "WindowVar.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -56,5 +57,6 @@ public:
 
 	void checkCollisions();
 	void createEnemyTextures();
+
 };
 

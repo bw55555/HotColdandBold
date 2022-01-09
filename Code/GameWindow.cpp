@@ -20,7 +20,6 @@ Shader* GameWindow::textShader;
 //unsigned int GameWindow::screenFBO;
 //unsigned int GameWindow::screenFBOTexture;
 
-
 GameWindow::GameWindow(GLFWwindow* w) {
 	window = w;
     screenShader = nullptr;
@@ -99,7 +98,6 @@ void GameWindow::initialize() {
     //scene = std::make_shared<GameLevel>(Level::Level1);
     scene = std::make_shared<MainMenu>();
     
-
     glGenFramebuffers(1, &UI::fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, UI::fbo);
 
@@ -139,13 +137,14 @@ void GameWindow::initialize() {
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer2 is not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     */
-
+    
 }
 
 void GameWindow::render() {
 
     scene->render();
     glfwSwapBuffers(GameWindow::Instance->window);
+    
 }
 
 void GameWindow::update() {
@@ -157,6 +156,7 @@ void GameWindow::update() {
         std::cout << "Bombed!";
         clearScreen();
     }
+
     scene->update();
 }
 
