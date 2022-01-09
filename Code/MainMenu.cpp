@@ -39,11 +39,11 @@ void MainMenu::update() {
 void DifficultyMenu::initialize() {
 
 	//in full...
-	createButton("Easy", []() {GameWindow::settings.difficulty = Difficulty::Easy; GameWindow::settings.mode = GameMode::All; GameWindow::Instance->loadScene(SceneName::Level1); }, glm::vec2(0.0f), glm::vec2(1.0f), 0, HTA::Center, VTA::Center);
+	createButton("Easy", []() {GameWindow::Instance->startGame(Difficulty::Easy, GameMode::All); }, glm::vec2(0.0f), glm::vec2(1.0f), 0, HTA::Center, VTA::Center);
 
 	//you can omit the last 4 parameters...
-	createButton("Medium", []() {GameWindow::settings.difficulty = Difficulty::Normal; GameWindow::settings.mode = GameMode::All; GameWindow::Instance->loadScene(SceneName::Level1); }, glm::vec2(0.0f, -60.0f));
-	createButton("Hard", []() {GameWindow::settings.difficulty = Difficulty::Hard; GameWindow::settings.mode = GameMode::All; GameWindow::Instance->loadScene(SceneName::Level1); }, glm::vec2(0.0f, -120.0f));
+	createButton("Normal", []() {GameWindow::Instance->startGame(Difficulty::Normal, GameMode::All); }, glm::vec2(0.0f, -60.0f));
+	createButton("Hard", []() {GameWindow::Instance->startGame(Difficulty::Hard, GameMode::All); }, glm::vec2(0.0f, -120.0f));
 	//createButton("X", doNothingFunc, glm::vec3(1.0f), glm::vec3(0.0f), 0, HTA::Center, VTA::Center);
 }
 

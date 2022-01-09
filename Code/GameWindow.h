@@ -54,6 +54,7 @@ public:
 	static void clearScreen();
 
 	void loadScene(SceneName name);
+	void startGame(Difficulty, GameMode);
 
 	void checkCollisions();
 	void createEnemyTextures();

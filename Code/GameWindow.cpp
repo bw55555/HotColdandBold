@@ -269,4 +269,21 @@ void GameWindow::loadScene(SceneName name) {
     }
 }
 
+void GameWindow::startGame(Difficulty d, GameMode g) {
+    settings.difficulty = d;
+    settings.mode = g;
+    switch (settings.mode) {
+    case GameMode::All:
+    case GameMode::Prac1:
+        loadScene(SceneName::Level1);
+        break;
+    case GameMode::Prac2:
+        loadScene(SceneName::Level2);
+        break;
+    case GameMode::Prac3:
+        loadScene(SceneName::Level3);
+        break;
+    }
+}
+
 void GameWindow::quit() { glfwSetWindowShouldClose(GameWindow::Instance -> window, true); }
