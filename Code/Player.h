@@ -15,6 +15,8 @@ public:
     float health;
     float invTimer;
     bool destroyed;
+
+    float bombs;
     Player(Hitbox collisionbox, unsigned int textureID);
     void checkMovement(GLFWwindow* window);
     void fire();

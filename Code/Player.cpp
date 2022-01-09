@@ -10,6 +10,7 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 	health = 3.0f;
 	invTimer = 0.0f;
 	destroyed = false;
+	bombs = 100.0f;
 }
 
 void Player::update(GLFWwindow* window) {
