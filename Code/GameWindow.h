@@ -5,6 +5,9 @@
 #include "BulletSpawner.h"
 #include "DropItem.h"
 #include "GameLevel.h"
+#include "KeyInput.h"
+#include "Settings.h"
+#include "WindowVar.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -13,11 +16,15 @@ extern std::string PATH_START;
 class GameWindow
 {
 private:
-	GLFWwindow* window;
-	Shader* shader;
-	unsigned int fbo = 0;
-	unsigned int textureColorbuffer = 0;
+	
 public:
+	//static unsigned int screenFBO;
+	//static unsigned int screenFBOTexture;
+
+	GLFWwindow* window;
+
+	static Settings settings;
+
 	static std::shared_ptr<Player> player;
 	static unsigned int enemyTextures[10];
 	static glm::vec2 screenSize; //set in main.cpp
@@ -25,21 +32,32 @@ public:
 	static const float halfWidth;
 	static const float halfHeight;
 
-	Shader* screenShader;
+	static std::shared_ptr<GameWindow> Instance;
 
-	glm::mat4 projectionMatrix;
-	std::shared_ptr<GameLevel> level = nullptr;
-	GameWindow(GLFWwindow* w, Shader* s);
+	static void quit();
+	
+	static Shader* shader;
+	static Shader* rectShader;
+	static Shader* screenShader;
+	static Shader* textShader;
+	
+	std::shared_ptr<Scene> scene = nullptr;
+	GameWindow(GLFWwindow* w);
 	
 	void render();
 	void update();
 	void initialize();
 	static void loadTexture(const char* filePath, unsigned int* texturePointer);
 	static void loadTexture(std::string filePath, unsigned int* texturePointer);
-	void clearBullets();
-	void clearEnemies();
-	void clearScreen();
+	static void clearBullets();
+	static void clearEnemies();
+	static void clearScreen();
+
+	void loadScene(SceneName name);
+	void startGame(Difficulty, GameMode);
+
 	void checkCollisions();
 	void createEnemyTextures();
+
 };
 

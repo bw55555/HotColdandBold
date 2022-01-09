@@ -2,6 +2,7 @@
 #include "LevelMacros.h"
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
+#include "BossEnemy.h"
 
 namespace Level {
     
@@ -20,17 +21,24 @@ namespace Level {
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        once(l) {
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
+        }
         wf(l, 0.5_s) {
+            
             //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
+            /*
             Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
                 delay(e, 30);
-                every(e, 60) e->dir = randomDir();
-                //fyex(e, 60, 30) e->move(linearBurst(rt(e, 60), 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
+                //fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             });
+            */
             //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
             
-            e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
+            //e->createBulletSpawner(glm::vec2(0, 0), bossPattern6);
+            
             
         }
         wf(l, 1.5_s) {
@@ -47,6 +55,57 @@ namespace Level {
         }
         delete fairy;
         delete dopple;
+    }
+
+    void bossUFunc(Enemy* e) {
+        float destroyTime = 3600.0f;
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern7); }
+            wf(e, destroyTime) {
+                e->destroy();
+            }
+        }
+        if (e->onNextPhase()) {
+            once(e) { 
+                e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
+            forever(e) {
+                enemyTestFunc(e);
+            }
+            wf(e, destroyTime) {
+                e->destroy();
+            }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
+            forever(e) {
+                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
+                fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+            }
+            wf(e, destroyTime) { 
+                e->destroy(); 
+            }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            once(e) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
+            wf(e, destroyTime) { e->destroy(); }
+        }
     }
 
     void bossPattern1(BSp s) {
@@ -75,7 +134,7 @@ namespace Level {
     void bossPattern2(BSp s) {
         int spawnInterval = 90; //probably too hard
         spawnInterval = 120; //this is a lot easier...
-        fyex(s, spawnInterval, 24) { //executes 24 frames in a row every spawnInterval frames
+        fyex(s, spawnInterval, 18) { //executes 18 frames in a row every spawnInterval frames
             every(s, 2) { //every 2 frames
                 nring(o, 6) { //6 bullets in a ring
                     nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
@@ -126,6 +185,148 @@ namespace Level {
             nspread(a, getAngle(targetPlayer(s->pos)), 4, 3) {
                 nstack(spd, 9.0f, 0.5f, 3) {
                     s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(a), spd));
+                }
+            }
+        }
+    }
+
+    void bossPattern4(BSp s) {
+        every(s, 40) {
+            float rf = randomFloat(0.0f, 15.0f);
+            rf = 0;
+            nring(a, 12) {
+                nstack(spd, 5, 0.3, 7) {
+                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(rf + a + 15 * t(s)/40), spd));
+                }
+            }
+        }
+        every(s, 60) {
+            s->dir = targetPlayer(s->pos);
+        }
+        fyex(s, 60, 18) {
+            every(s, 3) {
+                float a = rt(s, 60) + 1;
+                nspread(o, getAngle(s->dir), a, 2) {
+                    s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(o), 10.0f));
+                }
+            }
+        }
+    }
+
+    void bossPattern5(BSp s) {
+        int spawnTimeA = 4;
+        every(s, spawnTimeA) {
+            nring(a, 6) {
+                float angle = a + linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
+                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(angle), 8.0f));
+            }
+        }
+        every(s, spawnTimeA) {
+            nring(a, 6) {
+                float angle = a - linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
+                s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(angle), 8.0f));
+            }
+        }
+        /*
+        every(s, 10) {
+            nring(a, 16) {
+                float wave = oscillate(t(s) / 10, -15, 15, 3);
+                s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(a + wave), 10.0f));
+            }
+        }
+        every(s, 10) {
+            nring(a, 16) {
+                float wave = oscillate(t(s) / 10, -15, 15, 3);
+                s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(a - wave), 10.0f));
+            }
+        }
+        */
+
+    }
+
+    void bossPattern6(BSp s) {
+        float sI = dchoice(60.0f, 40.0f, 20.0f);
+        float finalSpeed = dchoice(6.0f, 8.0f, 10.0f);
+        float numBullets = dchoice(20, 30, 40);
+        float waveChange = dchoice(1.0f, 0.66666666f, 0.5f);
+        float initialSpeed = dchoice(4.0f, 7.0f, 7.0f);
+        every(s, sI) {
+            nringi(a, i, numBullets) {
+                float wave = initialSpeed * oscillate(i + 1, -1, 1, waveChange, 0);
+                s->spawnPreset(BulletType::KnifeBlue, SwitchDirectionalBullet(avecd(a + 2.34653 * t(s) / sI * 1.03321), 1.0f + 2.0f * initialSpeed + wave, 15.0f, finalSpeed + randomFloat(0.0f, 1.0f)));
+            }
+        }
+        everyo(s, sI, sI/2) {
+            nringi(a, i, numBullets) {
+                float wave = initialSpeed * oscillate(i + 1, -1, 1, waveChange, 0);
+                s->spawnPreset(BulletType::KnifeRed, SwitchDirectionalBullet(avecd(a - 2.34653 * t(s) / sI + 360/5/2), 1.0f + 2.0f * initialSpeed + wave, 15.0f, finalSpeed + randomFloat(0.0f, 1.0f)));
+            }
+        }
+    }
+
+    //spawns stars and throws them at you!
+    void bossPattern7(BSp s) {
+        every(s, 40.0f) {
+            float ringMoveSpeed = dchoice(10.0f, 15.0f, 20.0f);
+            float ro = randomFloat(0.0f, 360.0f);
+            nring(o, 32) {
+                s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(o + ro), ringMoveSpeed));
+            }
+        }
+        float starspawnInt = dchoice(180.0f, 150.0f, 120.0f);
+        every(s, starspawnInt) {
+            nring(o, 5) {
+                glm::vec2 dir = targetPlayer(s->pos);
+                float numBullets = 8.0f;
+                float radius = dchoice(350.0f, 400.0f, 450.0f);
+                float height = cos(glm::radians(72.0f)) * radius;
+
+                float angle = glm::degrees(acos(height / radius));
+                glm::vec2 firstPos = s->pos + radius * avecd(o + 90 + angle);
+                glm::vec2 secondPos = s->pos + radius * avecd(o + 90 - angle);
+                glm::vec2 diff = (secondPos - firstPos) / (numBullets);
+                nrep(i, numBullets) {
+                    glm::vec2 dest = firstPos + i * diff;
+                    Bsp b = s->spawnPresetwLambda(BulletType::RoundBlue, s->pos, [](Bp b) {
+                        motw(b, glm::vec2(cf(b, 0), cf(b, 1)), 30);
+                        forever(b) {
+                            b->move(b->dir * b->speed);
+                            glm::vec2 centerDest = glm::vec2(cf(b, 2), cf(b, 3)) + b->dir * b->speed;
+                            cf(b, 2) = centerDest.x;
+                            cf(b, 3) = centerDest.y;
+                            b->rotateAround(centerDest, 2);
+                            float x = oscillate(b->currTime - 30, -1, 1, 0.02);
+                            float sign = static_cast<float>((x > 0) - (x < 0));
+                            //b->move(glm::normalize(centerDest - b->getPos()) * sign * 1.0f);
+                        }
+                        });
+                    b->initializeCustomVars(dest, s->pos, Direction{ dir }, Speed{ 10.0f });
+                }
+            }
+        }
+    }
+
+    //it failed, but happy accidents
+    void bossPattern7Fail(BSp s) {
+        every(s, 3000.0f) {
+            nring(o, 7) {
+                float numBullets = 7.0f;
+                nrep(i, numBullets) {
+                    float height = 10.0f;
+                    float radius = 20.0f;
+                    float halflength = pow(pow(radius, 2) - pow(height, 2), 0.5);
+                    
+                    float l_incr = 2 * halflength / (numBullets - 1);
+                    float iLength = halflength - l_incr * i;
+                    float angle = glm::degrees(asin(iLength/radius));
+                    
+                    glm::vec2 dest = static_cast<float>(pow(pow(iLength, 2) + pow(height, 2), 0.5)) * avecd(o + angle);
+                    std::cout << halflength << " " << l_incr << " " << iLength << " A: " << angle << " Dest: " << dest.x << " " << dest.y << "\n";
+                    Bsp b = s->spawnPresetwLambda(BulletType::RoundBlue, s->pos, [](Bp b) {
+                        motw(b, glm::vec2(cf(b, 0), cf(b, 1)), 15);
+                        b->rotateAround(glm::vec2(cf(b, 2), cf(b, 3)), 2);
+                        });
+                    b->initializeCustomVars(s->pos + 15.0f * dest, s->pos);
                 }
             }
         }
@@ -213,7 +414,7 @@ namespace Level {
     void enemyTestFunc(Enemy* enemy) {
         //how to use void* like this?
         if (enemy->customFloats.size() <= 0) {
-            std::cout << "Custom Floats not initialized" << std::endl;
+            enemy->customFloats.push_back(1.0f);
             return;
         }
         float xpos = enemy->getPos().x;

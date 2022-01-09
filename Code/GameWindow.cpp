@@ -4,13 +4,26 @@
 #include <GLFW/glfw3.h>
 #include <Shader.h>
 #include "stb_image.h"
-
+#include "Text.h"
+#include "MainMenu.h"
+#include "UI.h"
 
 extern std::string PATH_START;
 
-GameWindow::GameWindow(GLFWwindow* w, Shader* s) {
+Settings GameWindow::settings;
+
+Shader* GameWindow::shader;
+Shader* GameWindow::rectShader;
+Shader* GameWindow::screenShader;
+Shader* GameWindow::textShader;
+
+//unsigned int GameWindow::screenFBO;
+//unsigned int GameWindow::screenFBOTexture;
+
+GameWindow::GameWindow(GLFWwindow* w) {
 	window = w;
-    shader = s;
+    screenShader = nullptr;
+    textShader = nullptr;
 	initialize();
 }
 
@@ -23,7 +36,7 @@ void GameWindow::initialize() {
     };
 
     unsigned int indices[] = {
-        0, 2, 1,
+        0, 1, 2,
         1, 2, 3
     };
 
@@ -75,135 +88,76 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
-    loadTexture(PATH_START + "resources/textures/Circle.png", &Player::hitboxTexture);
+    loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
     static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
-    level = std::make_shared<GameLevel>(Level::Level1);
 
-
-
-    glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    
+    Text::initializeFT();
+    //scene = std::make_shared<GameLevel>(Level::Level1);
+    scene = std::make_shared<MainMenu>();
+    
+    glGenFramebuffers(1, &UI::fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, UI::fbo);
 
     
 
-    glGenTextures(1, &textureColorbuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glGenTextures(1, &UI::textureColorbuffer);
+    glBindTexture(GL_TEXTURE_2D, UI::textureColorbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2 * halfWidth, 2 * halfHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
     // attach it to currently bound framebuffer object
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, UI::textureColorbuffer, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+    /*
+    glGenFramebuffers(1, &screenFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, screenFBO);
+
+
+
+    glGenTextures(1, &screenFBOTexture);
+    glBindTexture(GL_TEXTURE_2D, screenFBOTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 2 * halfWidth, 2 * halfHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // attach it to currently bound framebuffer object
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, screenFBOTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+        std::cout << "ERROR::FRAMEBUFFER:: Framebuffer2 is not complete!" << std::endl;
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    */
+    
 }
 
 void GameWindow::render() {
 
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glViewport(0,0,2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
-    for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
-        sprite->draw(shader); 
-    }
+    scene->render();
+    glfwSwapBuffers(GameWindow::Instance->window);
     
-    player->draw(shader);
-    player->drawHitbox(shader);
-    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-        enemy->draw(shader);
-    }
-    
-    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->draw(shader);
-    }
-    
-    for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
-        dropItem->draw(shader);
-    }
-
-    glfwSwapBuffers(window);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-
-    float ratio = GameWindow::halfHeight / GameWindow::halfWidth;
-    glViewport(screenSize.x / 2 - screenSize.y / 2 / ratio, 0, screenSize.y / ratio, screenSize.y);
-    screenShader->use();
-    screenShader->setInt("screenTexture", 0);
-    glm::mat4 tmat = glm::mat4(1.0f);
-    tmat = glm::scale(tmat, glm::vec3(2.0f));
-    screenShader->setMat4("transform", tmat);
-    glBindVertexArray(Sprite::VAO);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void GameWindow::update() {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (KeyInput::isPressed("ESC"))
         glfwSetWindowShouldClose(window, true);
 
     //bomb!
-    if (glfwGetKey(window, GLFW_KEY_X) == GLFW_PRESS)
-        clearBullets();
-
-    level->update();
-
-    //update player, enemy, spawners, bullets
-    player->update(window);
-
-    //update bullets before enemies so that spawned bullets are not updated on the same frame
-    for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
-        bullet->update();
+    if (KeyInput::isPressed("X")) {
+        std::cout << "Bombed!";
+        clearScreen();
     }
 
-    auto bulletsize = Bullet::bullets.size();
-    for (auto i = 0; i < bulletsize; i++) {
-        for (auto& s : Bullet::bullets[i]->spawners) {
-            s->update();
-        }
-    }
-
-    for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-        enemy->update();
-        for (auto& s : enemy->spawners) {
-            s->update();
-        }
-    }
-    
-    checkCollisions();
-
-    //check for and destroy bullets with a true destroyed tag at the end
-    if (Bullet::bullets.size() > 0) {
-        
-        Bullet::bullets.erase(std::remove_if(Bullet::bullets.begin(), Bullet::bullets.end(), [](const std::shared_ptr<Bullet>& bullet) {
-            return bullet->destroyed;
-        }), Bullet::bullets.end());
-        
-    }
-
-    if (Enemy::enemies.size() > 0) {
-
-        Enemy::enemies.erase(std::remove_if(Enemy::enemies.begin(), Enemy::enemies.end(), [](const std::shared_ptr<Enemy>& enemy) {
-            return enemy->destroyed;
-            }), Enemy::enemies.end());
-
-    }
-
-    if (DropItem::dropItems.size() > 0) {
-
-        DropItem::dropItems.erase(std::remove_if(DropItem::dropItems.begin(), DropItem::dropItems.end(), [](const std::shared_ptr<DropItem>& dropItem) {
-            return dropItem->destroyed;
-            }), DropItem::dropItems.end());
-
-    }
+    scene->update();
 }
 
 void GameWindow::loadTexture(std::string filePath, unsigned int* texturePointer) {
@@ -240,6 +194,7 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
     {
         std::cout << "Texture failed to load at path: " << filePath << std::endl;
     }
+    stbi_image_free(data);
 }
 
 void GameWindow::createEnemyTextures() {
@@ -283,9 +238,52 @@ void GameWindow::clearScreen() {
 }
 
 void GameWindow::clearEnemies() {
-    Enemy::enemies.clear();
+    for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+        e->destroy();
+    }
 }
 
 void GameWindow::clearBullets() {
-    Bullet::bullets.clear();
+    for (std::shared_ptr<Bullet> b : Bullet::bullets) {
+        b->destroy();
+    }
 }
+
+void GameWindow::loadScene(SceneName name) {
+    switch (name) {
+    case SceneName::MainMenu:
+        scene = std::make_shared<MainMenu>();
+        break;
+    case SceneName::DifficultyMenu:
+        scene = std::make_shared<DifficultyMenu>();
+        break;
+    case SceneName::Level1:
+        scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::Level2:
+        //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::Level3:
+        //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    }
+}
+
+void GameWindow::startGame(Difficulty d, GameMode g) {
+    settings.difficulty = d;
+    settings.mode = g;
+    switch (settings.mode) {
+    case GameMode::All:
+    case GameMode::Prac1:
+        loadScene(SceneName::Level1);
+        break;
+    case GameMode::Prac2:
+        loadScene(SceneName::Level2);
+        break;
+    case GameMode::Prac3:
+        loadScene(SceneName::Level3);
+        break;
+    }
+}
+
+void GameWindow::quit() { glfwSetWindowShouldClose(GameWindow::Instance -> window, true); }

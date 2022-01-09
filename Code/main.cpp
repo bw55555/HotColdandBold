@@ -14,19 +14,21 @@
 #include <numeric>
 #include <functional>
 #include "GameWindow.h"
-
+#include "KeyInput.h"
+#include "UIRect.h"
 
 
 extern std::string PATH_START = "";
-GameWindow* gameWindow;
+std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-const unsigned int SCR_WIDTH = 1500;
-const unsigned int SCR_HEIGHT = 1500;
-
-unsigned int Player::hitboxTexture;
+KeyInput::KeyMap KeyInput::keys;
+int KeyInput::currFrame = -1;
+std::shared_ptr<GameWindow> GameWindow::Instance;
+unsigned int Sprite::circleHitboxTexture;
 unsigned int DropItem::itemTextures[10];
 unsigned int Sprite::VAO;
+unsigned int UIRect::UIVAO;
 std::shared_ptr<Player> GameWindow::player;
 std::vector<std::shared_ptr<DropItem>> DropItem::dropItems;
 std::vector<std::shared_ptr<Enemy>> Enemy::enemies;
@@ -34,7 +36,7 @@ std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
 unsigned int BulletSpawner::bulletPresetTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
-glm::vec2 GameWindow::screenSize = glm::vec2(SCR_WIDTH, SCR_HEIGHT);
+glm::vec2 GameWindow::screenSize;
 const float GameWindow::halfWidth = 800.0f;
 const float GameWindow::halfHeight = 1000.0f;
 
@@ -49,7 +51,7 @@ int main() {
     else if (info.st_mode & S_IFDIR)  // S_ISDIR() doesn't exist on my windows 
         PATH_START = "";
     else
-        std::cout << "Welp something happened";
+        std::cout << "Welp something happened and the path is not recognized";
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -61,7 +63,7 @@ int main() {
     std::cout << "Initializing GLFW window" << std::endl;
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x/2, UI::UIsize.y/2, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -70,7 +72,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
+    
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -86,45 +88,65 @@ int main() {
     wglSwapIntervalEXT(1.0f);
     Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
     Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
-    gameWindow = new GameWindow(window, s);
-    gameWindow -> screenShader = screenShader;
+    Shader* textShader = Shader::makeShader(PATH_START + std::string("resources/shaders/TextShader.vert"), PATH_START + std::string("resources/shaders/TextShader.frag"));
+    Shader* rectShader = Shader::makeShader(PATH_START + std::string("resources/shaders/RectShader.vert"), PATH_START + std::string("resources/shaders/RectShader.frag"));
+    gameWindow = std::make_shared<GameWindow>(window);
+    GameWindow::shader = s;
+    GameWindow::screenShader = screenShader;
+    GameWindow::textShader = textShader;
+    GameWindow::rectShader = rectShader;
+    GameWindow::screenSize = UI::UIsize / 2.0f;
+    float ratio = UI::UIsize.y / UI::UIsize.x;
+    glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
+    UIRect::initializeVAO();
+    GameWindow::Instance = gameWindow;
     float currFrame = glfwGetTime();
 
     bool debugMode = false;
-    bool pressedP = false;
-    bool pressedAdvance = false;
     bool canAdvance = false;
+    KeyInput::track("ESC", GLFW_KEY_ESCAPE, -1);
+    KeyInput::track("P", GLFW_KEY_P, 1000000);
+    KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
+    KeyInput::track("DOWN", GLFW_KEY_DOWN, -1);
+    KeyInput::track("UP", GLFW_KEY_UP, -1);
+    KeyInput::track("LEFT", GLFW_KEY_LEFT, -1);
+    KeyInput::track("RIGHT", GLFW_KEY_RIGHT, -1);
+    KeyInput::track("Z", GLFW_KEY_Z, -1);
+    KeyInput::track("X", GLFW_KEY_X, 1000000);
+    KeyInput::track("ENTER", GLFW_KEY_ENTER, 1000000);
+    KeyInput::track("LSHIFT", GLFW_KEY_LEFT_SHIFT, -1);
+    KeyInput::track("A", GLFW_KEY_A, 1000000);
+    KeyInput::track("S", GLFW_KEY_S, 1000000);
+    KeyInput::track("D", GLFW_KEY_D, 1000000);
+    KeyInput::track("W", GLFW_KEY_W, 1000000);
+    KeyInput::track("-", GLFW_KEY_MINUS, 1000000);
+    KeyInput::track("=", GLFW_KEY_EQUAL, 1000000);
+    KeyInput::track("`", GLFW_KEY_GRAVE_ACCENT, 1000000);
+    KeyInput::track("0", GLFW_KEY_0, 1000000);
+    KeyInput::track("1", GLFW_KEY_1, 1000000);
+    KeyInput::track("2", GLFW_KEY_2, 1000000);
+    KeyInput::track("3", GLFW_KEY_3, 1000000);
+    KeyInput::track("4", GLFW_KEY_4, 1000000);
     while (!glfwWindowShouldClose(window)) {
         currFrame = glfwGetTime();
         glfwPollEvents();
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        KeyInput::checkEvents();
+        if (KeyInput::isPressed("ESC"))
             glfwSetWindowShouldClose(window, true);
-        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-            if (!pressedP) {
-                pressedP = true;
-                debugMode = !debugMode;
-            }
-        }
-        else if (pressedP) {
-            pressedP = false;
+        if (KeyInput::isPressed("P")) {
+            
+            debugMode = !debugMode;
         }
 
-        if (glfwGetKey(window, GLFW_KEY_PERIOD) == GLFW_PRESS) {
-            if (!pressedAdvance) {
-                pressedAdvance = true;
-                canAdvance = true;
-
-            }
+        if (KeyInput::isPressed("PERIOD")) {
+            canAdvance = true;
         }
-        else if (pressedAdvance) {
-            pressedAdvance = false;
+        WindowVar::updatewvar();
+        if (canAdvance || !debugMode) {
+            canAdvance = false;
+            gameWindow->update();
         }
-
-        if (!canAdvance && debugMode) {
-            continue;
-        }
-        canAdvance = false;
-        gameWindow->update();
+        
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
         //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;
@@ -157,4 +179,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     GameWindow::screenSize = glm::vec2(width, height);
+    float ratio = UI::UIsize.y / UI::UIsize.x;
+    glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
 }

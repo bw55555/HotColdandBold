@@ -10,6 +10,7 @@ private:
 	int numWaits = 0;
 	int numWaitTrue = 0;
 public:
+	
 	typedef void (*UpdateFunc)(T*);
 	UpdateFunc updatefunc;
 	std::vector<float> customFloats;
@@ -72,7 +73,7 @@ public:
 	
 	UpdateTime(UpdateFunc func) {
 		updatefunc = func;
-		currTime = 0;
+		currTime = -1.0f;
 		timeWaited = 0;
 		numWaitTrue = 0;
 	}
@@ -125,9 +126,25 @@ public:
 		shouldRun = true;
 	}
 
+	void reInitializeTime() {
+		timeWaited = 0.0f;
+		waitTime = 0.0f;
+		numWaits = 0;
+		numWaitTrue = 0;
+		customFloats.clear();
+		currTime = -1.0f;
+		shouldRun = true;
+	}
+
+	float getNestedTime() {
+		return currTime - timeWaited;
+	}
+
 	//try to use macro instead, its easier, or find a shorter name for this function
 	inline bool frameInterval(int interval, int offset = 0, int numTrue = 1) {
-		return shouldRun && ((int)currTime - offset) % interval < numTrue;
+		return shouldRun && ((int)currTime - offset) % interval >= 0 && ((int)currTime - offset) % interval < numTrue;
 	}
+
+	virtual ~UpdateTime() {};
 };
 

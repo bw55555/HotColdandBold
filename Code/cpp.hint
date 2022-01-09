@@ -18,6 +18,9 @@
 //time (in number of frames) as an integer
 #define ti(obj) static_cast<int>(obj->currTime)
 
+//time (in number of frames) inside the wait. Will be 0 first time the wait is executed. 
+#define nt(obj) obj->getNestedTime()
+
 //reduce time modulo n. Use this instead of c style casting time to an int
 #define rt(obj, n) static_cast<float>(static_cast<int>(t(obj)) % static_cast<int>(n))
 
@@ -25,7 +28,7 @@
 #define every(obj, interval) if (obj->frameInterval(interval))
 
 //every interval frames, with an offset
-#define every2(obj, interval, offset) if (obj->frameInterval(interval, offset))
+#define everyo(obj, interval, offset) if (obj->frameInterval(interval, offset))
 
 //better name plz...
 //For Y frames Every X frames
@@ -84,6 +87,12 @@
 //do this only once immediately (equivalent to wf(obj, 0))
 #define once(obj) if (obj->wait(0))
 
+//move over time to the destination. Does not increase wait timer.
+#define mot(obj, dest, numFrames) during(obj, numFrames) {obj->moveTo(dest, numFrames - nt(obj));}
+
+//move over time to the destination. Increases wait timer by numFrames. 
+#define motw(obj, dest, numFrames) mot(obj, dest, numFrames) delay(obj, numFrames)
+
 /*
 * ----------------
 * BULLET FUNCTIONS
@@ -91,23 +100,26 @@
 */
 
 
+//standard repeating
+#define nrep(vname, num) for (float vname = 0; vname < num; vname += 1)
+
 //bullet ring, vname is the variable name to insert
-#define nring(vname, num) for (float vname = 0; vname < 360.0f; vname += 360.0f/num)
+#define nring(vname, num) for (float vname = 0; vname < 360.0f; vname += 360.0f/(num))
 
 //bullet ring, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0f; vname += 360.0f/num, iname+=1f)
+#define nringi(vname, iname, num) for (auto [vname, iname] = std::tuple{0.0f, 0}; vname < 360.0f; vname += 360.0f/(num), iname+=1)
 
 //bullet stack, vname is the variable name to insert
-#define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<num * incr + minspd; vname += incr)
+#define nstack(vname, minspd, incr, num) for (float vname = minspd; vname<(num) * (incr) + (minspd); vname += incr)
 
 //bullet stack, vname is the variable name to insert, i is the index (also a variable name to insert)
-#define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{static_cast<float>(minspd), 0}; vname<num * incr + minspd; vname += incr, iname+=1)
+#define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{(minspd), 0}; vname<(num) * (incr) + (minspd); vname += incr, iname+=1)
 
 //bullet spread, vname is the variable name to insert, assumes num > 1
-#define nspread(vname, center, range, num) for (float vname = center-range/2; vname < center + range/2 + range/num; vname += range/(num-1))
+#define nspread(vname, center, range, num) for (float vname = (center)-(range)/2; vname < (center) + (range)/2 + (range)/(num); vname += (range)/((num)-1))
 
 //bullet spread, vname is the variable name to insert, i is the index (also a variable name to insert) assumes num > 1
-#define nspreadi(vname, iname, center, range, num) for (auto [vname, iname] = std::tuple{static_cast<float>(center-range/2), 0}; vname < center + range/2 + range/num; vname += range/(num-1), iname+=1)
+#define nspreadi(vname, iname, center, range, num) for (auto [vname, iname] = std::tuple{(center)-(range)/2, 0}; vname < (center) + (range)/2 + (range)/(num); vname += (range)/((num)-1), iname+=1)
 
 #define rad glm::radians
 
@@ -119,3 +131,6 @@
 //idk maybe I just want to be lazy
 #define sfs [](BulletSpawner* s)
 #define sf(name) [](BulletSpawner* name)
+
+#define cf(obj, num) obj->customFloats[num]
+

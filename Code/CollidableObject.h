@@ -5,7 +5,7 @@
 
 class GameWindow;
 
-enum class HitboxType {Circle, Box};
+enum class HitboxType {Circle, Box, None};
 
 enum class WallDirection { Left, Right, Up, Down, AnyHorizontal, AnyVertical, Any };
 
@@ -17,6 +17,23 @@ struct Hitbox {
     HitboxType type = HitboxType::Circle;
     float radius = 0; //only for circle
     glm::vec2 half_extents = glm::vec2(0, 0); //only for box
+    static Hitbox Circle(float r) {
+        Hitbox h;
+        h.type = HitboxType::Circle;
+        h.radius = r;
+        return h;
+    }
+    static Hitbox Box(glm::vec2 _half_extents) {
+        Hitbox h;
+        h.type = HitboxType::Box;
+        h.half_extents = _half_extents;
+        return h;
+    }
+    static Hitbox None() {
+        Hitbox h;
+        h.type = HitboxType::None;
+        return h;
+    }
 };
 
 class CollidableObject :
@@ -34,6 +51,8 @@ public:
     bool checkCollision(std::shared_ptr<CollidableObject> other);
     void move(glm::vec2 movement);
     void move(glm::vec2 movement, glm::vec4 clampBox);
+    void moveTo(glm::vec2 dest, float numFramesLeft = 1);
+    glm::vec2 rotateAround(glm::vec2 center, float angle);
 
     glm::vec2 getPos();
     void setPos(glm::vec2 aPos);
@@ -41,5 +60,6 @@ public:
     float getY();
 
     bool touchingWall(WallDirection dir);
+    Hitbox getHitbox() { return hitbox; };
 };
 

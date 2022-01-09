@@ -17,8 +17,9 @@ std::shared_ptr<Sprite> Sprite::makeSprite(unsigned int textureID, glm::vec3 sca
 	return s;
 }
 
-void Sprite::draw(Shader* shader) {
+void Sprite::draw() {
 	if (!renderEnabled) { return; }
+	Shader* shader = GameWindow::shader;
 	shader->use();
 	shader->setInt("texture1", 0);
 	glm::mat4 transmatrix = glm::mat4(1.0f);
@@ -34,6 +35,7 @@ void Sprite::draw(Shader* shader) {
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glBindVertexArray(VAO);
+	//glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); //do this to forget about EBO
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
@@ -55,4 +57,35 @@ bool Sprite::isOnScreen() {
 	//assumes that VAO is a square centered at 0. 
 	return -GameWindow::halfWidth < trans.x + scale.x && trans.x - scale.x < GameWindow::halfWidth && 
 		-GameWindow::halfHeight < trans.y + scale.y && trans.y - scale.y < GameWindow::halfHeight;
+}
+
+Hitbox Sprite::getHitbox() {
+	return Hitbox::None();
+}
+
+void Sprite::drawHitbox() {
+	Shader* shader = GameWindow::shader;
+	Hitbox hitbox = getHitbox();
+	if (hitbox.type == HitboxType::None) {
+		return;
+	}
+	if (hitbox.type == HitboxType::Circle) {
+		if (!renderEnabled) { return; }
+		shader->use();
+		shader->setInt("texture1", 0);
+		glm::mat4 transmatrix = glm::mat4(1.0f);
+		transmatrix = glm::translate(transmatrix, trans);
+		transmatrix = glm::scale(transmatrix, glm::vec3(hitbox.radius));
+		shader->setMat4("transformation", transmatrix);
+		glm::mat4 scaleMatrix = glm::mat4(1.0f);
+		scaleMatrix = glm::scale(scaleMatrix, glm::vec3(1.0f / GameWindow::halfWidth, 1.0f / GameWindow::halfHeight, 0.0f));
+		shader->setMat4("projection", scaleMatrix);
+		shader->setBool("shouldBlend", false);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, circleHitboxTexture);
+
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+	return;
 }

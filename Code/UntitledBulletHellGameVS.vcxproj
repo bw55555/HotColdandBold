@@ -107,7 +107,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetyped.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <DisableSpecificWarnings>26451;6262</DisableSpecificWarnings>
@@ -116,16 +116,18 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BossEnemy.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletMovement.cpp" />
     <ClCompile Include="BulletSpawner.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollidableObject.cpp" />
     <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -133,37 +135,61 @@
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="glad_wgl.c" />
+    <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="Level1.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="UIRect.cpp" />
     <ClCompile Include="Movement.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="WindowVar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
     <None Include="cpp.hint" />
+    <None Include="resources\shaders\RectShader.frag" />
+    <None Include="resources\shaders\RectShader.vert" />
     <None Include="resources\shaders\ScreenShader.frag" />
     <None Include="resources\shaders\ScreenShader.vert" />
     <None Include="resources\shaders\SpriteShader_U.frag" />
     <None Include="resources\shaders\SpriteShader_U.vert" />
+    <None Include="resources\shaders\TextShader.frag" />
+    <None Include="resources\shaders\TextShader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BossEnemy.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletMovement.h" />
     <ClInclude Include="BulletSpawner.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CollidableObject.h" />
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBuilder.h" />
+    <ClInclude Include="KeyInput.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="UIRect.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="LevelMacros.h" />
     <ClInclude Include="Movement.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="UpdateTime.h" />
     <ClInclude Include="GameLevel.h" />
     <ClInclude Include="GameWindow.h" />
     <ClInclude Include="Level1.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="WindowVar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

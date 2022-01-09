@@ -103,6 +103,14 @@ void BulletMovement::spinningDirectionalBullet2(Bullet* b) {
     b->move((radius + radiusEx) * (1 + b->currTime * b->customFloats[6]));
 }
 
+void BulletMovement::switchDirectionalBullet(Bullet* b) {
+    if (b->wait(b->customFloats[0])) {
+        b->dir = glm::vec2(b->customFloats[1], b->customFloats[2]);
+        b->speed = b->customFloats[3];
+    }
+    BulletMovement::directionalBullet(b);
+}
+
 void BulletMovement::DirectionalBullet::init(std::shared_ptr<Bullet> b) {
     b->initializeCustomVars(Speed{ spd }, Direction{ dir });
 }
@@ -122,4 +130,9 @@ glm::vec2 BulletMovement::targetPlayer(Bullet* b, glm::vec2 playerOffset) {
 void BulletMovement::TargetedBullet::init(std::shared_ptr<Bullet> b) {
     glm::vec2 dir = BulletMovement::targetPlayer(b.get());
     b->initializeCustomVars(Speed{ spd }, Direction{dir});
+}
+
+void BulletMovement::SwitchDirectionalBullet::init(std::shared_ptr<Bullet> b) {
+    glm::vec2 dir = BulletMovement::targetPlayer(b.get());
+    b->initializeCustomVars(Speed{ s1 }, Direction{ d1 }, time, d2, s2);
 }

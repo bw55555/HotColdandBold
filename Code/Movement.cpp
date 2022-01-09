@@ -1,11 +1,12 @@
 #include "Movement.h"
+#include <random>
 
 float Movement::randomFloat(float low, float high) {
     return low + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (high - low)));
 }
 
 glm::vec2 Movement::randomDir(float minAngle, float maxAngle) {
-    float angle = glm::radians(minAngle + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (maxAngle - minAngle))));
+    float angle = randomFloat(minAngle, maxAngle);
     return glm::vec2(cos(angle), sin(angle));
 }
 
