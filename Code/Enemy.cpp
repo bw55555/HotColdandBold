@@ -28,6 +28,9 @@ std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
 
 void Enemy::update() {
 	frameUpdate(this);
+	if (invTimer > 0) {
+		invTimer -= 1;
+	}
 }
 
 void Enemy::takeDamage() {

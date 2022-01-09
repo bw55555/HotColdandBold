@@ -21,6 +21,7 @@ void Sprite::draw() {
 	if (!renderEnabled) { return; }
 	Shader* shader = GameWindow::shader;
 	shader->use();
+	shader->setVec4("color", color);
 	shader->setInt("texture1", 0);
 	glm::mat4 transmatrix = glm::mat4(1.0f);
 	transmatrix = glm::translate(transmatrix, trans);

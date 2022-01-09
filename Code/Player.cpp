@@ -8,7 +8,7 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 	currTime = 0.0f;
 	lastFired = 0.0f;
 	health = 3.0f;
-	invTimer = 180.0f;
+	invTimer = 0.0f;
 	destroyed = false;
 }
 
@@ -22,6 +22,10 @@ void Player::update(GLFWwindow* window) {
 		fire();
 	if (invTimer > 0) {
 		invTimer -= 1;
+		color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+	else {
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 }
 
@@ -77,6 +81,7 @@ void Player::takeDamage() {
 		}
 		invTimer = 180.0f;
 	}
+	
 }
 
 void Player::destroy() {
