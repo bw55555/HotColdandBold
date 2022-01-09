@@ -13,10 +13,15 @@ public:
     float speed;
     float currTime;
     float lastFired;
+    float health;
+    float invTimer;
+    bool destroyed;
     Player(Hitbox collisionbox, unsigned int textureID);
     void checkMovement(GLFWwindow* window);
     void fire();
     void update(GLFWwindow* window);
     void drawHitbox(Shader* shader);
+    void takeDamage();
+    void destroy();
 };
 

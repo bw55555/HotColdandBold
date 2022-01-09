@@ -2,6 +2,8 @@
 #include "GameWindow.h"
 #include "BulletSpawner.h"
 
+#include <chrono>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Shader.h>
@@ -11,6 +13,9 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 	speed = 25.0f;
 	currTime = 0.0f;
 	lastFired = 0.0f;
+	health = 3.0f;
+	invTimer = 180.0f;
+	destroyed = false;
 }
 
 void Player::update(GLFWwindow* window) {
@@ -21,6 +26,9 @@ void Player::update(GLFWwindow* window) {
 	checkMovement(window);
 	if (glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
 		fire();
+	if (invTimer > 0) {
+		invTimer -= 1;
+	}
 }
 
 void Player::checkMovement(GLFWwindow* window) {
@@ -81,4 +89,20 @@ void Player::fire() {
 	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[2], BulletMovement::homingBullet, glm::vec3(bulletSize));
 	bullet->firedByPlayer = true;
 	bullet->initializeCustomVars(Movement::Speed{ 50.0f });
+}
+
+void Player::takeDamage() {
+	if (invTimer <= 0) {
+		health -= 1;
+		if (health == 0) {
+			destroy();
+		}
+		invTimer = 180.0f;
+	}
+}
+
+void Player::destroy() {
+	destroyed = true;
+	collisionEnabled = false;
+	renderEnabled = false;
 }

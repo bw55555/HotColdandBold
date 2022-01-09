@@ -3,6 +3,8 @@
 Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Enemy>(func) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
 	destroyed = false;
+	health = 3.0f;
+	invTimer = 3.0f;
 }
 
 std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
@@ -26,6 +28,16 @@ std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
 
 void Enemy::update() {
 	frameUpdate(this);
+}
+
+void Enemy::takeDamage() {
+	if (invTimer >= 3) {
+		health -= 1;
+		invTimer = 0.0f;
+		if (health == 0) {
+			destroy();
+		}
+	}
 }
 
 void Enemy::destroy() {
