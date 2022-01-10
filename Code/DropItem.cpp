@@ -12,7 +12,7 @@ std::shared_ptr<DropItem> DropItem::makeDropItem(Hitbox collisionbox, glm::vec2 
 }
 
 std::shared_ptr<DropItem> DropItem::makeDropItem(DropItemType type, glm::vec2 pos) {
-	return makeDropItem(Hitbox::Circle(25.0f), pos, type, DropItem::standardFunc, glm::vec3(50.0f));
+	return makeDropItem(Hitbox::Box(glm::vec2(25.0f)), pos, type, DropItem::standardFunc, glm::vec3(50.0f));
 }
 
 void DropItem::standardFunc(DropItem* item) {
