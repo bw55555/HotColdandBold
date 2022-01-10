@@ -25,6 +25,10 @@ void MainMenu::render() {
 */
 
 void MainMenu::update() {
+	if (KeyInput::isPressed("ESC")) {
+		GameWindow::Instance->quit();
+	}
+
 	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
 		buttons[selectedButton]->use();
 	}
@@ -59,6 +63,9 @@ void DifficultyMenu::render() {
 */
 
 void DifficultyMenu::update() {
+	if (KeyInput::isPressed("ESC")) {
+		GameWindow::Instance->loadScene(SceneName::MainMenu);
+	}
 	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
 		buttons[selectedButton]->use();
 	}

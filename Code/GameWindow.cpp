@@ -7,6 +7,7 @@
 #include "Text.h"
 #include "MainMenu.h"
 #include "UI.h"
+#include "PauseMenu.h"
 
 extern std::string PATH_START;
 
@@ -98,7 +99,7 @@ void GameWindow::initialize() {
     
     Text::initializeFT();
     //scene = std::make_shared<GameLevel>(Level::Level1);
-    scene = std::make_shared<MainMenu>();
+    loadScene(SceneName::MainMenu);
     
     glGenFramebuffers(1, &UI::fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, UI::fbo);
@@ -150,8 +151,6 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-    if (KeyInput::isPressed("ESC"))
-        glfwSetWindowShouldClose(window, true);
 
     //bomb!
     if (KeyInput::isPressed("X")) {
@@ -262,6 +261,7 @@ void GameWindow::clearBullets() {
 }
 
 void GameWindow::loadScene(SceneName name) {
+    if (name != SceneName::PauseMenu) { currScene = name; }
     switch (name) {
     case SceneName::MainMenu:
         scene = std::make_shared<MainMenu>();
@@ -277,6 +277,9 @@ void GameWindow::loadScene(SceneName name) {
         break;
     case SceneName::Level3:
         //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::PauseMenu:
+        pauseMenu = std::make_shared<PauseMenu>();
         break;
     }
 }
@@ -299,3 +302,13 @@ void GameWindow::startGame(Difficulty d, GameMode g) {
 }
 
 void GameWindow::quit() { glfwSetWindowShouldClose(GameWindow::Instance -> window, true); }
+
+void GameWindow::setPause(bool _pause) {
+    paused = _pause;
+    if (_pause == false) {
+        pauseMenu = nullptr;
+    }
+    if (_pause == true) {
+        loadScene(SceneName::PauseMenu);
+    }
+}

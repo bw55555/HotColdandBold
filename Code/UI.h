@@ -13,5 +13,7 @@ public:
 	static unsigned int textureColorbuffer;
 	static glm::vec2 UIsize;
 	static glm::mat4 UIprojection;
+
+	int screenPriority = 0;
 	void drawScreen();
 };

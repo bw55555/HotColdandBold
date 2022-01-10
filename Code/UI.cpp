@@ -26,19 +26,28 @@ void UI::update() {
     texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
     texts[5]->text = std::to_string(static_cast<int>(10 * GameWindow::Instance->frameRate) / 10.0f);
+    if (GameWindow::Instance->paused) {
+        GameWindow::Instance->pauseMenu->update();
+    }
 }
 
 void UI::render() {
-    
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    for (auto& s : sprites) {
-        s->draw();
+
+    for (int i = 0; i < sprites.size(); i++) {
+        if (screenPriority < 0) { drawScreen(); }
+        sprites[i]->draw();
+        if (i == screenPriority) { drawScreen(); }
     }
-    drawScreen();
+
 	for (auto& t : texts) {
 		t->draw();
 	}
+
+    if (GameWindow::Instance->paused) {
+        GameWindow::Instance->pauseMenu->render();
+    }
 }
 
 void UI::drawScreen() {

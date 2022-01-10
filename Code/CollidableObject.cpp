@@ -14,6 +14,7 @@ CollidableObject::CollidableObject(Hitbox collisionBox, glm::vec2 initialPos, un
 }
 
 bool CollidableObject::checkCollision(CollidableObject* other) {
+	if (!collisionEnabled) { return false; }
 	glm::vec2 firstCenter = hitbox.center + pos;
 	glm::vec2 secondCenter = other->hitbox.center + other->getPos();
 	if (hitbox.type == HitboxType::Circle && other->hitbox.type == HitboxType::Circle) {

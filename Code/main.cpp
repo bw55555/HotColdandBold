@@ -110,7 +110,7 @@ int main() {
 
     bool debugMode = false;
     bool canAdvance = false;
-    KeyInput::track("ESC", GLFW_KEY_ESCAPE, -1);
+    KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
     KeyInput::track("P", GLFW_KEY_P, 1000000);
     KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
     KeyInput::track("DOWN", GLFW_KEY_DOWN, -1);
@@ -134,15 +134,15 @@ int main() {
     KeyInput::track("3", GLFW_KEY_3, 1000000);
     KeyInput::track("4", GLFW_KEY_4, 1000000);
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     while (!glfwWindowShouldClose(window)) {
         currFrame = glfwGetTime();
         glfwPollEvents();
         KeyInput::checkEvents();
-        if (KeyInput::isPressed("ESC"))
-            glfwSetWindowShouldClose(window, true);
         if (KeyInput::isPressed("P")) {
-            
+            GameWindow::Instance->paused = !GameWindow::Instance->paused;
             debugMode = !debugMode;
         }
 

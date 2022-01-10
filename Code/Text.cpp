@@ -119,8 +119,7 @@ void Text::draw(glm::mat4 customProjection) {
     Shader* s = GameWindow::textShader;
     s->use();
     s->setVec4("textColor", color);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     //glm::mat4 projection = glm::ortho(0.0f, GameWindow::screenSize.x, 0.0f, GameWindow::screenSize.y);
     //glm::mat4 projection = 
     s->setMat4("projection", customProjection);
@@ -160,8 +159,6 @@ void Text::draw(glm::mat4 customProjection) {
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
-    
-    glDisable(GL_BLEND);
 }
 
 

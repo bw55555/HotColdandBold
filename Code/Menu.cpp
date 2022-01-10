@@ -49,3 +49,14 @@ void Menu::render() {
 		t->draw();
 	}
 }
+void Menu::update() {
+	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
+		buttons[selectedButton]->use();
+	}
+	if (KeyInput::isPressed("DOWN", 10)) {
+		selectNext();
+	}
+	if (KeyInput::isPressed("UP", 10)) {
+		selectPrev();
+	}
+}

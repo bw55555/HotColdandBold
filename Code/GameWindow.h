@@ -24,6 +24,8 @@ public:
 	GLFWwindow* window;
 
 	float frameRate;
+	bool paused = false;
+	std::shared_ptr<Scene> pauseMenu = nullptr;
 
 	static Settings settings;
 
@@ -44,6 +46,8 @@ public:
 	static Shader* textShader;
 	
 	std::shared_ptr<Scene> scene = nullptr;
+	SceneName currScene;
+
 	GameWindow(GLFWwindow* w);
 	
 	void render();
@@ -60,6 +64,8 @@ public:
 
 	void checkCollisions();
 	void createEnemyTextures();
+
+	void setPause(bool _pause);
 
 };
 
