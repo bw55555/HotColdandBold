@@ -22,6 +22,5 @@ public:
     DropItem(Hitbox collisionbox, glm::vec2 initialPos, DropItemType type, void (*func)(DropItem*), glm::vec3 scaling = glm::vec3(50.0f));
     void update();
     void destroy();
-    void collect();
 };
 

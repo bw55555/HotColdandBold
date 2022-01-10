@@ -237,8 +237,7 @@ void GameWindow::checkCollisions() {
     for (std::shared_ptr<DropItem> d : DropItem::dropItems) {
         if (player->checkCollision(std::static_pointer_cast<CollidableObject>(d))) {
             //Collision detected between enemy and player, do something!
-            std::cout << "Got hit by enemy :(" << std::endl;
-            d->collect();
+            player->collect(d.get());
         }
     }
 }
@@ -288,6 +287,7 @@ void GameWindow::loadScene(SceneName name) {
 void GameWindow::startGame(Difficulty d, GameMode g) {
     settings.difficulty = d;
     settings.mode = g;
+    player->initialize();
     switch (settings.mode) {
     case GameMode::All:
     case GameMode::Prac1:

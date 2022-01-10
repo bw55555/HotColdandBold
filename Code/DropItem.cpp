@@ -35,8 +35,3 @@ void DropItem::destroy() {
 	collisionEnabled = false;
 	renderEnabled = false;
 }
-
-void DropItem::collect() {
-	destroy();
-	//idk do something
-}

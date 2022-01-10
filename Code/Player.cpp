@@ -2,15 +2,19 @@
 #include "GameWindow.h"
 #include "BulletSpawner.h"
 
-
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
-	speed = 25.0f;
+	initialize();
+}
+
+void Player::initialize() {
 	currTime = 0.0f;
-	lastFired = 0.0f;
+	speed = 25.0f;
 	health = 3.0f;
 	invTimer = 0.0f;
 	destroyed = false;
 	bombs = 100.0f;
+	collisionEnabled = true;
+	renderEnabled = true;
 }
 
 void Player::update(GLFWwindow* window) {
@@ -89,4 +93,13 @@ void Player::destroy() {
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;
+}
+
+void Player::collect(DropItem* item) {
+	switch (item->itemType) {
+	case DropItemType::Life:
+		health += 1.0f;
+		break;
+	}
+	item->destroy();
 }
