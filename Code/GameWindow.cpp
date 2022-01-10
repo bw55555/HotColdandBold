@@ -91,6 +91,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
+    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[0]);
+    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
     static unsigned int enemyTextures[10]; // Why is this 10?
