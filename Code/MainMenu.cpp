@@ -25,19 +25,10 @@ void MainMenu::render() {
 */
 
 void MainMenu::update() {
-	if (KeyInput::isPressed("ESC")) {
+	if (KeyInput::isPressed("ESC", 1000000)) {
 		GameWindow::Instance->quit();
 	}
-
-	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
-		buttons[selectedButton]->use();
-	}
-	if (KeyInput::isPressed("DOWN", 10)) {
-		selectNext();
-	}
-	if (KeyInput::isPressed("UP", 10)) {
-		selectPrev();
-	}
+	Menu::update();
 }
 
 void DifficultyMenu::initialize() {
@@ -63,16 +54,8 @@ void DifficultyMenu::render() {
 */
 
 void DifficultyMenu::update() {
-	if (KeyInput::isPressed("ESC")) {
+	if (KeyInput::isPressed("ESC", 1000000)) {
 		GameWindow::Instance->loadScene(SceneName::MainMenu);
 	}
-	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
-		buttons[selectedButton]->use();
-	}
-	if (KeyInput::isPressed("DOWN", 10)) {
-		selectNext();
-	}
-	if (KeyInput::isPressed("UP", 10)) {
-		selectPrev();
-	}
+	Menu::update();
 }

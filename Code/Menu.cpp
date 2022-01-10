@@ -50,7 +50,7 @@ void Menu::render() {
 	}
 }
 void Menu::update() {
-	if (KeyInput::isPressed("Z") || KeyInput::isPressed("ENTER")) {
+	if (KeyInput::isPressed("Z", 1000000) || KeyInput::isPressed("ENTER", 1000000)) {
 		buttons[selectedButton]->use();
 	}
 	if (KeyInput::isPressed("DOWN", 10)) {

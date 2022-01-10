@@ -261,7 +261,11 @@ void GameWindow::clearBullets() {
 }
 
 void GameWindow::loadScene(SceneName name) {
-    if (name != SceneName::PauseMenu) { currScene = name; }
+    currScene = name; 
+    Enemy::enemies.clear();
+    Bullet::bullets.clear();
+    DropItem::dropItems.clear();
+    Sprite::spriteList.clear();
     switch (name) {
     case SceneName::MainMenu:
         scene = std::make_shared<MainMenu>();
@@ -277,9 +281,6 @@ void GameWindow::loadScene(SceneName name) {
         break;
     case SceneName::Level3:
         //scene = std::make_shared<GameLevel>(Level::Level1);
-        break;
-    case SceneName::PauseMenu:
-        pauseMenu = std::make_shared<PauseMenu>();
         break;
     }
 }
@@ -309,6 +310,6 @@ void GameWindow::setPause(bool _pause) {
         pauseMenu = nullptr;
     }
     if (_pause == true) {
-        loadScene(SceneName::PauseMenu);
+        pauseMenu = std::make_shared<PauseMenu>();
     }
 }
