@@ -90,6 +90,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
+    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
+
     static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
 
@@ -230,6 +232,14 @@ void GameWindow::checkCollisions() {
             //Collision detected between enemy and player, do something!
             std::cout << "Got hit by enemy :(" << std::endl;
             player->takeDamage();
+        }
+    }
+
+    for (std::shared_ptr<DropItem> d : DropItem::dropItems) {
+        if (player->checkCollision(std::static_pointer_cast<CollidableObject>(d))) {
+            //Collision detected between enemy and player, do something!
+            std::cout << "Got hit by enemy :(" << std::endl;
+            d->collect();
         }
     }
 }

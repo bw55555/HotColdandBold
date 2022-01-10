@@ -5,6 +5,9 @@ BossEnemy::BossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int tex
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
 	createBossHealthBar();
 	numPhases = countPhases();
+	setDFunc([](Enemy* e) {
+		DropItem::makeDropItem(DropItemType::Life, e->getPos());
+	});
 }
 
 std::shared_ptr<Enemy> BossEnemy::makeBossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
@@ -20,6 +23,7 @@ void BossEnemy::update() {
 }
 
 void BossEnemy::destroy() {
+	dfunc(static_cast<Enemy*>(this));
 	if (currPhase >= numPhases) {
 		destroyed = true;
 		collisionEnabled = false;

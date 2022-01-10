@@ -6,8 +6,6 @@
 #include "BulletSpawner.h"
 #include "DropItem.h"
 
-void doNothingFunc(Enemy* e) {};
-
 class EnemyBuilderInterface // An abstract enemy specification. Extend this in a subclass, and remember to implement all methods!
 	// If you aren't sure, check FairyBuilder or ping @KD on discord
 {

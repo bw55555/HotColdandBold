@@ -37,6 +37,10 @@ void GameLevel::update() {
         }
     }
 
+    for (auto item : DropItem::dropItems) {
+        item->update();
+    }
+
     GameWindow::Instance->checkCollisions();
 
     //check for and destroy bullets with a true destroyed tag at the end

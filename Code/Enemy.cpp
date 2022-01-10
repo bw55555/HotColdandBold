@@ -44,6 +44,7 @@ void Enemy::takeDamage() {
 }
 
 void Enemy::destroy() {
+	dfunc(this);
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;

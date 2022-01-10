@@ -6,6 +6,8 @@
 #include "CollidableObject.h"
 #include "UpdateTime.h"
 
+inline void doNothingFunc(Enemy* e) {}
+
 class Enemy :
     public CollidableObject, public UpdateTime<Enemy>, public std::enable_shared_from_this<Enemy>
 {
@@ -28,5 +30,10 @@ public:
 
     virtual void startNextPhase() {};
     virtual bool onNextPhase() { return false; };
+
+    typedef void (*DestroyFunc)(Enemy*);
+
+    DestroyFunc dfunc = doNothingFunc;
+    void setDFunc(DestroyFunc d) { dfunc = d; }
 };
 
