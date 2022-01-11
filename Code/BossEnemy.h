@@ -10,7 +10,7 @@ public:
     BossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
     ~BossEnemy();
 
-    std::unique_ptr<Sprite> bossHealthBar;
+    static std::unique_ptr<Sprite> bossHealthBar;
     void createBossHealthBar();
 
     int numPhases = 1;
@@ -22,6 +22,6 @@ public:
 
     void destroy();
     void update();
-    
+    void draw() override;
 };
 

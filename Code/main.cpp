@@ -16,12 +16,13 @@
 #include "GameWindow.h"
 #include "KeyInput.h"
 #include "UIRect.h"
-
+#include "BossEnemy.h"
 
 extern std::string PATH_START = "";
 std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
+std::unique_ptr<Sprite> BossEnemy::bossHealthBar = nullptr;
 KeyInput::KeyMap KeyInput::keys;
 int KeyInput::currFrame = -1;
 std::shared_ptr<GameWindow> GameWindow::Instance;
@@ -142,17 +143,19 @@ int main() {
         glfwPollEvents();
         KeyInput::checkEvents();
         if (KeyInput::isPressed("P")) {
-            GameWindow::Instance->paused = !GameWindow::Instance->paused;
             debugMode = !debugMode;
         }
 
-        if (KeyInput::isPressed("PERIOD")) {
+        if (KeyInput::isPressed("PERIOD", 60)) {
             canAdvance = true;
         }
         WindowVar::updatewvar();
         if (canAdvance || !debugMode) {
             canAdvance = false;
             gameWindow->update();
+        }
+        else if (KeyInput::isPressed("ESC")) {
+            GameWindow::Instance->quit();
         }
         
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;

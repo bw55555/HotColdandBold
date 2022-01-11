@@ -1,5 +1,6 @@
 #include "BossEnemy.h"
 #include "GameWindow.h"
+#include "UIRect.h"
 
 BossEnemy::BossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : Enemy(collisionbox, initialPos, textureID, func, scaling) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
@@ -20,6 +21,8 @@ void BossEnemy::update() {
 	//update the health bar here.
 	countedPhases = 0;
 	frameUpdate(this);
+	//bossHealthBar->scale = glm::vec3(WindowVar::wvar4, 1.0f);
+	//bossHealthBar->trans = glm::vec3(WindowVar::wvar3, 1.0f);
 }
 
 void BossEnemy::destroy() {
@@ -38,10 +41,11 @@ void BossEnemy::destroy() {
 BossEnemy::~BossEnemy() {
 	//should delete the pointers in the spawners vector
 	spawners.clear();
+	bossHealthBar = nullptr;
 }
 
 void BossEnemy::createBossHealthBar() {
-	bossHealthBar = std::unique_ptr<Sprite>(nullptr);
+	bossHealthBar = std::make_unique<UIRect>(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), glm::vec3(1400.0f, 32.0f, 0.0f), glm::vec3(-600.0f, 920.0f, 1.0f));
 	//create the health bar... somehow
 	//well, we definitely don't need textures for this, just an expanding square
 }
@@ -67,4 +71,8 @@ bool BossEnemy::onNextPhase() {
 		return shouldRun;
 	}
 	return false;
+}
+
+void BossEnemy::draw() {
+	Sprite::draw();
 }

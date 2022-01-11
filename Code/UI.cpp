@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Shader.h>
+#include <sstream>
+#include <iomanip>
+#include "BossEnemy.h"
 
 unsigned int UI::fbo = 0;
 unsigned int UI::textureColorbuffer = 0;
@@ -25,7 +28,9 @@ void UI::initialize() {
 void UI::update() {
     texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
-    texts[5]->text = std::to_string(static_cast<int>(10 * GameWindow::Instance->frameRate) / 10.0f);
+    std::stringstream s;
+    s << std::setprecision(3) << GameWindow::Instance->frameRate << "fps";
+    texts[5]->text = s.str();
     if (GameWindow::Instance->paused) {
         GameWindow::Instance->pauseMenu->update();
     }
@@ -39,6 +44,10 @@ void UI::render() {
         if (screenPriority < 0) { drawScreen(); }
         sprites[i]->draw();
         if (i == screenPriority) { drawScreen(); }
+    }
+
+    if (BossEnemy::bossHealthBar != nullptr) {
+        BossEnemy::bossHealthBar->draw();
     }
 
 	for (auto& t : texts) {
