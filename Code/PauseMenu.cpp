@@ -16,15 +16,7 @@ void PauseMenu::initialize() {
 
 
 void PauseMenu::update() {
-	if (KeyInput::isPressed("Z", 1000000) || KeyInput::isPressed("ENTER", 1000000)) {
-		buttons[selectedButton]->use();
-	}
-	if (KeyInput::isPressed("DOWN", 10)) {
-		selectNext();
-	}
-	if (KeyInput::isPressed("UP", 10)) {
-		selectPrev();
-	}
+	Menu::update();
 }
 
 void PauseMenu::render() {

@@ -29,7 +29,7 @@ namespace Level {
             //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
             //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
             /*
-            Esp e = director.buildEnemy(dopple, glm::vec2(0.0f, 500.0f), [](Ep e) {
+            Esp e = Enemy::makePresetEnemy(EnemyType::Doppel, glm::vec2(0.0f, 500.0f), [](Ep e) {
                 delay(e, 30);
                 every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
                 //fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));

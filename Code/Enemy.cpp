@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "GameWindow.h"
 
 Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Enemy>(func) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
@@ -11,6 +12,15 @@ std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPo
 	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(collisionbox, initialPos, textureID, func, scaling);
 	enemies.push_back(e);
 	return e;
+}
+
+std::shared_ptr<Enemy> Enemy::makePresetEnemy(EnemyType type, glm::vec2 initialPos, void (*func)(Enemy*)) {
+	switch (type) {
+	case EnemyType::Fairy:
+		return makeEnemy(Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
+	case EnemyType::Doppel:
+		return makeEnemy(Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[1], func, glm::vec3(100.0f));
+	}
 }
 
 std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
@@ -60,3 +70,4 @@ void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner
 	std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
 	spawners.push_back(std::move(s));
 }
+

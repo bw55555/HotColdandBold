@@ -96,7 +96,6 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
-    static unsigned int enemyTextures[10]; // Why is this 10?
     createEnemyTextures();
 
     
