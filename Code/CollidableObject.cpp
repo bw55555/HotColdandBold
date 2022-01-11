@@ -88,7 +88,7 @@ float CollidableObject::getX() {
 }
 
 float CollidableObject::getY() {
-	return pos.x;
+	return pos.y;
 }
 
 bool CollidableObject::touchingWall(WallDirection dir) {
@@ -100,13 +100,13 @@ bool CollidableObject::touchingWall(WallDirection dir) {
 	case WallDirection::AnyVertical:
 		return touchingWall(WallDirection::Up) || touchingWall(WallDirection::Down);
 	case WallDirection::Up:
-		return pos.y + scale.y > GameWindow::halfHeight;
+		return pos.y + scale.y/2.0f > GameWindow::halfHeight;
 	case WallDirection::Down:
-		return pos.y - scale.y < -GameWindow::halfHeight;
+		return pos.y - scale.y/2.0f < -GameWindow::halfHeight;
 	case WallDirection::Right:
-		return pos.x + scale.x > GameWindow::halfWidth;
+		return pos.x + scale.x/2.0f > GameWindow::halfWidth;
 	case WallDirection::Left:
-		return pos.x - scale.x < -GameWindow::halfWidth;
+		return pos.x - scale.x/2.0f < -GameWindow::halfWidth;
 	}
-	return 0;
+	return false;
 }

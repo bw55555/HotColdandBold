@@ -89,6 +89,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
+    loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[0]);

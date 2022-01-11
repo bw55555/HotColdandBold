@@ -6,7 +6,7 @@
 
 class Enemy;
 
-enum class BulletType { RoundBlue, KnifeBlue, RoundRed, KnifeRed, BallBlackBorder };
+enum class BulletType { RoundBlue, KnifeBlue, RoundRed, KnifeRed, BallBlackBorder, DotWhite };
 
 class BulletSpawner : public UpdateTime<BulletSpawner>
 {
