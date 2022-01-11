@@ -13,34 +13,37 @@ CollidableObject::CollidableObject(Hitbox collisionBox, glm::vec2 initialPos, un
 	collisionEnabled = true;
 }
 
-bool CollidableObject::checkCollision(CollidableObject* other) {
+bool CollidableObject::checkCollision(Hitbox otherHitbox, glm::vec2 otherPos) {
 	if (!collisionEnabled) { return false; }
 	glm::vec2 firstCenter = hitbox.center + pos;
-	glm::vec2 secondCenter = other->hitbox.center + other->getPos();
-	if (hitbox.type == HitboxType::Circle && other->hitbox.type == HitboxType::Circle) {
+	glm::vec2 secondCenter = otherHitbox.center + otherPos;
+	if (hitbox.type == HitboxType::Circle && otherHitbox.type == HitboxType::Circle) {
 		float dist = glm::distance(firstCenter, secondCenter);
-		return dist < other->hitbox.radius + hitbox.radius;
+		return dist < otherHitbox.radius + hitbox.radius;
 	}
 
-	if (hitbox.type == HitboxType::Circle && other->hitbox.type == HitboxType::Box) {
-		glm::vec2 closest = secondCenter + glm::clamp(firstCenter - secondCenter, -1.0f * other->hitbox.half_extents, other->hitbox.half_extents);
+	if (hitbox.type == HitboxType::Circle && otherHitbox.type == HitboxType::Box) {
+		glm::vec2 closest = secondCenter + glm::clamp(firstCenter - secondCenter, -1.0f * otherHitbox.half_extents, otherHitbox.half_extents);
 		return glm::length(closest - firstCenter) < hitbox.radius;
 	}
 
-	if (hitbox.type == HitboxType::Box && other->hitbox.type == HitboxType::Circle) {
+	if (hitbox.type == HitboxType::Box && otherHitbox.type == HitboxType::Circle) {
 		glm::vec2 closest = firstCenter + glm::clamp(secondCenter - firstCenter, -1.0f * hitbox.half_extents, hitbox.half_extents);
-		return glm::length(closest - secondCenter) < other->hitbox.radius;
+		return glm::length(closest - secondCenter) < otherHitbox.radius;
 	}
 
-	if (hitbox.type == HitboxType::Box && other->hitbox.type == HitboxType::Box) {
+	if (hitbox.type == HitboxType::Box && otherHitbox.type == HitboxType::Box) {
 		glm::vec2 diff = firstCenter - secondCenter;
-		return abs(diff.x) < abs(hitbox.half_extents.x + other->hitbox.half_extents.x) &&
-			abs(diff.y) < abs(hitbox.half_extents.y + other->hitbox.half_extents.y);
+		return abs(diff.x) < abs(hitbox.half_extents.x + otherHitbox.half_extents.x) &&
+			abs(diff.y) < abs(hitbox.half_extents.y + otherHitbox.half_extents.y);
 	}
 
 	//code collision between 2 boxes and 1 box, 1 circle
 	return false;
-	//remember to copy this code to the shared pointer version
+}
+
+bool CollidableObject::checkCollision(CollidableObject* other) {
+	return checkCollision(other->hitbox, other->getPos());
 }
 
 bool CollidableObject::checkCollision(std::shared_ptr<CollidableObject> other) {

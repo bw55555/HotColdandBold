@@ -18,6 +18,8 @@ void UI::initialize() {
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Bombs", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("100", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("Graze", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
 
     makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
     //Reference X
@@ -28,9 +30,10 @@ void UI::initialize() {
 void UI::update() {
     texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
+    texts[6]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->grazeAmount));
     std::stringstream s;
     s << std::setprecision(3) << GameWindow::Instance->frameRate << "fps";
-    texts[5]->text = s.str();
+    texts[7]->text = s.str();
     if (GameWindow::Instance->paused) {
         GameWindow::Instance->pauseMenu->update();
     }

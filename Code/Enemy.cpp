@@ -21,6 +21,7 @@ std::shared_ptr<Enemy> Enemy::makePresetEnemy(EnemyType type, glm::vec2 initialP
 	case EnemyType::Doppel:
 		return makeEnemy(Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[1], func, glm::vec3(100.0f));
 	}
+	return nullptr;
 }
 
 std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {

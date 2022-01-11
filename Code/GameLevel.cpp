@@ -19,7 +19,7 @@ void GameLevel::update() {
     if (!GameWindow::Instance->paused) {
         frameUpdate(this);
         //update player, enemy, spawners, bullets
-        GameWindow::Instance->player->update(GameWindow::Instance->window);
+        GameWindow::Instance->player->update();
 
         //update bullets before enemies so that spawned bullets are not updated on the same frame
         for (std::shared_ptr<Bullet> bullet : Bullet::bullets) {
