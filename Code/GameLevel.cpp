@@ -41,11 +41,18 @@ void GameLevel::update() {
             }
         }
 
+        bool autoCollect = GameWindow::Instance->player->getPos().y > 400.0f;
         for (auto item : DropItem::dropItems) {
+            if (autoCollect) { 
+                item->autoCollected = true; 
+            }
             item->update();
+            
         }
 
         GameWindow::Instance->checkCollisions();
+
+
 
         //check for and destroy bullets with a true destroyed tag at the end
         if (Bullet::bullets.size() > 0) {

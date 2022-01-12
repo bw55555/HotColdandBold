@@ -21,7 +21,7 @@ void DropItem::standardFunc(DropItem* item) {
 	glm::vec2 mvec = 10.0f * glm::vec2(0.0f, -1.0f);
 	if (item->autoCollected) { 
 		float dist = glm::length(GameWindow::Instance->player->getPos() - item->getPos());
-		mvec = std::min(sqrt(dist), 10.0f) * BulletMovement::targetPlayer(item->getPos()); 
+		mvec = std::max(dist/10.0f, 25.0f - 2.5f * floor(5.0f - dist/50.0f)) * BulletMovement::targetPlayer(item->getPos()); 
 	}
 	item->move(mvec);
 }
