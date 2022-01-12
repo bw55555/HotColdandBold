@@ -3,7 +3,7 @@
 #include "CollidableObject.h"
 #include "UpdateTime.h"
 
-enum class DropItemType {Red, Blue, Life};
+enum class DropItemType {Heat, Life};
 
 class DropItem :
     public CollidableObject, public UpdateTime<DropItem>

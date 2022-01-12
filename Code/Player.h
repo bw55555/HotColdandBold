@@ -15,6 +15,8 @@ public:
     float lastFired;
     float health;
     float invTimer;
+    float heat;
+
     int grazeAmount;
     bool destroyed;
 

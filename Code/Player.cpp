@@ -5,6 +5,7 @@
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
 	health = 3.0f;
 	grazeAmount = 0;
+	bombs = 100.0f;
 	initialize();
 }
 
@@ -13,13 +14,16 @@ void Player::initialize() {
 	speed = 25.0f;
 	invTimer = 0.0f;
 	destroyed = false;
-	bombs = 100.0f;
 	collisionEnabled = true;
 	renderEnabled = true;
+	heat = 500.0f;
 }
 
 void Player::update() {
 	currTime += 1;
+	if (static_cast<int>(currTime) % 6 == 0) {
+		heat -= 1.0f;
+	}
 	if (lastFired > 0) {
 		lastFired -= 1;
 	}
@@ -39,11 +43,11 @@ void Player::checkMovement() {
 
 	//rshift?
 	if (KeyInput::isPressed("LSHIFT")) {
-		speed = 8.0f;
+		speed = std::min(heat / 20, 8.0f);
 		focus = true;
 	}
 	else {
-		speed = 20.0f;
+		speed = std::min(heat / 20, 20.0f); //idk but better formula is probably needed...
 		focus = false;
 	}
 
@@ -107,6 +111,8 @@ void Player::collect(DropItem* item) {
 	case DropItemType::Life:
 		health += 1.0f;
 		break;
+	case DropItemType::Heat:
+		heat += 5.0f;
 	}
 	item->destroy();
 }

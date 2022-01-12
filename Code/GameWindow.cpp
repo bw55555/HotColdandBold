@@ -88,9 +88,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[0]);
+    loadTexture(PATH_START + "resources/textures/Heat.png", &DropItem::itemTextures[0]);
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
     createEnemyTextures();
 
