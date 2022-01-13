@@ -77,17 +77,8 @@ void GameWindow::initialize() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-<<<<<<< HEAD
-    unsigned int playerTexture = 0;
+    initializePlayer();
     loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
-    Hitbox playerHitbox;
-    playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 15.0f;
-    //dosmth with the player hitbox
-    player = std::make_shared<Player>(playerHitbox, playerTexture);
-=======
-    loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
->>>>>>> 5f147467ed9d0d24ec8e6582464a2c998020b3d8
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
