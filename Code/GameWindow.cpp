@@ -76,7 +76,7 @@ void GameWindow::initialize() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
     unsigned int playerTexture = 0;
-    loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
+    loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
     playerHitbox.radius = 15.0f;
@@ -86,7 +86,7 @@ void GameWindow::initialize() {
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture(PATH_START + "resources/textures/KnifeBlue.png", &BulletSpawner::bulletPresetTextures[1]);
-    loadTexture(PATH_START + "resources/textures/PlayerBullet.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/fireball.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
@@ -203,7 +203,7 @@ void GameWindow::loadTexture(const char* filePath, unsigned int* texturePointer)
 void GameWindow::createEnemyTextures() {
     //This is not an ideal implementation! Simply a placeholder for now
     //Add more textures here as you make more enemies, but ideally we're looping through everything in a file
-    loadTexture(PATH_START + "resources/textures/TouhouFairy.png", &enemyTextures[0]);
+    loadTexture(PATH_START + "resources/textures/snowman.png", &enemyTextures[0]);
     loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTextures[1]);
 }
 

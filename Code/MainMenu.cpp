@@ -5,6 +5,7 @@ void MainMenu::initialize() {
 
 	//in full...
 	createButton("Play", []() {GameWindow::Instance->loadScene(SceneName::DifficultyMenu); }, glm::vec2(0.0f), glm::vec2(1.0f), 0, HTA::Center, VTA::Center);
+	makeText("HOT, COLD, & BOLD", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, 700.0f), glm::vec2(3.0f), 0, HTA::Center, VTA::Center);
 	
 	//you can omit the last 4 parameters...
 	createButton("Practice", doNothingFunc, glm::vec2(0.0f, -60.0f));
