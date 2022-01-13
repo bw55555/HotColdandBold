@@ -18,6 +18,8 @@ Shader* GameWindow::rectShader;
 Shader* GameWindow::screenShader;
 Shader* GameWindow::textShader;
 
+unsigned int GameWindow::playerTexture;
+
 //unsigned int GameWindow::screenFBO;
 //unsigned int GameWindow::screenFBOTexture;
 
@@ -75,6 +77,7 @@ void GameWindow::initialize() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
+<<<<<<< HEAD
     unsigned int playerTexture = 0;
     loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
     Hitbox playerHitbox;
@@ -82,6 +85,9 @@ void GameWindow::initialize() {
     playerHitbox.radius = 15.0f;
     //dosmth with the player hitbox
     player = std::make_shared<Player>(playerHitbox, playerTexture);
+=======
+    loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
+>>>>>>> 5f147467ed9d0d24ec8e6582464a2c998020b3d8
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
@@ -92,9 +98,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
 
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[0]);
+    loadTexture(PATH_START + "resources/textures/Heat.png", &DropItem::itemTextures[0]);
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
     createEnemyTextures();
 
@@ -225,6 +230,7 @@ void GameWindow::checkCollisions() {
                 b->destroy();
                 player->takeDamage();
             }
+            player->checkGraze(b.get());
         }
     }
 
@@ -261,6 +267,14 @@ void GameWindow::clearBullets() {
     }
 }
 
+void GameWindow::initializePlayer() {
+    Hitbox playerHitbox;
+    playerHitbox.type = HitboxType::Circle;
+    playerHitbox.radius = 15.0f;
+    //dosmth with the player hitbox
+    player = std::make_shared<Player>(playerHitbox, playerTexture);
+}
+
 void GameWindow::loadScene(SceneName name) {
     currScene = name; 
     Enemy::enemies.clear();
@@ -289,7 +303,8 @@ void GameWindow::loadScene(SceneName name) {
 void GameWindow::startGame(Difficulty d, GameMode g) {
     settings.difficulty = d;
     settings.mode = g;
-    player->initialize();
+    player = nullptr;
+    initializePlayer();
     switch (settings.mode) {
     case GameMode::All:
     case GameMode::Prac1:

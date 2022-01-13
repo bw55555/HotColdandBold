@@ -47,6 +47,7 @@ public:
     Hitbox hitbox;
     CollidableObject(Hitbox collisionBox, glm::vec3 initialPos, unsigned int textureID, glm::vec3 scaling = glm::vec3(1000.0f), float rotation = 0.0f);
     CollidableObject(Hitbox collisionBox, glm::vec2 initialPos, unsigned int textureID, glm::vec3 scaling = glm::vec3(1000.0f), float rotation = 0.0f);
+    bool checkCollision(Hitbox otherHitbox, glm::vec2 otherPos);
     bool checkCollision(CollidableObject* other);
     bool checkCollision(std::shared_ptr<CollidableObject> other);
     void move(glm::vec2 movement);

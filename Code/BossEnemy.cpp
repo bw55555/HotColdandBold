@@ -7,7 +7,9 @@ BossEnemy::BossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int tex
 	createBossHealthBar();
 	numPhases = countPhases();
 	setDFunc([](Enemy* e) {
-		DropItem::makeDropItem(DropItemType::Life, e->getPos());
+		for (int i = 0; i < 15; i++) {
+			DropItem::makeDropItem(DropItemType::Heat, e->getPos() + Movement::randomDir() * Movement::randomFloat(0.0f, 150.0f));
+		}
 	});
 }
 

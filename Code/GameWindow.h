@@ -30,6 +30,7 @@ public:
 	static Settings settings;
 
 	static std::shared_ptr<Player> player;
+	static unsigned int playerTexture;
 	static unsigned int enemyTextures[10];
 	static glm::vec2 screenSize; //set in main.cpp
 	
@@ -59,6 +60,7 @@ public:
 	static void clearEnemies();
 	static void clearScreen();
 
+	void initializePlayer();
 	void loadScene(SceneName name);
 	void startGame(Difficulty, GameMode);
 
