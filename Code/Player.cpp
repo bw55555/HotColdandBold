@@ -21,7 +21,7 @@ void Player::initialize() {
 
 void Player::update() {
 	currTime += 1;
-	if (static_cast<int>(currTime) % 6 == 0) {
+	if (heat > 0 && static_cast<int>(currTime) % 6 == 0) {
 		heat -= 1.0f;
 	}
 	if (lastFired > 0) {
@@ -74,14 +74,14 @@ void Player::fire() {
 		return;
 	}
 	lastFired = 3.0f;
-	float bulletSize = 100.0f;
+	float bulletSize = 200.0f;
 	Hitbox bulletHitbox;
 	bulletHitbox.type = HitboxType::Circle;
 	bulletHitbox.radius = bulletSize/2.0f;
-	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[2], BulletMovement::homingBullet, glm::vec3(bulletSize));
+	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[19], BulletMovement::directionalBullet, glm::vec3(bulletSize));
 	bullet->firedByPlayer = true;
-	bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 50.0f });
-	bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.7f);
+	bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 100.0f });
+	bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.8f);
 }
 
 void Player::takeDamage() {
@@ -118,8 +118,9 @@ void Player::collect(DropItem* item) {
 }
 
 bool Player::checkGraze(Bullet* b) {
-	if (collisionEnabled && !b->grazed && b->checkCollision(Hitbox::Circle(50.0f), getPos())) {
+	if (collisionEnabled && !b->grazed && b->checkCollision(Hitbox::Circle(100.0f), getPos())) {
 		grazeAmount += 1;
+		heat += 1;
 		b->grazed = true;
 		return true;
 	}

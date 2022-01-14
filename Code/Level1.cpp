@@ -22,7 +22,7 @@ namespace Level {
         EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
         wf(l, 0.5_s) {
             

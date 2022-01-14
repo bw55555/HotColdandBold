@@ -1,5 +1,6 @@
 #include "DropItem.h"
 #include "GameWindow.h"
+#include "Enemy.h"
 
 DropItem::DropItem(Hitbox collisionbox, glm::vec2 initialPos, DropItemType type, void (*func)(DropItem*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, itemTextures[static_cast<int>(type)], scaling), UpdateTime<DropItem>(func) {
 	itemType = type;
@@ -25,7 +26,7 @@ void DropItem::standardFunc(DropItem* item) {
 		float dist = glm::length(GameWindow::Instance->player->getPos() - item->getPos());
 		mvec = std::max(dist/10.0f, 25.0f - 2.5f * floor(5.0f - dist/50.0f)) * BulletMovement::targetPlayer(item->getPos()); 
 	}
-	else if (glm::length(GameWindow::Instance->player->getPos() - item->getPos()) < 100.0f) {
+	else if (glm::length(GameWindow::Instance->player->getPos() - item->getPos()) < 150.0f) {
 		item->autoCollected = true;
 		goto start22;
 	}

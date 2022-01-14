@@ -1,15 +1,16 @@
 #include "Enemy.h"
 #include "GameWindow.h"
 
-Enemy::Enemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Enemy>(func) {
+Enemy::Enemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : CollidableObject(collisionbox, initialPos, textureID, scaling), UpdateTime<Enemy>(func) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
 	destroyed = false;
-	health = 3.0f;
-	invTimer = 3.0f;
+	health = _health;
+	invTimer = 0.0f;
 }
 
-std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
-	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(collisionbox, initialPos, textureID, func, scaling);
+std::shared_ptr<Enemy> Enemy::makeEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) {
+	std::shared_ptr<Enemy> e = std::make_shared<Enemy>(_health, collisionbox, initialPos, textureID, func, scaling);
+	e->dfunc = Enemy::spawnDropOnDeath(DropItemType::Heat);
 	enemies.push_back(e);
 	return e;
 }
@@ -17,9 +18,9 @@ std::shared_ptr<Enemy> Enemy::makeEnemy(Hitbox collisionbox, glm::vec2 initialPo
 std::shared_ptr<Enemy> Enemy::makePresetEnemy(EnemyType type, glm::vec2 initialPos, void (*func)(Enemy*)) {
 	switch (type) {
 	case EnemyType::Fairy:
-		return makeEnemy(Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
+		return makeEnemy(30.0f, Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
 	case EnemyType::Doppel:
-		return makeEnemy(Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[1], func, glm::vec3(100.0f));
+		return makeEnemy(30.0f, Hitbox::Circle(50.0f), initialPos, GameWindow::enemyTextures[1], func, glm::vec3(100.0f));
 	}
 	return nullptr;
 }
@@ -44,10 +45,9 @@ void Enemy::update() {
 	}
 }
 
-void Enemy::takeDamage() {
+void Enemy::takeDamage(float damage) {
 	if (invTimer <= 0) {
-		health -= 1;
-		invTimer = 180.0f;
+		health -= damage;
 		if (health == 0) {
 			destroy();
 		}
@@ -72,3 +72,12 @@ void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner
 	spawners.push_back(std::move(s));
 }
 
+Enemy::DestroyFunc Enemy::spawnDropOnDeath(DropItemType d) {
+	switch (d) {
+	case DropItemType::Heat:
+		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Heat, e->getPos()); };
+	case DropItemType::Life:
+		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Life, e->getPos()); };
+	}
+	return nullptr;
+}
