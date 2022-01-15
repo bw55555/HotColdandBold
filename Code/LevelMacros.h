@@ -120,6 +120,10 @@
 #define delayTrigger(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime)) {}
 
 
+//delay until enemy wave is cleared
+#define delayClear(obj, maxWaitTime) if (obj->waitForTrigger(Enemy::enemies.size() == 0, maxWaitTime)) {}
+
+
 //do this only once immediately (equivalent to wf(obj, 0))
 #define once(obj) if (obj->wait(0))
 

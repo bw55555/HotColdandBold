@@ -66,7 +66,7 @@ namespace Level {
             }
         }
         delay(l, 60);
-        delayTrigger(l, Enemy::enemies.size() == 0, 900);
+        delayClear(l, 900);
         delay(l, 60);
         during(l, 360) {
             every(l, 60) {
@@ -75,7 +75,7 @@ namespace Level {
             }
         }
         delay(l, 60);
-        delayTrigger(l, Enemy::enemies.size() == 0, 900);
+        delayTrigger(l, Enemy::enemies.size() == 0, 900); // same as delayClear(l, 900)
         delay(l, 60);
     }
 
