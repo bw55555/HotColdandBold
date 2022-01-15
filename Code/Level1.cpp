@@ -16,11 +16,12 @@ namespace Level {
 
     using namespace Movement;
     using namespace BulletMovement;
-    void Level1(GameLevel* l) {
+    void Level1(GLp l) {
         FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
         DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        L1Part1(l);
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
@@ -55,6 +56,52 @@ namespace Level {
         }
         delete fairy;
         delete dopple;
+    }
+
+    void L1Part1(GLp l) {
+        during(l, 360) {
+            every(l, 60) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L1P1EnemyFunc);
+                e->createBulletSpawner(L1P1EnemyBSFunc);
+            }
+        }
+        delay(l, 960);
+        during(l, 360) {
+            every(l, 60) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L1P1EnemyFunc2);
+                e->createBulletSpawner(L1P1EnemyBSFunc);
+            }
+        }
+        delay(l, 960);
+    }
+
+    void L1P1EnemyBSFunc(BSp s) {
+        delay(s, 60);
+        forever(s) {
+            every(s, 60) {
+                nspread(o, getAngle(targetPlayer(s->pos)), dchoice(30, 30, 60), dchoice(1, 3, 5)) {
+                    nstack(spd, 6.0f, 2.0f, dchoice(1, 2, 3)) {
+                        s->spawnPreset(BulletType::DotWhite, DirectionalBullet(avecd(o), spd));
+                    }
+                }
+            }
+        }
+    }
+
+    void L1P1EnemyFunc(Ep e) {
+        float mT = 600.0f;
+        during(e, mT) {
+            float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
+            e->moveTo(followBezierCurve(cbct, glm::vec2(850.0f, 900.0f), glm::vec2(-850.0f, 400.0f), glm::vec2(566.0f, 504.0f)));
+        } delay(e, mT);
+    }
+
+    void L1P1EnemyFunc2(Ep e) {
+        float mT = 600.0f;
+        during(e, mT) {
+            float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
+            e->moveTo(followBezierCurve(cbct, glm::vec2(-850.0f, 900.0f), glm::vec2(850.0f, 400.0f), glm::vec2(-566.0f, 504.0f)));
+        } delay(e, mT);
     }
 
     void bossUFunc(Enemy* e) {

@@ -41,10 +41,18 @@
 #define fyex(obj, x, y) if (obj->frameInterval(x, 0, y))
 
 
-
 //too bad no easy support for overloading macros... if someone wants to figure this out go ahead
 //For Y frames Every X frames at Offset o
 #define fyexo(obj, x, y, o) if (obj->frameInterval(x, o, y))
+
+
+//to make timecurves easier to use, expr should return a float between 0 and 1
+#define addTC(timeCurveObj, _maxTime, timeCurvePart, exprTimeVar, expr) {float maxTime = _maxTime; float exprTimeVar = maxTime; float maxTCPartEvalTime = expr; exprTimeVar = std::clamp(timeCurveObj.TCcurrTime, 0.0f, static_cast<float>(maxTime)); timeCurveObj.TCcurrTime -= static_cast<float>(maxTime); timeCurveObj.TCreturnTime += static_cast<float>(timeCurvePart) * static_cast<float>(expr) / maxTCPartEvalTime;}
+
+
+//with constexpr, to make timecurves easier to use
+//#define addTC(timeCurveObj, maxTime, timeCurvePart, exprTimeVar, expr) {float exprTimeVar = std::clamp(timeCurveObj.TCcurrTime, 0.0f, static_cast<float>(maxTime)); timeCurveObj.TCcurrTime -= static_cast<float>(maxTime); {const exprTimeVar = maxTime; constexpr maxTCEvaluatedTime = expr; timeCurveObj.TCreturnTime += static_cast<float>(timeCurvePart) * static_cast<float>(expr) / static_cast<float>(maxTime);}}
+
 
 /*
 * --------------
@@ -143,8 +151,8 @@
 #define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{(minspd), 0}; vname<(num) * (incr) + (minspd); vname += incr, iname+=1)
 
 
-//bullet spread, vname is the variable name to insert, assumes num > 1
-#define nspread(vname, center, range, num) for (float vname = (center)-(range)/2; vname < (center) + (range)/2 + (range)/(num); vname += (range)/((num)-1))
+//bullet spread, vname is the variable name to insert, assumes range > 0, num > 0
+#define nspread(vname, center, range, num) for (float vname = (center)- (num > 1) * (range)/2; vname < (center) + (range)/2 + (range)/(num); vname += (num) <= 1 ? 2 * (range) : (range)/((num)-1))
 
 
 //bullet spread, vname is the variable name to insert, i is the index (also a variable name to insert) assumes num > 1

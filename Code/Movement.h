@@ -50,4 +50,23 @@ namespace Movement {
 
     //returns a speed, quick deceleration at the end
     float linearBurst(float currTime, float initialVelocity, float deceleration, float maxTime);
+
+    //returns a location to move to, not a vector
+    glm::vec2 followBezierCurve(float t, glm::vec2 start, glm::vec2 end, glm::vec2 control);
+
+    //returns a location to move to, not a vector
+    inline glm::vec2 followBezierCurve(float currTime, float maxTime, glm::vec2 start, glm::vec2 end, glm::vec2 control) {
+        return followBezierCurve(currTime / maxTime, start, end, control);
+    }
+
+    //meant for the bezier curve function, to add a quick burst at the start. All params except currTime should be static (shouldn't change per frame)
+    float quickBurst(float currTime, float maxTime, float burstTime = 30.0f, float initialMult = 2.0f, float accel = -0.1f);
+
+    struct TimeCurve {
+        float TCcurrTime;
+        float TCreturnTime = 0;
+        TimeCurve(float _TCcurrTime) : TCcurrTime(_TCcurrTime) {};
+    };
+
+    float cubic_bezier_time(float currTime, float maxTime, float v1, float v2, float v3, float v4);
 };

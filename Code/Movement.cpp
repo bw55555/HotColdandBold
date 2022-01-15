@@ -60,3 +60,45 @@ float Movement::linearAcceleration(float currTime, float acceleration, float max
     float extraDist = reverseFlag ? 0 : laps * (2 * dist + maxVelocity * maxTime);
     return extraDist + linearAcceleration(remTime, acceleration, maxVelocity, maxTime, reverseFlag);
 }
+
+glm::vec2 Movement::followBezierCurve(float t, glm::vec2 start, glm::vec2 end, glm::vec2 control) {
+    if (t >= 1) { return end; }
+    if (t <= 0) { return start; }
+    return (1 - t) * (1 - t) * start + 2.0f * t * (1 - t) * control + t * t * end;
+}
+
+float Movement::quickBurst(float currTime, float maxTime, float burstTime, float initialMult, float accel) {
+    assert(maxTime >= burstTime);
+
+    assert(accel != 0); // nonzero acceleration
+
+    float accelTime = (1 - initialMult) / accel;
+
+    assert(burstTime > accelTime); // make sure you slow down faster than burstTime or bad things happen
+    
+    if (currTime < 0) { return 0; }
+    if (currTime > maxTime) { return 1; }
+
+    float MburstTime = 0;
+    
+
+    MburstTime = currTime * initialMult + 0.5f * accel * currTime * currTime;
+
+    float rt = 0;
+    rt += std::min(currTime, burstTime - accelTime) * initialMult;
+    if (currTime > burstTime - accelTime) {
+        float t = (std::min(currTime, burstTime) - burstTime + accelTime);
+        rt += (initialMult * t + 0.5f * accel * t * t);
+    } 
+    if (currTime > burstTime) {
+        rt += (currTime - burstTime) / (maxTime - burstTime) * (maxTime - rt);
+    }
+    return rt / maxTime;
+}
+
+float Movement::cubic_bezier_time(float currTime, float maxTime, float v1, float v2, float v3, float v4) {
+    float t = currTime / maxTime;
+    if (t > 1) { return 1; }
+    else if (t < 0) { return 0; }
+    return (glm::vec2(0.0f, 0.0f) * pow(1-t, 3.0f) + glm::vec2(v1, v2) * 3.0f * pow(1-t, 2.0f) * t + glm::vec2(v3, v4) * 3.0f * (1-t) * pow(t, 2.0f) + glm::vec2(1, 1) * pow(t, 3.0f)).y;
+}

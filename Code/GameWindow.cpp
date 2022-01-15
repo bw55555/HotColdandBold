@@ -213,7 +213,7 @@ void GameWindow::checkCollisions() {
                 if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                     //collision detected between enemy and player bullet, do something!
                     e->takeDamage();
-                    b->destroy();
+                    b->collisionEnabled = false;
                 }
             }
         }

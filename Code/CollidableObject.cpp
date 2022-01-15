@@ -43,6 +43,7 @@ bool CollidableObject::checkCollision(Hitbox otherHitbox, glm::vec2 otherPos) {
 }
 
 bool CollidableObject::checkCollision(CollidableObject* other) {
+	if (other->collisionEnabled == false) { return false; }
 	return checkCollision(other->hitbox, other->getPos());
 }
 

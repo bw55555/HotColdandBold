@@ -75,10 +75,7 @@ void Player::fire() {
 	}
 	lastFired = 3.0f;
 	float bulletSize = 200.0f;
-	Hitbox bulletHitbox;
-	bulletHitbox.type = HitboxType::Circle;
-	bulletHitbox.radius = bulletSize/2.0f;
-	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(bulletHitbox, getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[19], BulletMovement::directionalBullet, glm::vec3(bulletSize));
+	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize/2.0f - 2), getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[19], BulletMovement::directionalBullet, glm::vec3(bulletSize));
 	bullet->firedByPlayer = true;
 	bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 100.0f });
 	bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.8f);
@@ -87,10 +84,12 @@ void Player::fire() {
 void Player::takeDamage() {
 	if (invTimer <= 0) {
 		health -= 1;
-		if (health == 0) {
+		if (health < 0) {
 			destroy();
 		}
-		respawn();
+		else {
+			respawn();
+		}
 	}
 	
 }

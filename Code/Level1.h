@@ -4,12 +4,16 @@
 
 namespace Level {
 
-    void bossUFunc(Enemy* e);
-
-    void bs1(BulletSpawner* spawner);
-    void bs2(BulletSpawner* spawner);
-    void bs_1(BulletSpawner* spawner);
     
+
+    void Level1(GLp l);
+    
+    void L1Part1(GLp l);
+    void L1P1EnemyFunc(Ep e);
+    void L1P1EnemyFunc2(Ep e);
+    void L1P1EnemyBSFunc(BSp b);
+
+    void bossUFunc(Enemy* e);
     void bossPattern1(BSp s);
     void bossPattern2(BSp s);
     void bossPattern3(BSp s);
@@ -20,9 +24,15 @@ namespace Level {
     void bossPattern7(BSp s);
 
     void macroExample(BSp s);
+    
+
+    void bs1(BulletSpawner* spawner);
+    void bs2(BulletSpawner* spawner);
+    void bs_1(BulletSpawner* spawner);
+
     void enemyTestFunc(Enemy* enemy);
     void bulletSpawnerTestFunc(BulletSpawner* spawner);
-    void Level1(GameLevel* level);
+    
 
     void bulletSpawnerTestFunc2(BulletSpawner* spawner);
     void testFunc2(Bullet* b);

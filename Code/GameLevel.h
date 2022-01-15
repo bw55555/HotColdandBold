@@ -20,6 +20,7 @@ public:
 };
 
 namespace Level {
+	typedef GameLevel* GLp;
 	typedef BulletSpawner* BSp;
 	typedef Bullet* Bp;
 	typedef Enemy* Ep;
