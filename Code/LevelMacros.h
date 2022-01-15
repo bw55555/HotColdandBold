@@ -76,6 +76,10 @@
 #define wf2(obj, time, n) if (obj->wait(time, n))
 
 
+//wait for trigger
+#define wft(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime))
+
+
 //wait until. Increases the wait timer **to** time. 
 #define wu(obj, time) if (obj->waitUntil(time))
 
@@ -110,6 +114,10 @@
 
 //do nothing until time frames. Increases the wait timer to time.
 #define delayTo(obj, time) if (obj->waitUntil(time)) {return;}
+
+
+//delay until trigger
+#define delayTrigger(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime)) {}
 
 
 //do this only once immediately (equivalent to wf(obj, 0))

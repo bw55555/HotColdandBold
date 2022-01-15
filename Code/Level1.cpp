@@ -65,14 +65,18 @@ namespace Level {
                 e->createBulletSpawner(L1P1EnemyBSFunc);
             }
         }
-        delay(l, 960);
+        delay(l, 60);
+        delayTrigger(l, Enemy::enemies.size() == 0, 900);
+        delay(l, 60);
         during(l, 360) {
             every(l, 60) {
                 Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L1P1EnemyFunc2);
                 e->createBulletSpawner(L1P1EnemyBSFunc);
             }
         }
-        delay(l, 960);
+        delay(l, 60);
+        delayTrigger(l, Enemy::enemies.size() == 0, 900);
+        delay(l, 60);
     }
 
     void L1P1EnemyBSFunc(BSp s) {
@@ -93,7 +97,10 @@ namespace Level {
         during(e, mT) {
             float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
             e->moveTo(followBezierCurve(cbct, glm::vec2(850.0f, 900.0f), glm::vec2(-850.0f, 400.0f), glm::vec2(566.0f, 504.0f)));
-        } delay(e, mT);
+        } 
+        wf(e, mT) {
+            e->destroy();
+        }
     }
 
     void L1P1EnemyFunc2(Ep e) {
@@ -101,7 +108,10 @@ namespace Level {
         during(e, mT) {
             float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
             e->moveTo(followBezierCurve(cbct, glm::vec2(-850.0f, 900.0f), glm::vec2(850.0f, 400.0f), glm::vec2(-566.0f, 504.0f)));
-        } delay(e, mT);
+        } 
+        wf(e, mT) {
+            e->destroy();
+        }
     }
 
     void bossUFunc(Enemy* e) {

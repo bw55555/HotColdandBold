@@ -80,6 +80,7 @@ public:
 
 	void frameUpdate(T* derivedpointer) {
 		currTime += 1.0f;
+		triggerNum = 0;
 		numWaits = 0;
 		waitTime = 0;
 		updatefunc(derivedpointer);
@@ -109,6 +110,25 @@ public:
 		}
 	}
 
+	std::vector<float> triggerTimes;
+	int triggerNum = 0;
+
+	bool waitForTrigger(bool cond, float maxWaitTime) {
+		triggerNum += 1;
+		float wt = currTime - waitTime;
+		if (triggerTimes.size() >= triggerNum) {
+			maxWaitTime = triggerTimes[triggerNum - 1];
+		}
+		else if (cond) {
+			maxWaitTime = std::max(0.0f, wt);
+		}
+		bool res = wait(maxWaitTime);
+		if (res) {
+			triggerTimes.push_back(wt);
+		}
+		return res;
+	}
+
 	bool waitUntil(float time, float numTrue = 1.0f) {
 		if (time < waitTime) { return false; }
 		return wait(time - waitTime, numTrue);
@@ -127,6 +147,8 @@ public:
 	}
 
 	void reInitializeTime() {
+		triggerTimes.clear();
+		triggerNum = 0;
 		timeWaited = 0.0f;
 		waitTime = 0.0f;
 		numWaits = 0;
