@@ -17,7 +17,7 @@ public:
 	//use this if you want, not necessary
 	glm::vec2 dir = glm::vec2(0.0f, -1.0f);
 	//use this if you want, not necessary
-	float speed = 10.0f;
+	float speed = 0.0f;
 
 	glm::vec2 getVelocity() { return dir * speed; }
 	void setVelocity(glm::vec2 vel) { dir = normalizeSafe(vel); speed = glm::length(vel); }

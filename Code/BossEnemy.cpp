@@ -10,8 +10,8 @@ BossEnemy::BossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, u
 	createBossHealthBar();
 	numPhases = countPhases();
 	setDFunc([](Enemy* e) {
-		for (int i = 0; i < 15; i++) {
-			DropItem::makeDropItem(DropItemType::Heat, e->getPos() + Movement::randomDir() * Movement::randomFloat(0.0f, 150.0f));
+		for (int i = 0; i < 20; i++) {
+			DropItem::makeDropItem(DropItemType::Heat, e->getPos() + Movement::randomDir() * Movement::randomFloat(0.0f, 300.0f), DropItem::gravityDropFunc);
 		}
 	});
 }
@@ -36,7 +36,7 @@ void BossEnemy::update() {
 void BossEnemy::destroy() {
 	dfunc(static_cast<Enemy*>(this));
 	if (currPhase >= numPhases) {
-		bossHealthBar = nullptr;
+		//bossHealthBar = nullptr;
 		destroyed = true;
 		collisionEnabled = false;
 		renderEnabled = false;
