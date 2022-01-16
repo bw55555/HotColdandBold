@@ -390,7 +390,7 @@ namespace Level {
             Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(-600.0f, 1100.0f), L1P4EnemyFunc2);
             Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(600.0f, 1100.0f), L1P4EnemyFunc2);
         }
-        delayClear(l, 1500, 10000.0f);
+        delayClear(l, 1500, 2200);
         delay(l, 120.0f);
     }
 

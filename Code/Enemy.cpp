@@ -54,13 +54,15 @@ void Enemy::takeDamage(float damage) {
 	if (invTimer <= 0) {
 		health -= damage;
 		if (health <= 0) {
-			destroy();
+			destroy(DestroyReason::Damage);
 		}
 	}
 }
 
-void Enemy::destroy() {
-	dfunc(this);
+void Enemy::destroy(DestroyReason reason) {
+	if (reason != DestroyReason::Timeout) {
+		dfunc(this);
+	}
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;

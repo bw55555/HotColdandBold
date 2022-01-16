@@ -27,7 +27,7 @@ public:
     std::vector<std::unique_ptr<BulletSpawner>> spawners;
     Enemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
     virtual void update();
-    virtual void destroy();
+    virtual void destroy(DestroyReason reason = DestroyReason::Timeout);
     virtual void takeDamage(float damage = 1.0f);
     ~Enemy();
     BulletSpawner* createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
