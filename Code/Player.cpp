@@ -123,9 +123,7 @@ void Player::destroy() {
 }
 
 void Player::respawn() {
-	for (auto& b : Bullet::bullets) {
-		b->destroy();
-	}
+	GameWindow::Instance->clearBullets();
 	invTimer = 180.0f;
 	//do something!
 }
@@ -159,9 +157,7 @@ void Player::bomb() {
 	for (auto& e : Enemy::enemies) {
 		e->takeDamage(100.0f);
 	}
-	for (auto& b : Bullet::bullets) {
-		b->destroy();
-	}
+	GameWindow::Instance->clearBullets();
 	for (auto& d : DropItem::dropItems) {
 		d->autoCollected = true;
 	}

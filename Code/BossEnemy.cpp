@@ -33,8 +33,11 @@ void BossEnemy::update() {
 
 }
 
-void BossEnemy::destroy() {
-	dfunc(static_cast<Enemy*>(this));
+void BossEnemy::destroy(DestroyReason reason) {
+	if (reason != DestroyReason::Timeout) {
+		dfunc(static_cast<Enemy*>(this));
+	}
+	GameWindow::clearBullets();
 	if (currPhase >= numPhases) {
 		//bossHealthBar = nullptr;
 		destroyed = true;
@@ -43,7 +46,6 @@ void BossEnemy::destroy() {
 	}
 	else {
 		startNextPhase();
-		GameWindow::clearBullets();
 	}
 }
 

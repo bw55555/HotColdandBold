@@ -22,7 +22,7 @@ public:
     int countPhases();
     bool onNextPhase();
 
-    void destroy();
+    void destroy(DestroyReason reason);
     void update();
     void draw() override;
 
