@@ -26,14 +26,14 @@ namespace Level {
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(200.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
         L1Part4(l);
         L1Part5(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
@@ -299,7 +299,7 @@ namespace Level {
     void minibossUFunc(Ep e) {
         float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
-            wf(e, 120.0f) { e->createBulletSpawner(minibossPattern1); 
+            wf(e, 90.0f) { e->createBulletSpawner(minibossPattern1); 
             BSp s1 = e->createBulletSpawner(glm::vec2(0.0f, 100.0f), minibossPattern1Sub);
             s1->initializeCustomVars(static_cast<int>(BulletType::RoundBlue));
             BSp s2 = e->createBulletSpawner(glm::vec2(0.0f, -100.0f), minibossPattern1Sub);
@@ -308,7 +308,7 @@ namespace Level {
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
-            wf(e, 120.0f) {
+            wf(e, 90.0f) {
                 e->createBulletSpawner(minibossPattern2);
             }
             wf(e, destroyTime) { e->destroy(); }
@@ -536,17 +536,17 @@ namespace Level {
         float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern7); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern7); }
             wf(e, destroyTime) {
                 e->destroy();
             }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) {
+            wf(e, 60.0f) {
                 e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
             forever(e) {
-                every(e, 60) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
+                every(e, 60) e->dir = randomDir();
                 fyexo(e, 60, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             }
             wf(e, destroyTime) {
@@ -555,7 +555,7 @@ namespace Level {
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
             forever(e) {
                 every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
                 fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
@@ -566,22 +566,22 @@ namespace Level {
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
             wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 120.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
             wf(e, destroyTime) { e->destroy(); }
         }
     }
@@ -783,6 +783,14 @@ namespace Level {
             }
         }
     }
+
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * ------------
+    * Misc Randomness
+    * ------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
 
     //it failed, but happy accidents
     void bossPattern7Fail(BSp s) {

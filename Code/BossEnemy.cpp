@@ -6,7 +6,8 @@ glm::vec3 hbInitScale = glm::vec3(1400.0f, 32.0f, 0.0f);
 
 BossEnemy::BossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling) : Enemy(_health, collisionbox, initialPos, textureID, func, scaling) {
 	//never use this, use makeEnemy instead. Ever. It screws with shared pointers. 
-	maxHealth = _health;
+	setMaxHealth(_health);
+	invTimer = 120.0f;
 	createBossHealthBar();
 	numPhases = countPhases();
 	setDFunc([](Enemy* e) {
@@ -25,7 +26,7 @@ std::shared_ptr<Enemy> BossEnemy::makeBossEnemy(float _health, Hitbox collisionb
 void BossEnemy::update() {
 	//update the health bar here.
 	countedPhases = 0;
-	frameUpdate(this);
+	Enemy::update();
 
 	bossHealthBar->scale.x = hbInitScale.x * health/maxHealth;
 	//bossHealthBar->scale = glm::vec3(WindowVar::wvar4, 1.0f);
@@ -62,6 +63,7 @@ void BossEnemy::createBossHealthBar() {
 }
 
 void BossEnemy::startNextPhase() {
+	invTimer = 120.0f;
 	currPhase += 1;
 	health = maxHealth;
 	reInitializeTime();
