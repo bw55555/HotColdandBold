@@ -120,7 +120,7 @@ public:
 		if (triggerTimes.size() >= triggerNum) {
 			maxWaitTime = triggerTimes[triggerNum - 1];
 		}
-		else if (cond) {
+		else if (shouldRun && cond) {
 			maxWaitTime = std::clamp(wt, 0.0f, maxWaitTime);
 		}
 		bool res = wait(maxWaitTime);
