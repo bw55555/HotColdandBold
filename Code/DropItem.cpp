@@ -53,7 +53,7 @@ void DropItem::gravityDropFunc(DropItem* item) {
 
 void DropItem::update() {
 	frameUpdate(this);
-	if (!autoCollected && !isOnScreen()) { destroy(); }
+	if (!autoCollected && scale.y + getPos().y < -GameWindow::halfHeight) { destroy(); }
 }
 
 void DropItem::destroy() {

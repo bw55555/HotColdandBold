@@ -153,12 +153,6 @@ void GameWindow::render() {
 
 void GameWindow::update() {
 
-    //bomb!
-    if (KeyInput::isPressed("X")) {
-        std::cout << "Bombed!";
-        clearScreen();
-    }
-
     scene->update();
 }
 

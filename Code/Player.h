@@ -30,6 +30,7 @@ public:
     void takeDamage();
     void destroy();
     void respawn();
+    void bomb();
 
     void collect(DropItem* item);
     bool checkGraze(Bullet* b);

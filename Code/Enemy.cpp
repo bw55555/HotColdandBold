@@ -33,6 +33,7 @@ std::shared_ptr<Enemy> Enemy::findNearestEnemy(glm::vec2 pos) {
 	float minDistance = -1.0f;
 	std::shared_ptr<Enemy> minDistEnemy = std::shared_ptr<Enemy>(nullptr);
 	for (std::shared_ptr<Enemy> e : Enemy::enemies) {
+		if (!e->isOnScreen()) { continue; }
 		float dist = glm::distance(pos, e->getPos());
 		if (minDistance < 0 || dist < minDistance) {
 			minDistance = dist;

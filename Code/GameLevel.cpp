@@ -17,6 +17,7 @@ void GameLevel::update() {
         GameWindow::Instance->setPause(true);
     }
     if (!GameWindow::Instance->paused) {
+
         frameUpdate(this);
         //update player, enemy, spawners, bullets
         GameWindow::Instance->player->update();

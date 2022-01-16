@@ -18,13 +18,13 @@ void Player::initialize() {
 	destroyed = false;
 	collisionEnabled = true;
 	renderEnabled = true;
-	heat = 500.0f;
+	heat = 2000.0f;
 }
 
 void Player::update() {
 	currTime += 1;
 	if (heat > 0 && static_cast<int>(currTime) % 6 == 0) {
-		heat -= 1.0f;
+		heat -= 1.0f - focus * 0.2f;
 	}
 	if (lastFired > 0) {
 		lastFired -= 1;
@@ -33,6 +33,10 @@ void Player::update() {
 		lastHomingFired -= 1;
 	}
 	checkMovement();
+	//bomb!
+	if (KeyInput::isPressed("X")) {
+		bomb();
+	}
 	if (KeyInput::isPressed("Z"))
 		fire();
 	if (invTimer > 0) {
@@ -119,7 +123,9 @@ void Player::destroy() {
 }
 
 void Player::respawn() {
-	GameWindow::Instance->clearBullets();
+	for (auto& b : Bullet::bullets) {
+		b->destroy();
+	}
 	invTimer = 180.0f;
 	//do something!
 }
@@ -144,5 +150,19 @@ bool Player::checkGraze(Bullet* b) {
 	}
 	else {
 		return false;
+	}
+}
+
+void Player::bomb() {
+	bombs -= 1;
+	heat -= 300.0f;
+	for (auto& e : Enemy::enemies) {
+		e->takeDamage(100.0f);
+	}
+	for (auto& b : Bullet::bullets) {
+		b->destroy();
+	}
+	for (auto& d : DropItem::dropItems) {
+		d->autoCollected = true;
 	}
 }
