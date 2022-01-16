@@ -140,7 +140,7 @@ namespace Level {
     */
 
     void L1Part2(GLp l) {
-        once(l) {
+        wf(l, 120) {
             nspread(xpos, 0, 1200, 8) {
                 Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
             }
@@ -153,7 +153,7 @@ namespace Level {
             }
         }
         delayClear(l, 360, 660);
-        once(l) {
+        wf(l, 120) {
             nspread(xpos, 0, 1200, 8) {
                 Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
             }
@@ -166,6 +166,26 @@ namespace Level {
             }
         }
         delayClear(l, 360, 660);
+        wf(l, 120) {
+            nspread(xpos, 0, 1200, 8) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
+            }
+        }
+        during(l, 360) {
+            every(l, 30) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(900.0f, 800.0f), L1P2EnemyFunc2);
+                e->createBulletSpawner(L1P2EnemyBSFunc2);
+                e->initializeCustomVars(Speed{ -10.0f });
+            }
+        }
+        during(l, 375) {
+            everyo(l, 30, 15) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(-900.0f, 700.0f), L1P2EnemyFunc2);
+                e->createBulletSpawner(L1P2EnemyBSFunc2);
+                e->initializeCustomVars(Speed{ 10.0f });
+            }
+        }
+        delayClear(l, 375, 660);
     }
 
     void L1P2EnemyFunc(Ep e) {
