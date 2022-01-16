@@ -21,6 +21,7 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        L1Part3(l);
         L1Part1(l);
         L1Part2(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
@@ -230,6 +231,53 @@ namespace Level {
         everyo(s, dchoice(60, 40, 20), 10) {
             nstack(spd, dchoice(8, 9, 10), 2.0f, dchoice(1, 2, 3)) {
                 s->spawnPreset(BulletType::KnifeRed, TargetedBullet(spd));
+            }
+        }
+    }
+
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * --------------
+    * Level 1 Part 3
+    * --------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
+
+    void L1Part3(GLp l) {
+        once(l) {
+            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(0.0f, 1100.0f), L1P3EnemyFunc);
+        }
+        delayClear(l, 30.0f, 960.0f);
+        delay(l, 300.0f);
+        once(l) {
+            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(-500.0f, 1100.0f), L1P3EnemyFunc);
+            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(500.0f, 1100.0f), L1P3EnemyFunc);
+        }
+        delayClear(l, 30.0f, 960.0f);
+        delay(l, 300.0f);
+
+    }
+
+    void L1P3EnemyFunc(Ep e) {
+        during(e, 30) {
+            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
+        } delay(e, 30);
+        once(e) { e->createBulletSpawner(L1P3EnemyBSFunc); }
+        delay(e, 900);
+        during(e, 30) {
+            float accel = 0.5f;
+            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, 20.0f));
+        }
+        wf(e, 30) { e->destroy(); };
+    }
+
+    void L1P3EnemyBSFunc(BSp s) {
+        every(s, dchoice(7, 5, 5)) {
+            nring(o, 2) {
+                nstack(spd, 4.0f, 2.0f, dchoice(2, 3, 4)) {
+                    s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(-45 + o + 2.03314 * t(s)), spd));
+                    s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(-45 + o + 90 - 2.03314 * t(s)), spd));
+                }
             }
         }
     }

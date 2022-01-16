@@ -18,6 +18,10 @@ namespace Level {
     void L1P2EnemyBSFunc(BSp s);
     void L1P2EnemyFunc2(Ep e);
     void L1P2EnemyBSFunc2(BSp s);
+    
+    void L1Part3(GLp l);
+    void L1P3EnemyFunc(Ep e);
+    void L1P3EnemyBSFunc(BSp s);
 
     void bossUFunc(Enemy* e);
     void bossPattern1(BSp s);

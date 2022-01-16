@@ -9,7 +9,7 @@
 
 inline void doNothingFunc(Enemy* e) {}
 
-enum class EnemyType { WeakFairy, Fairy, Doppel };
+enum class EnemyType { WeakFairy, Fairy, StrongFairy, Doppel };
 
 class Enemy :
     public CollidableObject, public UpdateTime<Enemy>, public std::enable_shared_from_this<Enemy>
