@@ -13,6 +13,7 @@ public:
     float speed;
     float currTime;
     float lastFired;
+    float lastHomingFired;
     float health;
     float invTimer;
     float heat;

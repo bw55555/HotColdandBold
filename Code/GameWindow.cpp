@@ -212,8 +212,15 @@ void GameWindow::checkCollisions() {
             for (std::shared_ptr<Enemy> e : Enemy::enemies) {
                 if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                     //collision detected between enemy and player bullet, do something!
-                    e->takeDamage();
-                    b->collisionEnabled = false;
+                    
+                    if (b->isPlayerHomingBullet) {
+                        e->takeDamage(dchoice(0.5f, 0.334f, 0.25f));
+                        b->destroy();
+                    }
+                    else {
+                        e->takeDamage();
+                        b->collisionEnabled = false;
+                    }
                 }
             }
         }

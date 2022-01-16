@@ -115,6 +115,7 @@ public:
 	int triggerNum = 0;
 
 	bool waitForTrigger(bool cond, float maxWaitTime) {
+		//make sure this works properly when shouldRun is false
 		triggerNum += 1;
 		float wt = currTime - waitTime;
 		if (triggerTimes.size() >= triggerNum) {

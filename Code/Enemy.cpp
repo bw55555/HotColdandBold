@@ -52,7 +52,7 @@ void Enemy::update() {
 void Enemy::takeDamage(float damage) {
 	if (invTimer <= 0) {
 		health -= damage;
-		if (health == 0) {
+		if (health <= 0) {
 			destroy();
 		}
 	}

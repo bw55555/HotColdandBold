@@ -26,6 +26,14 @@ namespace Level {
     void minibossUFunc(Ep e);
     void minibossPattern1(BSp s);
     void minibossPattern1Sub(BSp s);
+    void minibossPattern2(BSp s);
+    void minibossPattern2Sub(BSp s);
+
+    void L1Part4(GLp l);
+    void L1P4EnemyFunc(Ep e);
+    void L1P4EnemyBSFunc(BSp s);
+    void L1P4EnemyFunc2(Ep e);
+    void L1P4EnemyBSFunc2(BSp s);
 
     void bossUFunc(Enemy* e);
     void bossPattern1(BSp s);

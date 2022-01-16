@@ -124,8 +124,8 @@
 #define after(obj, time) if (obj->wait(time, -1.0f))
 
 
-//do nothing for time frames. Does not increase the wait timer. 
-#define sleep(obj, time) if (obj->wait(0, time)) {return;}
+//returns true once after time frames. does not increase the wait timer.
+#define when(obj, time) if (obj->wait(0, time) && nt(obj) == (time)-1)
 
 
 //do nothing for time frames. Increases the wait timer by time.

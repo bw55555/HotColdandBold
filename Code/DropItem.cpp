@@ -27,7 +27,7 @@ bool DropItem::checkAutoCollect(DropItem* item) {
 
 	if (item->autoCollected) {
 		float dist = glm::length(GameWindow::Instance->player->getPos() - item->getPos());
-		item->move(std::max(dist / 10.0f, 25.0f - 2.5f * floor(5.0f - dist / 50.0f)) * BulletMovement::targetPlayer(item->getPos()));
+		item->move(std::max(dist / 10.0f, 40.0f - 3.0f * (dist / 50.0f)) * BulletMovement::targetPlayer(item->getPos()));
 	}
 	return item->autoCollected;
 }

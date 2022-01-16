@@ -10,6 +10,8 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 }
 
 void Player::initialize() {
+	lastFired = 0.0f;
+	lastHomingFired = 0.0f;
 	currTime = 0.0f;
 	speed = 25.0f;
 	invTimer = 0.0f;
@@ -26,6 +28,9 @@ void Player::update() {
 	}
 	if (lastFired > 0) {
 		lastFired -= 1;
+	}
+	if (lastHomingFired > 0) {
+		lastHomingFired -= 1;
 	}
 	checkMovement();
 	if (KeyInput::isPressed("Z"))
@@ -70,15 +75,28 @@ void Player::checkMovement() {
 
 
 void Player::fire() {
-	if (lastFired > 0) {
-		return;
+	if (lastFired <= 0) {
+		lastFired = 3.0f;
+		float bulletSize = 200.0f;
+		std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize / 2.0f - 2), getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[19], BulletMovement::directionalBullet, glm::vec3(bulletSize));
+		bullet->firedByPlayer = true;
+		bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 100.0f });
+		bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.9f);
 	}
-	lastFired = 3.0f;
-	float bulletSize = 200.0f;
-	std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize/2.0f - 2), getPos() + glm::vec2(0.0f, 10.0f), BulletSpawner::bulletPresetTextures[19], BulletMovement::directionalBullet, glm::vec3(bulletSize));
-	bullet->firedByPlayer = true;
-	bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 100.0f });
-	bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.8f);
+	if (!focus) {
+		if (lastHomingFired <= 0) {
+			lastHomingFired = 12.0f;
+			float bulletSize = 100.0f;
+			for (int i = 0; i < 2; i++) {
+				std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize / 2.0f - 2), getPos() + glm::vec2(50.0f * (2.0f * i - 1.0f), 10.0f), BulletSpawner::bulletPresetTextures[2], BulletMovement::homingBullet, glm::vec3(bulletSize));
+				bullet->firedByPlayer = true;
+				bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 50.0f });
+				bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.8f);
+				bullet->isPlayerHomingBullet = true;
+			}
+		}
+		
+	}
 }
 
 void Player::takeDamage() {

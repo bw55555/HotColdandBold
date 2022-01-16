@@ -21,13 +21,14 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        L1Part4(l);
+        L1Part1(l);
+        L1Part2(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
-        L1Part1(l);
-        L1Part2(l);
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
@@ -297,6 +298,12 @@ namespace Level {
     void minibossUFunc(Ep e) {
         float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
+            once(e) {
+                e->createBulletSpawner(minibossPattern2);
+            }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+        if (e->onNextPhase()) {
             once(e) { e->createBulletSpawner(minibossPattern1); 
             BSp s1 = e->createBulletSpawner(glm::vec2(0.0f, 100.0f), minibossPattern1Sub);
             s1->initializeCustomVars(static_cast<int>(BulletType::RoundBlue));
@@ -312,7 +319,7 @@ namespace Level {
             every(s, dchoice(40, 30, 20)) {
                 nspread(o, -90.0f, std::abs(106 - dchoice(9.0f, 8.5f, 7.5f) * rtv / 10), 2) {
                     nstack(spd, 6.0f, 2.0f, dchoice(5, 5, 6)) {
-                        s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), spd));
+                        Bsp b = s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), spd));
                     }
                 }
             }
@@ -327,6 +334,104 @@ namespace Level {
                 nring(o, dchoice(8, 8, 12)) {
                     s->spawnPreset(static_cast<BulletType>(static_cast<int>(cf(s, 0))), DirectionalBullet(avecd(o + t(s)), dchoice(6.0f, 8.0f, 10.0f)));
                 }
+            }
+        }
+    }
+
+    void minibossPattern2(BSp s) {
+        every(s, 300) {
+            float rf = randomFloat(0.0f, 45.0f);
+            nringi(o, i, 4) {
+                BulletType spawnType = BulletType::RoundBlue;
+                if (i % 2 == 0) {
+                    spawnType = BulletType::RoundBlue;
+                }
+                else {
+                    spawnType = BulletType::RoundRed;
+                }
+                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos + avecd(o + 90 * t(s)/300 + rf), SpinningDirectionalBullet(s->pos, 7.0f, 2.0f, -0.001f, 0.0f));
+                BSp s = b->createBulletSpawner(minibossPattern2Sub);
+                s->initializeCustomVars(static_cast<int>(spawnType));
+            }
+        }
+    }
+
+    void minibossPattern2Sub(BSp s) {
+        delay(s, 20.0f);
+        forever(s) {
+            every(s, dchoice(20, 16, 12)) {
+                nring(o, dchoice(6, 8, 10)) {
+                    Bsp b = s->spawnPreset(static_cast<BulletType>(static_cast<int>(cf(s, 0))), DirectionalBullet(avecd(o + t(s)), dchoice(5.0f, 6.0f, 8.0f)));
+                }
+            }
+        }
+    }
+
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * --------------
+    * Level 1 Part 4
+    * --------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
+
+    void L1Part4(GLp l) {
+        during(l, 1500) {
+            every(l, 30) {
+                float xpos = (static_cast<int>(t(l) / 30) % 5) - 2;
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos * 300.0f + randomFloat(-100.0f, 100.0f), 1100.0f), L1P4EnemyFunc);
+                e->createBulletSpawner(L1P4EnemyBSFunc);
+            }
+        }
+        when(l, 600) {
+            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(0.0f, 1100.0f), L1P4EnemyFunc2);
+        }
+        when(l, 1200) {
+            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(-600.0f, 1100.0f), L1P4EnemyFunc2);
+            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(600.0f, 1100.0f), L1P4EnemyFunc2);
+        }
+        delayClear(l, 1500, 10000.0f);
+        delay(l, 120.0f);
+    }
+
+    void L1P4EnemyFunc(Ep e) {
+        e->move(3.0f * glm::vec2(sin(glm::radians(3.234f * t(e))), -1.0f));
+        wfmt(e, !e->isOnScreen(), 60.0f, 10000.0f) { e->destroy(); }
+    }
+
+    void L1P4EnemyBSFunc(BSp s) {
+        every(s, dchoice(60, 40, 30)) {
+            nstack(spd, 5.0f, 2.0f, dchoice(3, 4, 5)) {
+                s->spawnPreset(BulletType::RoundBlue, TargetedBullet(spd));
+            }
+        }
+    }
+
+    void L1P4EnemyFunc2(Ep e) {
+        constexpr float accel = 0.5f;
+        constexpr float maxVel = 20.0f;
+        constexpr float moveTime = 30.0f;;
+        during(e, moveTime) {
+            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -1 * maxVel, accel, moveTime));
+        } delay(e, moveTime);
+        once(e) { e->createBulletSpawner(L1P4EnemyBSFunc2); }
+        delay(e, 900);
+        during(e, moveTime) {
+            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, maxVel));
+        }
+        wf(e, moveTime) { e->destroy(); };
+    }
+
+    void L1P4EnemyBSFunc2(BSp s) {
+        float o = 0.0f;
+        int interval = 15;
+        after(s, 180) {
+            o += t(s) * 2;
+            interval -= floor(std::min(nt(s)/30, 10.0f));
+        }
+        every(s, interval) {
+            nring(a, 8) {
+                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(a + o), 10.0f));
             }
         }
     }
