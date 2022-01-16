@@ -69,13 +69,9 @@ void CollidableObject::moveTo(glm::vec2 movement, float numFramesLeft) {
 }
 
 glm::vec2 CollidableObject::rotateAround(glm::vec2 center, float angle) {
-	glm::vec2 radius = center - pos;
-	float currAngle = isZeroVec(radius) ? 0 : 180 - glm::degrees(glm::orientedAngle(glm::normalize(radius), glm::vec2(1, 0)));
-
-	float incrAngle = angle + currAngle;
-	glm::vec2 rotatedRadius = glm::vec2(glm::length(radius) * cos(glm::radians(incrAngle)), glm::length(radius) * sin(glm::radians(incrAngle)));
-	move((radius + rotatedRadius));
-	return (radius + rotatedRadius);
+	glm::vec2 moveVec = Movement::rotateAround(pos, center, angle);
+	move(moveVec);
+	return (moveVec);
 }
 
 glm::vec2 CollidableObject::getPos() {

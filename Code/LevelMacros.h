@@ -36,6 +36,14 @@
 #define everyo(obj, interval, offset) if (obj->frameInterval(interval, offset))
 
 
+//every interval frames, declaring reduced time as reducedTimeName
+#define rtevery(obj, reducedTimeName, interval) if (float reducedTimeName = rt(obj, interval); obj->frameInterval(interval))
+
+
+//every interval frames, with an offset, declaring reduced time as reducedTimeName
+#define rteveryo(obj, reducedTimeName, interval, offset) if (float reducedTimeName = rt(obj, interval); obj->frameInterval(interval, offset))
+
+
 //better name plz...
 //For Y frames Every X frames
 #define fyex(obj, x, y) if (obj->frameInterval(x, 0, y))
@@ -44,6 +52,14 @@
 //too bad no easy support for overloading macros... if someone wants to figure this out go ahead
 //For Y frames Every X frames at Offset o
 #define fyexo(obj, x, y, o) if (obj->frameInterval(x, o, y))
+
+
+//For Y frames Every X frames, declaring reduced time
+#define rtfyex(obj, reducedTimeName, x, y) if (float reducedTimeName = rt(obj, x); obj->frameInterval(x, 0, y))
+
+
+//For Y frames Every X frames at Offset o, declaring reduced time
+#define rtfyexo(obj, reducedTimeName, x, y, o) if (float reducedTimeName = rt(obj, x); obj->frameInterval(x, o, y))
 
 
 //to make timecurves easier to use, expr should return a float between 0 and 1

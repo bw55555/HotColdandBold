@@ -102,3 +102,12 @@ float Movement::cubic_bezier_time(float currTime, float maxTime, float v1, float
     else if (t < 0) { return 0; }
     return (glm::vec2(0.0f, 0.0f) * pow(1-t, 3.0f) + glm::vec2(v1, v2) * 3.0f * pow(1-t, 2.0f) * t + glm::vec2(v3, v4) * 3.0f * (1-t) * pow(t, 2.0f) + glm::vec2(1, 1) * pow(t, 3.0f)).y;
 }
+
+glm::vec2 Movement::rotateAround(glm::vec2 pos, glm::vec2 center, float angle) {
+    glm::vec2 radius = center - pos;
+    float currAngle = radius == glm::vec2(0.0f, 0.0f) ? 0 : 180 - glm::degrees(glm::orientedAngle(glm::normalize(radius), glm::vec2(1, 0)));
+
+    float incrAngle = angle + currAngle;
+    glm::vec2 rotatedRadius = glm::vec2(glm::length(radius) * cos(glm::radians(incrAngle)), glm::length(radius) * sin(glm::radians(incrAngle)));
+    return (radius + rotatedRadius);
+}

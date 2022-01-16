@@ -70,10 +70,11 @@ Enemy::~Enemy() {
 	spawners.clear();
 }
 
-void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
+BulletSpawner* Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*)) {
 	
 	std::unique_ptr<BulletSpawner> s = std::make_unique<BulletSpawner>(shared_from_this(), initialPos, func);
 	spawners.push_back(std::move(s));
+	return spawners[spawners.size() - 1].get();
 }
 
 Enemy::DestroyFunc Enemy::spawnDropOnDeath(DropItemType d) {

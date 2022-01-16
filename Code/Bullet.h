@@ -31,8 +31,8 @@ public:
         move(getVelocity()); 
     };
     std::vector<std::unique_ptr<BulletSpawner>> spawners;
-    void createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
-    void createBulletSpawner(void (*func)(BulletSpawner*)) { return createBulletSpawner(glm::vec2(0, 0), func); }
+    BulletSpawner* createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner*));
+    BulletSpawner* createBulletSpawner(void (*func)(BulletSpawner*)) { return createBulletSpawner(glm::vec2(0, 0), func); }
     ~Bullet();
 };
 

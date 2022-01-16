@@ -21,6 +21,11 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
+        once(l) {
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
+        }
+        delayClear(l, 30.0f, 10000.0f);
         L1Part1(l);
         L1Part2(l);
         L1Part3(l);
@@ -28,7 +33,6 @@ namespace Level {
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
-        delay(l, 30.0f);
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
             //switch to win menu here
@@ -277,6 +281,51 @@ namespace Level {
                 nstack(spd, 4.0f, 2.0f, dchoice(2, 3, 4)) {
                     s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(-45 + o + 2.03314 * t(s)), spd));
                     s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(-45 + o + 90 - 2.03314 * t(s)), spd));
+                }
+            }
+        }
+    }
+    
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * ------------
+    * Level 1 Miniboss
+    * ------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
+
+    void minibossUFunc(Ep e) {
+        float destroyTime = 3600.0f;
+        if (e->onNextPhase()) {
+            once(e) { e->createBulletSpawner(minibossPattern1); 
+            BSp s1 = e->createBulletSpawner(glm::vec2(0.0f, 100.0f), minibossPattern1Sub);
+            s1->initializeCustomVars(static_cast<int>(BulletType::RoundBlue));
+            BSp s2 = e->createBulletSpawner(glm::vec2(0.0f, -100.0f), minibossPattern1Sub);
+            s2->initializeCustomVars(static_cast<int>(BulletType::RoundRed));
+            }
+            wf(e, destroyTime) { e->destroy(); }
+        }
+    }
+
+    void minibossPattern1(BSp s) {
+        rtfyex(s, rtv, 300, 240) {
+            every(s, dchoice(40, 30, 20)) {
+                nspread(o, -90.0f, std::abs(106 - dchoice(9.0f, 8.5f, 7.5f) * rtv / 10), 2) {
+                    nstack(spd, 6.0f, 2.0f, dchoice(5, 5, 6)) {
+                        s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), spd));
+                    }
+                }
+            }
+        }
+    }
+
+    void minibossPattern1Sub(BSp s) {
+        s->localPos = s->localPos + rotateAround(s->localPos, glm::vec2(0.0f, 0.0f), 1.0f);
+        delay(s, 240);
+        forever(s) {
+            every(s, dchoice(16, 12, 9)) {
+                nring(o, dchoice(8, 8, 12)) {
+                    s->spawnPreset(static_cast<BulletType>(static_cast<int>(cf(s, 0))), DirectionalBullet(avecd(o + t(s)), dchoice(6.0f, 8.0f, 10.0f)));
                 }
             }
         }

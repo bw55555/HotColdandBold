@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -64,11 +65,17 @@ namespace Movement {
     //meant for the bezier curve function, to add a quick burst at the start. All params except currTime should be static (shouldn't change per frame)
     float quickBurst(float currTime, float maxTime, float burstTime = 30.0f, float initialMult = 2.0f, float accel = -0.1f);
 
+
+    //this does stuff with the addTC macro, but not very useful apparently
     struct TimeCurve {
         float TCcurrTime;
         float TCreturnTime = 0;
         TimeCurve(float _TCcurrTime) : TCcurrTime(_TCcurrTime) {};
     };
 
+    //returns a time given a cubic bezier curve with controls (0,0), (v1, v2) and (v3, v4), (1,1)
     float cubic_bezier_time(float currTime, float maxTime, float v1, float v2, float v3, float v4);
+
+    //returns a movement vector
+    glm::vec2 rotateAround(glm::vec2 pos, glm::vec2 center, float angle);
 };
