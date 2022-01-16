@@ -92,6 +92,7 @@ public:
 
 	//do not nest waits. This will break things
 	bool wait(float time, float numTrue = 1.0f) {
+		assert(time >= 0);
 		numWaits += 1;
 		waitTime += time;
 		//std::cout << currTime << " " << timeWaited << " " << numTrue << " " << numWaits << " " << numWaitTrue << "\n";

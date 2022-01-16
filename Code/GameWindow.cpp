@@ -264,7 +264,7 @@ void GameWindow::clearBullets() {
 void GameWindow::initializePlayer() {
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 15.0f;
+    playerHitbox.radius = 10.0f;
     //dosmth with the player hitbox
     player = std::make_shared<Player>(playerHitbox, playerTexture);
 }

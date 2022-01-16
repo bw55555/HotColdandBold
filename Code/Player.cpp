@@ -101,6 +101,7 @@ void Player::destroy() {
 }
 
 void Player::respawn() {
+	GameWindow::Instance->clearBullets();
 	invTimer = 180.0f;
 	//do something!
 }
@@ -111,7 +112,7 @@ void Player::collect(DropItem* item) {
 		health += 1.0f;
 		break;
 	case DropItemType::Heat:
-		heat += 5.0f;
+		heat += 10.0f;
 	}
 	item->destroy();
 }

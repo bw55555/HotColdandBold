@@ -76,8 +76,12 @@
 #define wf2(obj, time, n) if (obj->wait(time, n))
 
 
-//wait for trigger
+//wait for trigger at most maxWaitTime frames
 #define wft(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime))
+
+
+// delay minWaitTime, then wait for trigger at most maxWaitTime frames
+#define wfmt(obj, cond, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(cond, maxWaitTime - minWaitTime))
 
 
 //wait until. Increases the wait timer **to** time. 
@@ -120,8 +124,12 @@
 #define delayTrigger(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime)) {}
 
 
+//delay at least minWaitTime time, then delay until trigger
+#define delayMinTrigger(obj, cond, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(cond, maxWaitTime - minWaitTime)) {}
+
+
 //delay until enemy wave is cleared
-#define delayClear(obj, maxWaitTime) if (obj->waitForTrigger(Enemy::enemies.size() == 0, maxWaitTime)) {}
+#define delayClear(obj, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(Enemy::enemies.size() == 0, maxWaitTime - minWaitTime)) {}
 
 
 //do this only once immediately (equivalent to wf(obj, 0))

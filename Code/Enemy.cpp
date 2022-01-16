@@ -18,7 +18,7 @@ std::shared_ptr<Enemy> Enemy::makeEnemy(float _health, Hitbox collisionbox, glm:
 std::shared_ptr<Enemy> Enemy::makePresetEnemy(EnemyType type, glm::vec2 initialPos, void (*func)(Enemy*)) {
 	switch (type) {
 	case EnemyType::WeakFairy:
-		return makeEnemy(5.0f, Hitbox::Circle(20.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
+		return makeEnemy(3.0f, Hitbox::Circle(20.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
 	case EnemyType::Fairy:
 		return makeEnemy(dchoice(15.0f, 20.0f, 30.0f), Hitbox::Circle(20.0f), initialPos, GameWindow::enemyTextures[0], func, glm::vec3(100.0f));
 	case EnemyType::Doppel:
@@ -77,9 +77,9 @@ void Enemy::createBulletSpawner(glm::vec2 initialPos, void (*func)(BulletSpawner
 Enemy::DestroyFunc Enemy::spawnDropOnDeath(DropItemType d) {
 	switch (d) {
 	case DropItemType::Heat:
-		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Heat, e->getPos()); };
+		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Heat, e->getPos(), DropItem::gravityDropFunc); };
 	case DropItemType::Life:
-		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Life, e->getPos()); };
+		return [](Enemy* e) {DropItem::makeDropItem(DropItemType::Life, e->getPos(), DropItem::gravityDropFunc); };
 	}
 	return nullptr;
 }

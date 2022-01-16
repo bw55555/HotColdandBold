@@ -28,7 +28,7 @@ namespace Level {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
         delay(l, 30.0f);
-        delayClear(l, 10000.0f);
+        delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
             //switch to win menu here
         }
@@ -69,6 +69,14 @@ namespace Level {
         //delete dopple;
     }
 
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * --------------
+    * Level 1 Part 1
+    * --------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
+
     void L1Part1(GLp l) {
         during(l, 360) {
             every(l, 60) {
@@ -76,8 +84,7 @@ namespace Level {
                 e->createBulletSpawner(L1P1EnemyBSFunc);
             }
         }
-        delay(l, 60);
-        delayClear(l, 900);
+        delayClear(l, 360, 900);
         delay(l, 60);
         during(l, 360) {
             every(l, 60) {
@@ -85,8 +92,7 @@ namespace Level {
                 e->createBulletSpawner(L1P1EnemyBSFunc);
             }
         }
-        delay(l, 60);
-        delayTrigger(l, Enemy::enemies.size() == 0, 900); // same as delayClear(l, 900)
+        delayMinTrigger(l, Enemy::enemies.size() == 0, 360, 900); // same as delayClear(l, 360, 900)
         delay(l, 60);
     }
 
@@ -125,13 +131,41 @@ namespace Level {
         }
     }
 
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * --------------
+    * Level 1 Part 2
+    * --------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
+
     void L1Part2(GLp l) {
         once(l) {
             nspread(xpos, 0, 1200, 8) {
                 Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
             }
         }
-        delayClear(l, 660);
+        during(l, 360) {
+            every(l, 30) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(-900.0f, 700.0f), L1P2EnemyFunc2);
+                e->createBulletSpawner(L1P2EnemyBSFunc2);
+                e->initializeCustomVars(Speed{ 10.0f });
+            }
+        }
+        delayClear(l, 360, 660);
+        once(l) {
+            nspread(xpos, 0, 1200, 8) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
+            }
+        }
+        during(l, 360) {
+            every(l, 30) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(900.0f, 700.0f), L1P2EnemyFunc2);
+                e->createBulletSpawner(L1P2EnemyBSFunc2);
+                e->initializeCustomVars(Speed{ -10.0f });
+            }
+        }
+        delayClear(l, 360, 660);
     }
 
     void L1P2EnemyFunc(Ep e) {
@@ -150,16 +184,43 @@ namespace Level {
 
     void L1P2EnemyBSFunc(BSp s) {
         every(s, 120) {
-            nstack(spd, dchoice(6, 8, 10), 2.0f, dchoice(3, 4, 6)) {
+            nstack(spd, dchoice(6, 7, 8), 2.0f, dchoice(3, 4, 6)) {
                 s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(glm::vec2(0.0f, -1.0f), spd));
             }
         }
+        /*
         everyo(s, 120, 60) {
             nring(o, 16) {
                 s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), dchoice(5.0f, 6.0f, 8.0f)));
             }
         }
+        */
     }
+
+    void L1P2EnemyFunc2(Ep e) {
+        forever(e) {
+            e->move(glm::vec2(1.0f, 0.0f) * e->speed);
+        }
+        wfmt(e, !e->isOnScreen(), 60.0f, 1200.0f) {
+            e->destroy();
+        }
+    }
+
+    void L1P2EnemyBSFunc2(BSp s) {
+        everyo(s, dchoice(60, 40, 20), 10) {
+            nstack(spd, dchoice(8, 9, 10), 2.0f, dchoice(1, 2, 3)) {
+                s->spawnPreset(BulletType::KnifeRed, TargetedBullet(spd));
+            }
+        }
+    }
+
+    /*
+    * -----------------------------------------------------------------------------------------------------------------
+    * ------------
+    * Level 1 Boss
+    * ------------
+    * -----------------------------------------------------------------------------------------------------------------
+    */
 
     void bossUFunc(Enemy* e) {
         float destroyTime = 3600.0f;
