@@ -37,6 +37,8 @@ namespace Movement {
     inline float oscillate(float currTime, float min, float max, float spd) {
         return oscillate(currTime, min, max, spd, (max + min) / 2);
     }
+
+    //return a distance
     float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime, bool reverseFlag);
     inline float linearAcceleration(float currTime, float acceleration, float maxVelocity, float maxTime) {
         return linearAcceleration(currTime, acceleration, maxVelocity, maxTime, false);

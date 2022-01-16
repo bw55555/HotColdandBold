@@ -22,6 +22,8 @@ namespace Level {
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
         L1Part1(l);
+        L1Part2(l);
+        wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
@@ -88,19 +90,6 @@ namespace Level {
         delay(l, 60);
     }
 
-    void L1P1EnemyBSFunc(BSp s) {
-        delay(s, 60);
-        forever(s) {
-            every(s, 60) {
-                nspread(o, getAngle(targetPlayer(s->pos)), dchoice(30, 30, 60), dchoice(1, 3, 5)) {
-                    nstack(spd, 6.0f, 2.0f, dchoice(1, 2, 3)) {
-                        s->spawnPreset(BulletType::DotWhite, DirectionalBullet(avecd(o), spd));
-                    }
-                }
-            }
-        }
-    }
-
     void L1P1EnemyFunc(Ep e) {
         float mT = 600.0f;
         during(e, mT) {
@@ -120,6 +109,55 @@ namespace Level {
         } 
         wf(e, mT) {
             e->destroy();
+        }
+    }
+
+    void L1P1EnemyBSFunc(BSp s) {
+        delay(s, 60);
+        forever(s) {
+            every(s, 60) {
+                nspread(o, getAngle(targetPlayer(s->pos)), dchoice(30, 30, 60), dchoice(1, 3, 5)) {
+                    nstack(spd, 6.0f, 2.0f, dchoice(1, 2, 3)) {
+                        s->spawnPreset(BulletType::DotWhite, DirectionalBullet(avecd(o), spd));
+                    }
+                }
+            }
+        }
+    }
+
+    void L1Part2(GLp l) {
+        once(l) {
+            nspread(xpos, 0, 1200, 8) {
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L1P2EnemyFunc);
+            }
+        }
+        delayClear(l, 660);
+    }
+
+    void L1P2EnemyFunc(Ep e) {
+        during(e, 30) {
+            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
+        } delay(e, 30);
+        once(e) { e->createBulletSpawner(L1P2EnemyBSFunc); }
+        delay(e, 600);
+        during(e, 30) {
+            float accel = 0.5f;
+            e->move(glm::vec2(0.0f, 1.0f)*std::max(e->getNestedTime() * accel, 20.0f));
+        } 
+        wf(e, 30) { e->destroy(); };
+        
+    }
+
+    void L1P2EnemyBSFunc(BSp s) {
+        every(s, 120) {
+            nstack(spd, dchoice(6, 8, 10), 2.0f, dchoice(3, 4, 6)) {
+                s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(glm::vec2(0.0f, -1.0f), spd));
+            }
+        }
+        everyo(s, 120, 60) {
+            nring(o, 16) {
+                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), dchoice(5.0f, 6.0f, 8.0f)));
+            }
         }
     }
 
