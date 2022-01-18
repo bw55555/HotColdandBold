@@ -34,7 +34,7 @@ std::shared_ptr<Player> GameWindow::player;
 std::vector<std::shared_ptr<DropItem>> DropItem::dropItems;
 std::vector<std::shared_ptr<Enemy>> Enemy::enemies;
 std::vector<std::shared_ptr<Sprite>> Sprite::spriteList;
-unsigned int BulletSpawner::bulletPresetTextures[10];
+unsigned int BulletSpawner::bulletPresetTextures[20];
 unsigned int Sprite::backgroundTextures[10];
 unsigned int GameWindow::enemyTextures[10];
 std::vector<std::shared_ptr<Bullet>> Bullet::bullets;
