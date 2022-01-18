@@ -17,6 +17,9 @@
 #include "KeyInput.h"
 #include "UIRect.h"
 #include "BossEnemy.h"
+#include <irrklang/irrKlang.h>
+
+irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();
 
 extern std::string PATH_START = "";
 std::shared_ptr<GameWindow> gameWindow;
@@ -112,6 +115,11 @@ int main() {
 
     bool debugMode = false;
     bool canAdvance = false;
+
+
+    SoundEngine->play2D("resources/audio/mainloop.mp3", true);
+    //SoundEngine->play2D((PATH_START + std::string("resources/audio/mainloop.mp3")).c_str(), true);
+
     KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
     KeyInput::track("P", GLFW_KEY_P, 1000000);
     KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
@@ -179,6 +187,7 @@ int main() {
         
     }
 
+    SoundEngine->drop();
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
