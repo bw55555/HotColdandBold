@@ -26,7 +26,7 @@ int Text::initializeFT() {
     }
 
     FT_Face face;
-    if (FT_New_Face(ft, "resources/fonts/arial.ttf", 0, &face))
+    if (FT_New_Face(ft, "resources/fonts/DFPPOPCorn-W12.ttf", 0, &face))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
         return -1;
