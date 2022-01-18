@@ -17,6 +17,7 @@ void GameLevel::update() {
         GameWindow::Instance->setPause(true);
     }
     if (!GameWindow::Instance->paused) {
+
         frameUpdate(this);
         //update player, enemy, spawners, bullets
         GameWindow::Instance->player->update();
@@ -85,7 +86,7 @@ void GameLevel::update() {
 void GameLevel::render() {
     if (!GameWindow::Instance->paused) {
         glBindFramebuffer(GL_FRAMEBUFFER, ui->fbo);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glViewport(0, 0, 2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
         for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {

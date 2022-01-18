@@ -77,25 +77,19 @@ void GameWindow::initialize() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-//<<<<<<< HEAD
-    unsigned int playerTexture = 0;
+    initializePlayer();
     loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
-    Hitbox playerHitbox;
-    playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 15.0f;
-    //dosmth with the player hitbox
-    player = std::make_shared<Player>(playerHitbox, playerTexture);
-//=======
-    loadTexture(PATH_START + "resources/textures/awesomeface.png", &playerTexture);
-//>>>>>>> 5f147467ed9d0d24ec8e6582464a2c998020b3d8
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture(PATH_START + "resources/textures/KnifeBlue.png", &BulletSpawner::bulletPresetTextures[1]);
-    loadTexture(PATH_START + "resources/textures/fireball.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/RoundRed.png", &BulletSpawner::bulletPresetTextures[2]);
     loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
+    
+    loadTexture(PATH_START + "resources/textures/fireball.png", &BulletSpawner::bulletPresetTextures[19]);
+    
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
     loadTexture(PATH_START + "resources/textures/icevsfire.jpg", &Sprite::backgroundTextures[0]);
 
@@ -160,12 +154,6 @@ void GameWindow::render() {
 
 void GameWindow::update() {
 
-    //bomb!
-    if (KeyInput::isPressed("X")) {
-        std::cout << "Bombed!";
-        clearScreen();
-    }
-
     scene->update();
 }
 
@@ -219,8 +207,15 @@ void GameWindow::checkCollisions() {
             for (std::shared_ptr<Enemy> e : Enemy::enemies) {
                 if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                     //collision detected between enemy and player bullet, do something!
-                    std::cout << "Hit enemy!" << std::endl;
-                    b->destroy();
+                    
+                    if (b->isPlayerHomingBullet) {
+                        e->takeDamage(dchoice(0.5f, 0.334f, 0.25f));
+                        b->destroy();
+                    }
+                    else {
+                        e->takeDamage();
+                        b->collisionEnabled = false;
+                    }
                 }
             }
         }
@@ -271,7 +266,7 @@ void GameWindow::clearBullets() {
 void GameWindow::initializePlayer() {
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 15.0f;
+    playerHitbox.radius = 10.0f;
     //dosmth with the player hitbox
     player = std::make_shared<Player>(playerHitbox, playerTexture);
 }

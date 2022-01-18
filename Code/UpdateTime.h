@@ -17,7 +17,7 @@ public:
 	//use this if you want, not necessary
 	glm::vec2 dir = glm::vec2(0.0f, -1.0f);
 	//use this if you want, not necessary
-	float speed = 10.0f;
+	float speed = 0.0f;
 
 	glm::vec2 getVelocity() { return dir * speed; }
 	void setVelocity(glm::vec2 vel) { dir = normalizeSafe(vel); speed = glm::length(vel); }
@@ -80,6 +80,7 @@ public:
 
 	void frameUpdate(T* derivedpointer) {
 		currTime += 1.0f;
+		triggerNum = 0;
 		numWaits = 0;
 		waitTime = 0;
 		updatefunc(derivedpointer);
@@ -91,6 +92,7 @@ public:
 
 	//do not nest waits. This will break things
 	bool wait(float time, float numTrue = 1.0f) {
+		assert(time >= 0);
 		numWaits += 1;
 		waitTime += time;
 		//std::cout << currTime << " " << timeWaited << " " << numTrue << " " << numWaits << " " << numWaitTrue << "\n";
@@ -107,6 +109,26 @@ public:
 		else {
 			return false;
 		}
+	}
+
+	std::vector<float> triggerTimes;
+	int triggerNum = 0;
+
+	bool waitForTrigger(bool cond, float maxWaitTime) {
+		//make sure this works properly when shouldRun is false
+		triggerNum += 1;
+		float wt = currTime - waitTime;
+		if (triggerTimes.size() >= triggerNum) {
+			maxWaitTime = triggerTimes[triggerNum - 1];
+		}
+		else if (shouldRun && cond) {
+			maxWaitTime = std::clamp(wt, 0.0f, maxWaitTime);
+		}
+		bool res = wait(maxWaitTime);
+		if (res) {
+			triggerTimes.push_back(wt);
+		}
+		return res;
 	}
 
 	bool waitUntil(float time, float numTrue = 1.0f) {
@@ -127,6 +149,8 @@ public:
 	}
 
 	void reInitializeTime() {
+		triggerTimes.clear();
+		triggerNum = 0;
 		timeWaited = 0.0f;
 		waitTime = 0.0f;
 		numWaits = 0;

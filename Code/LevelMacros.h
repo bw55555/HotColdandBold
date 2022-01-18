@@ -36,15 +36,39 @@
 #define everyo(obj, interval, offset) if (obj->frameInterval(interval, offset))
 
 
+//every interval frames, declaring reduced time as reducedTimeName
+#define rtevery(obj, reducedTimeName, interval) if (float reducedTimeName = rt(obj, interval); obj->frameInterval(interval))
+
+
+//every interval frames, with an offset, declaring reduced time as reducedTimeName
+#define rteveryo(obj, reducedTimeName, interval, offset) if (float reducedTimeName = rt(obj, interval); obj->frameInterval(interval, offset))
+
+
 //better name plz...
 //For Y frames Every X frames
 #define fyex(obj, x, y) if (obj->frameInterval(x, 0, y))
 
 
-
 //too bad no easy support for overloading macros... if someone wants to figure this out go ahead
 //For Y frames Every X frames at Offset o
 #define fyexo(obj, x, y, o) if (obj->frameInterval(x, o, y))
+
+
+//For Y frames Every X frames, declaring reduced time
+#define rtfyex(obj, reducedTimeName, x, y) if (float reducedTimeName = rt(obj, x); obj->frameInterval(x, 0, y))
+
+
+//For Y frames Every X frames at Offset o, declaring reduced time
+#define rtfyexo(obj, reducedTimeName, x, y, o) if (float reducedTimeName = rt(obj, x); obj->frameInterval(x, o, y))
+
+
+//to make timecurves easier to use, expr should return a float between 0 and 1
+#define addTC(timeCurveObj, _maxTime, timeCurvePart, exprTimeVar, expr) {float maxTime = _maxTime; float exprTimeVar = maxTime; float maxTCPartEvalTime = expr; exprTimeVar = std::clamp(timeCurveObj.TCcurrTime, 0.0f, static_cast<float>(maxTime)); timeCurveObj.TCcurrTime -= static_cast<float>(maxTime); timeCurveObj.TCreturnTime += static_cast<float>(timeCurvePart) * static_cast<float>(expr) / maxTCPartEvalTime;}
+
+
+//with constexpr, to make timecurves easier to use
+//#define addTC(timeCurveObj, maxTime, timeCurvePart, exprTimeVar, expr) {float exprTimeVar = std::clamp(timeCurveObj.TCcurrTime, 0.0f, static_cast<float>(maxTime)); timeCurveObj.TCcurrTime -= static_cast<float>(maxTime); {const exprTimeVar = maxTime; constexpr maxTCEvaluatedTime = expr; timeCurveObj.TCreturnTime += static_cast<float>(timeCurvePart) * static_cast<float>(expr) / static_cast<float>(maxTime);}}
+
 
 /*
 * --------------
@@ -66,6 +90,14 @@
 
 //wait for, returns true n times. Increases the wait timer **by** time. 
 #define wf2(obj, time, n) if (obj->wait(time, n))
+
+
+//wait for trigger at most maxWaitTime frames
+#define wft(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime))
+
+
+// delay minWaitTime, then wait for trigger at most maxWaitTime frames
+#define wfmt(obj, cond, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(cond, maxWaitTime - minWaitTime))
 
 
 //wait until. Increases the wait timer **to** time. 
@@ -92,8 +124,8 @@
 #define after(obj, time) if (obj->wait(time, -1.0f))
 
 
-//do nothing for time frames. Does not increase the wait timer. 
-#define sleep(obj, time) if (obj->wait(0, time)) {return;}
+//returns true once after time frames. does not increase the wait timer.
+#define when(obj, time) if (obj->wait(0, time) && nt(obj) == (time)-1)
 
 
 //do nothing for time frames. Increases the wait timer by time.
@@ -102,6 +134,18 @@
 
 //do nothing until time frames. Increases the wait timer to time.
 #define delayTo(obj, time) if (obj->waitUntil(time)) {return;}
+
+
+//delay until trigger
+#define delayTrigger(obj, cond, maxWaitTime) if (obj->waitForTrigger(cond, maxWaitTime)) {}
+
+
+//delay at least minWaitTime time, then delay until trigger
+#define delayMinTrigger(obj, cond, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(cond, maxWaitTime - minWaitTime)) {}
+
+
+//delay until enemy wave is cleared
+#define delayClear(obj, minWaitTime, maxWaitTime) delay(obj, minWaitTime); if (obj->waitForTrigger(Enemy::enemies.size() == 0, maxWaitTime - minWaitTime)) {}
 
 
 //do this only once immediately (equivalent to wf(obj, 0))
@@ -143,8 +187,8 @@
 #define nstacki(vname, iname, minspd, incr, num) for (auto [vname, iname] = std::tuple{(minspd), 0}; vname<(num) * (incr) + (minspd); vname += incr, iname+=1)
 
 
-//bullet spread, vname is the variable name to insert, assumes num > 1
-#define nspread(vname, center, range, num) for (float vname = (center)-(range)/2; vname < (center) + (range)/2 + (range)/(num); vname += (range)/((num)-1))
+//bullet spread, vname is the variable name to insert, assumes range > 0, num > 0
+#define nspread(vname, center, range, num) for (float vname = (center)- (num > 1) * (range)/2; vname < (center) + (range)/2 + (range)/(num); vname += (num) <= 1 ? 2 * (range) : (range)/((num)-1))
 
 
 //bullet spread, vname is the variable name to insert, i is the index (also a variable name to insert) assumes num > 1

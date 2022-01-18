@@ -13,6 +13,7 @@ public:
     float speed;
     float currTime;
     float lastFired;
+    float lastHomingFired;
     float health;
     float invTimer;
     float heat;
@@ -29,6 +30,7 @@ public:
     void takeDamage();
     void destroy();
     void respawn();
+    void bomb();
 
     void collect(DropItem* item);
     bool checkGraze(Bullet* b);

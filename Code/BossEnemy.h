@@ -5,13 +5,15 @@ class BossEnemy :
     public Enemy
 {
 public:
-    static std::shared_ptr<Enemy> makeBossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
+    static std::shared_ptr<Enemy> makeBossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
 
-    BossEnemy(Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
+    BossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, unsigned int textureID, void (*func)(Enemy*), glm::vec3 scaling = glm::vec3(100.0f));
     ~BossEnemy();
 
     static std::unique_ptr<Sprite> bossHealthBar;
     void createBossHealthBar();
+
+    float maxHealth = 0.0f;
 
     int numPhases = 1;
     int currPhase = 1;
@@ -20,8 +22,10 @@ public:
     int countPhases();
     bool onNextPhase();
 
-    void destroy();
+    void destroy(DestroyReason reason);
     void update();
     void draw() override;
+
+    void setMaxHealth(float _maxHealth);
 };
 

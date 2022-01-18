@@ -5,6 +5,8 @@
 
 class GameWindow;
 
+enum class DestroyReason { Timeout, Damage };
+
 enum class HitboxType {Circle, Box, None};
 
 enum class WallDirection { Left, Right, Up, Down, AnyHorizontal, AnyVertical, Any };
