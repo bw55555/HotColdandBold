@@ -99,6 +99,7 @@ void Player::destroy() {
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;
+	GameWindow::Instance->loadScene(SceneName::GameOver);
 }
 
 void Player::respawn() {

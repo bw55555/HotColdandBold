@@ -19,7 +19,7 @@ public:
 	typedef std::unordered_map<ButtonState, glm::vec4> ColorMap;
 	ColorMap colormap{ {ButtonState::Inactive, glm::vec4(0.7f, 0.7f, 0.7f, 1.0f)}, 
 		{ButtonState::Active, glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)},
-		{ButtonState::Selected, glm::vec4(1.0f, 1.0f, 0.0f, 1.0f)} };
+		{ButtonState::Selected, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)} };
 	void setColorMap(glm::vec4 inactiveColor, glm::vec4 activeColor, glm::vec4 selectedColor) { colormap = ColorMap{ {ButtonState::Selected, selectedColor}, {ButtonState::Active, activeColor}, {ButtonState::Inactive, inactiveColor} }; }
 	void setColorMap(ColorMap c) { colormap = c; }
 	bool isSelected() {

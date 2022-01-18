@@ -22,6 +22,7 @@ private:
 public: 
 	static unsigned int circleHitboxTexture;
 	static unsigned int VAO;
+	static unsigned int backgroundTextures[];
 	static std::vector<std::shared_ptr<Sprite>> spriteList;
 	static std::shared_ptr<Sprite> makeSprite(unsigned int textureID, glm::vec3 scaling = glm::vec3(1000.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);
 	Sprite(unsigned int textureID, glm::vec3 scaling = glm::vec3(1000.0f), glm::vec3 offset = glm::vec3(0.0f), float rotation = 0.0f);

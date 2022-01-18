@@ -132,6 +132,7 @@
     <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameLevel.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="glad_wgl.c" />
@@ -174,6 +175,7 @@
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBuilder.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="KeyInput.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
