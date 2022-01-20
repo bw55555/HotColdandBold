@@ -3,7 +3,7 @@
 #include "Audio.h"
 #include <unordered_map>
 
-enum class SFXType {Shot};
+enum class SFXType {Shot, EnemyDeath, PlayerDeath};
 
 class SoundEffect : public Audio {
 public:

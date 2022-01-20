@@ -3,7 +3,7 @@
 
 using namespace irrklang;
 
-SoundEffect::SFXPlayMap SoundEffect::playedThisFrame{ {SFXType::Shot, false} };
+SoundEffect::SFXPlayMap SoundEffect::playedThisFrame;//{ {SFXType::Shot, false}, {SFXType::EnemyDeath, false}, {SFXType::PlayerDeath, false} };
 
 std::shared_ptr<SoundEffect> SoundEffect::play(std::string filePath, bool shouldReturn) {
 	ISound* sound = SoundEngine->play2D((PATH_START + filePath).c_str(), false, true);
