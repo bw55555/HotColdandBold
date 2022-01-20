@@ -3,15 +3,21 @@
 
 using irrklang::ISound, irrklang::ISoundEngine;
 
-float Audio::bgVolume = 1.0f;
-float Audio::sfxVolume = 1.0f;
-irrklang::ISoundEngine* Audio::SoundEngine = irrklang::createIrrKlangDevice();
+float Audio::bgVolume = 0.6f;
+float Audio::sfxVolume = 0.3f;
 
-std::shared_ptr<Audio> Audio::playSound(std::string filePath) {
-	SoundEngine->play2D(filePath.c_str(), true);
-	return nullptr;
+std::shared_ptr<Audio> Audio::playSound(std::string filePath, bool loop, bool shouldReturn) {
+	ISound* sound = SoundEngine->play2D((PATH_START + filePath).c_str(), loop, true);
+	sound->setVolume(static_cast<double>(bgVolume));
+	sound->setIsPaused(false);
+	if (!shouldReturn) { return nullptr; }
+	return std::make_shared<Audio>(sound);
 }
 
 void Audio::dropEngine() {
 	SoundEngine->drop();
+}
+
+Audio::~Audio() {
+	sound->drop();
 }

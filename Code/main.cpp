@@ -18,10 +18,13 @@
 #include "UIRect.h"
 #include "BossEnemy.h"
 #include "Audio.h"
+#include <irrklang/irrKlang.h>
 
 extern std::string PATH_START = "";
 std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+
+irrklang::ISoundEngine* Audio::SoundEngine = irrklang::createIrrKlangDevice();
 
 std::unique_ptr<Sprite> BossEnemy::bossHealthBar = nullptr;
 KeyInput::KeyMap KeyInput::keys;
@@ -114,7 +117,11 @@ int main() {
     bool debugMode = false;
     bool canAdvance = false;
 
-    Audio::playSound(PATH_START + "resources/audio/mainloop.mp3");
+    if (!Audio::SoundEngine) {
+        std::cout << "Failed to create Sound Engine";
+    }
+
+    Audio::playSound("resources/audio/mainloop.mp3", true);
 
     KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
     KeyInput::track("P", GLFW_KEY_P, 1000000);

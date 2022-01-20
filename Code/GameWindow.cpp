@@ -8,6 +8,8 @@
 #include "MainMenu.h"
 #include "UI.h"
 #include "PauseMenu.h"
+#include "Audio.h"
+#include "SoundEffect.h"
 
 extern std::string PATH_START;
 
@@ -153,7 +155,7 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-
+    SoundEffect::clearPlayed();
     scene->update();
 }
 
