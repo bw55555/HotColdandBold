@@ -7,7 +7,7 @@ SoundEffect::SFXPlayMap SoundEffect::playedThisFrame;//{ {SFXType::Shot, false},
 
 std::shared_ptr<SoundEffect> SoundEffect::play(std::string filePath, bool shouldReturn) {
 	ISound* sound = SoundEngine->play2D((PATH_START + filePath).c_str(), false, true);
-	sound->setVolume(sfxVolume);
+	sound->setVolume(0.2f * sfxVolume);
 	sound->setIsPaused(false);
 	if (!shouldReturn) { return nullptr; }
 	return std::make_shared<SoundEffect>(sound);

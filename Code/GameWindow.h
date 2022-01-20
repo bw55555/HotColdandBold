@@ -8,6 +8,7 @@
 #include "KeyInput.h"
 #include "Settings.h"
 #include "WindowVar.h"
+#include "SoundEffect.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -26,6 +27,8 @@ public:
 	float frameRate;
 	bool paused = false;
 	std::shared_ptr<Scene> pauseMenu = nullptr;
+
+	std::shared_ptr<Audio> mainLoopMusic;
 
 	static Settings settings;
 

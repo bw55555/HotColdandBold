@@ -20,5 +20,8 @@ public:
 	static void dropEngine();
 
 	Audio(irrklang::ISound* _sound) { sound = _sound; };
+	
+	void setVolume(float volume);
+
 	virtual ~Audio();
 };

@@ -143,6 +143,7 @@
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="SettingsMenu.cpp" />
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="UIRect.cpp" />
     <ClCompile Include="Movement.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Audio.h" />
+    <ClInclude Include="SettingsMenu.h" />
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="UIRect.h" />
     <ClInclude Include="Scene.h" />

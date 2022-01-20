@@ -117,11 +117,7 @@ int main() {
     bool debugMode = false;
     bool canAdvance = false;
 
-    if (!Audio::SoundEngine) {
-        std::cout << "Failed to create Sound Engine";
-    }
-
-    Audio::playSound("resources/audio/mainloop.mp3", true);
+    
 
     KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
     KeyInput::track("P", GLFW_KEY_P, 1000000);
