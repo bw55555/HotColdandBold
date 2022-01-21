@@ -22,7 +22,7 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
-        /*L1Part1(l);
+        L1Part1(l);
         L1Part2(l);
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
@@ -36,7 +36,7 @@ namespace Level {
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
         }
-        delayClear(l, 30.0f, 10000.0f);*/
+        delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
             GameWindow::Instance->setWin(true);
         }
