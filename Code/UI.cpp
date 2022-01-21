@@ -38,7 +38,7 @@ void UI::update() {
     texts[8]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->heat));
     texts[10]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->continues));
     std::stringstream s;
-    s << std::setprecision(3) << GameWindow::Instance->frameRate << "fps";
+    s << std::setprecision(2) << GameWindow::Instance->frameRate << "fps";
     texts[11]->text = s.str();
     if (GameWindow::Instance->paused) {
         GameWindow::Instance->pauseMenu->update();
