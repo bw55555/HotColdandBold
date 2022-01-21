@@ -19,6 +19,13 @@ public:
     float heat;
     int continues;
 
+    float overHeatTime = -1.0f;
+    float superchargeHeatInstant = 0.0f;
+    float superchargeHeatPermanent = 0.0f;
+    float superchargeHeatMax = 100.0f;
+
+    float noInstantHeatTimer = 0.0f;
+
     int grazeAmount;
     bool destroyed;
 
@@ -32,6 +39,7 @@ public:
     void destroy();
     void respawn();
     void bomb();
+    void addHeat(float amt);
 
     void collect(DropItem* item);
     bool checkGraze(Bullet* b);

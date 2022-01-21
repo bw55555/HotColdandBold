@@ -7,6 +7,7 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 	continues = 3;
 	grazeAmount = 0;
 	bombs = 100.0f;
+	superchargeHeatMax = 250.0f;
 	initialize();
 }
 
@@ -15,7 +16,7 @@ void Player::initialize() {
 	lastHomingFired = 0.0f;
 	currTime = 0.0f;
 	speed = 25.0f;
-	invTimer = 0.0f;
+	invTimer = -1.0f;
 	destroyed = false;
 	collisionEnabled = true;
 	renderEnabled = true;
@@ -27,12 +28,36 @@ void Player::update() {
 	if (heat > 0 && static_cast<int>(currTime) % 6 == 0) {
 		heat -= 1.0f - focus * 0.2f;
 	}
-	if (lastFired > 0) {
-		lastFired -= 1;
+	lastFired -= (lastFired > 0) * 1.0f;
+	lastHomingFired -= (lastHomingFired > 0) * 1.0f;
+	superchargeHeatInstant -= (superchargeHeatInstant > 0) * 1.0f;
+	noInstantHeatTimer -= (noInstantHeatTimer > 0) * 1.0f;
+
+	if (superchargeHeatInstant + superchargeHeatPermanent >= superchargeHeatMax) {
+		overHeatTime = 480.0f;
+		superchargeHeatInstant = 0.0f;
+		superchargeHeatPermanent = 0.0f;
 	}
-	if (lastHomingFired > 0) {
-		lastHomingFired -= 1;
+
+	if (invTimer > 0) {
+		invTimer -= 1;
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
+	} else if (invTimer == 0.0f) {
+		invTimer -= 1;
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
+
+	if (overHeatTime > 0) {
+		overHeatTime -= 1.0f;
+		color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+	}
+	else if (overHeatTime == 0.0f) {
+		overHeatTime = -1.0f;
+		health += 1;
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		//sound effect here
+	}
+
 	checkMovement();
 	//bomb!
 	if (KeyInput::isPressed("X")) {
@@ -40,13 +65,9 @@ void Player::update() {
 	}
 	if (KeyInput::isPressed("Z"))
 		fire();
-	if (invTimer > 0) {
-		invTimer -= 1;
-		color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	}
-	else {
-		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	}
+
+
+	
 }
 
 void Player::checkMovement() {
@@ -105,6 +126,14 @@ void Player::fire() {
 }
 
 void Player::takeDamage() {
+	if (overHeatTime >= 0.0f) {
+		overHeatTime = -1.0f;
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		GameWindow::Instance->clearBullets();
+		//sound effect here
+		return;
+	}
+
 	if (invTimer <= 0) {
 		health -= 1;
 		if (health <= 0) {
@@ -121,13 +150,24 @@ void Player::destroy() {
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;
+	superchargeHeatInstant = 0.0f;
+	GameWindow::Instance->clearBullets();
 	GameWindow::Instance->setLost(true);
 }
 
 void Player::respawn() {
 	GameWindow::Instance->clearBullets();
 	invTimer = 180.0f;
+	superchargeHeatInstant = 0.0f;
 	//do something!
+}
+
+void Player::addHeat(float amt) {
+	heat += amt;
+	if (noInstantHeatTimer <= 0.0f && overHeatTime == -1.0f) {
+		superchargeHeatInstant += 9 * amt / 10.0f;
+	}
+	superchargeHeatPermanent += amt / 10.0f;
 }
 
 void Player::collect(DropItem* item) {
@@ -136,10 +176,10 @@ void Player::collect(DropItem* item) {
 		health += 1.0f;
 		break;
 	case DropItemType::Heat:
-		heat += 10.0f;
+		addHeat(10.0f);
 		break;
 	case DropItemType::LargeHeat:
-		heat += 100.0f;
+		addHeat(100.0f);
 		break;
 	}
 	item->destroy();
@@ -158,7 +198,11 @@ bool Player::checkGraze(Bullet* b) {
 }
 
 void Player::bomb() {
+	//maybe do something (sound effect) if can't bomb for any reason?
+	if (bombs <= 0 || heat < 300.0f) { return; }
+	noInstantHeatTimer = 60.0f;
 	bombs -= 1;
+	superchargeHeatInstant = 0.0f;
 	heat -= 300.0f;
 	for (auto& e : Enemy::enemies) {
 		e->takeDamage(100.0f);

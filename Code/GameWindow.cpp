@@ -394,6 +394,7 @@ void GameWindow::setCredits(bool cred) {
 void GameWindow::undeadify() {
     if (player->continues > 0) {
         player->continues -= 1;
+        player->invTimer = 180.0f;
         setLost(false);
     }
 }
