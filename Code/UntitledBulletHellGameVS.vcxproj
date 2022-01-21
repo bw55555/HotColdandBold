@@ -129,6 +129,7 @@
     <ClCompile Include="BulletSpawner.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CollidableObject.cpp" />
+    <ClCompile Include="Credits.cpp" />
     <ClCompile Include="DropItem.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameLevel.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="glad_wgl.c" />
     <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="Level1.cpp" />
+    <ClCompile Include="Level2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -152,6 +154,7 @@
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="WindowVar.cpp" />
+    <ClCompile Include="WinMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
@@ -172,11 +175,13 @@
     <ClInclude Include="BulletSpawner.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CollidableObject.h" />
+    <ClInclude Include="Credits.h" />
     <ClInclude Include="DropItem.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBuilder.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="KeyInput.h" />
+    <ClInclude Include="Level2.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />
@@ -194,6 +199,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="WindowVar.h" />
+    <ClInclude Include="WinMenu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

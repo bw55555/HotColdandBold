@@ -16,7 +16,12 @@ void GameLevel::update() {
     if (!GameWindow::Instance->paused && KeyInput::isPressed("ESC")) {
         GameWindow::Instance->setPause(true);
     }
-    if (!GameWindow::Instance->paused) {
+
+    if (!GameWindow::Instance->over && GameWindow::Instance->player->destroyed) {
+        GameWindow::Instance->setLost(true);
+    }
+
+    if (!GameWindow::Instance->paused && !GameWindow::Instance->over) {
 
         frameUpdate(this);
         //update player, enemy, spawners, bullets

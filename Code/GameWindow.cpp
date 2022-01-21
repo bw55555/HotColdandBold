@@ -1,5 +1,6 @@
 #include "GameWindow.h"
 #include "Level1.h"
+#include "Level2.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <Shader.h>
@@ -8,6 +9,9 @@
 #include "MainMenu.h"
 #include "UI.h"
 #include "PauseMenu.h"
+#include "GameOver.h"
+#include "WinMenu.h"
+#include "Credits.h"
 
 extern std::string PATH_START;
 
@@ -288,10 +292,13 @@ void GameWindow::loadScene(SceneName name) {
         scene = std::make_shared<GameLevel>(Level::Level1);
         break;
     case SceneName::Level2:
-        //scene = std::make_shared<GameLevel>(Level::Level1);
+        scene = std::make_shared<GameLevel>(Level::Level2);
         break;
     case SceneName::Level3:
         //scene = std::make_shared<GameLevel>(Level::Level1);
+        break;
+    case SceneName::Credits:
+        scene = std::make_shared<Credits>();
         break;
     }
 }
@@ -325,4 +332,57 @@ void GameWindow::setPause(bool _pause) {
     if (_pause == true) {
         pauseMenu = std::make_shared<PauseMenu>();
     }
+}
+
+void GameWindow::setLost(bool dead) {
+    over = dead;
+    if (over == false) {
+        overMenu = nullptr;
+        player->health = 3.0f;
+        player->initialize();
+    }
+    if (over) {
+        overMenu = std::make_shared<GameOver>();
+    }
+}
+
+void GameWindow::setWin(bool win) {
+    won = win;
+    if (won) {
+        winMenu = std::make_shared<WinMenu>();
+    }
+    if (won == false) {
+        winMenu = nullptr;
+    }
+}
+
+void GameWindow::setCredits(bool cred) {
+    credit = cred;
+    if (credit) {
+        credits = std::make_shared<Credits>();
+    }
+    if (credit == false) {
+        credits = nullptr;
+    }
+}
+
+void GameWindow::undeadify() {
+    if (player->continues > 0) {
+        player->continues -= 1;
+        setLost(false);
+    }
+}
+
+void GameWindow::mainMenu() {
+    GameWindow::Instance->loadScene(SceneName::MainMenu);
+    player->continues = 3;
+    player->health = 3.0f;
+    player->bombs = 100;
+    setLost(false);
+}
+
+void GameWindow::restart() {
+    GameWindow::Instance->loadScene(SceneName::Level1);
+    player->continues = 3;
+    setLost(false);
 }

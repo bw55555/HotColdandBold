@@ -22,6 +22,8 @@ void UI::initialize() {
     makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Heat", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 250.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 250.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("Continues", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(730.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
 
     makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
     //Reference X
@@ -34,11 +36,21 @@ void UI::update() {
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
     texts[6]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->grazeAmount));
     texts[8]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->heat));
+    texts[10]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->continues));
     std::stringstream s;
     s << std::setprecision(3) << GameWindow::Instance->frameRate << "fps";
-    texts[9]->text = s.str();
+    texts[11]->text = s.str();
     if (GameWindow::Instance->paused) {
         GameWindow::Instance->pauseMenu->update();
+    }
+    if (GameWindow::Instance->over) {
+        GameWindow::Instance->overMenu->update();
+    }
+    if (GameWindow::Instance->won) {
+        GameWindow::Instance->winMenu->update();
+    }
+    if (GameWindow::Instance->credit) {
+        GameWindow::Instance->credits->update();
     }
 }
 
@@ -60,8 +72,18 @@ void UI::render() {
 		t->draw();
 	}
 
-    if (GameWindow::Instance->paused) {
+    if (GameWindow::Instance->paused && !GameWindow::Instance->over) {
         GameWindow::Instance->pauseMenu->render();
+    }
+
+    if (GameWindow::Instance->over) {
+        GameWindow::Instance->overMenu->render();
+    }
+    if (GameWindow::Instance->won) {
+        GameWindow::Instance->winMenu->render();
+    }
+    if (GameWindow::Instance->credit) {
+        GameWindow::Instance->credits->render();
     }
 }
 

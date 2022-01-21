@@ -25,7 +25,14 @@ public:
 
 	float frameRate;
 	bool paused = false;
+	bool over = false;
+	bool won = false;
+	bool credit = false;
+	int winTimer = 0;
 	std::shared_ptr<Scene> pauseMenu = nullptr;
+	std::shared_ptr<Scene> overMenu = nullptr;
+	std::shared_ptr<Scene> winMenu = nullptr;
+	std::shared_ptr<Scene> credits = nullptr;
 
 	static Settings settings;
 
@@ -68,6 +75,12 @@ public:
 	void createEnemyTextures();
 
 	void setPause(bool _pause);
+	void setLost(bool dead);
+	void setWin(bool win);
+	void setCredits(bool cred);
+	void undeadify();
+	void mainMenu();
+	void restart();
 
 };
 

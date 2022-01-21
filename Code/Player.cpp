@@ -4,6 +4,7 @@
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
 	health = 3.0f;
+	continues = 3;
 	grazeAmount = 0;
 	bombs = 100.0f;
 	initialize();
@@ -106,7 +107,7 @@ void Player::fire() {
 void Player::takeDamage() {
 	if (invTimer <= 0) {
 		health -= 1;
-		if (health < 0) {
+		if (health <= 0) {
 			destroy();
 		}
 		else {
@@ -120,7 +121,7 @@ void Player::destroy() {
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;
-	GameWindow::Instance->loadScene(SceneName::GameOver);
+	GameWindow::Instance->setLost(true);
 }
 
 void Player::respawn() {

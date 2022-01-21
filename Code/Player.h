@@ -17,6 +17,7 @@ public:
     float health;
     float invTimer;
     float heat;
+    int continues;
 
     int grazeAmount;
     bool destroyed;

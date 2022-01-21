@@ -34,13 +34,13 @@ void MainMenu::update() {
 }
 
 void DifficultyMenu::initialize() {
-
+	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	//in full...
-	createButton("Easy", []() {GameWindow::Instance->startGame(Difficulty::Easy, GameMode::All); }, glm::vec2(0.0f), glm::vec2(1.0f), 0, HTA::Center, VTA::Center);
+	createButton("Easy", []() {GameWindow::Instance->startGame(Difficulty::Easy, GameMode::All); }, glm::vec2(0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 
 	//you can omit the last 4 parameters...
-	createButton("Normal", []() {GameWindow::Instance->startGame(Difficulty::Normal, GameMode::All); }, glm::vec2(0.0f, -60.0f));
-	createButton("Hard", []() {GameWindow::Instance->startGame(Difficulty::Hard, GameMode::All); }, glm::vec2(0.0f, -120.0f));
+	createButton("Normal", []() {GameWindow::Instance->startGame(Difficulty::Normal, GameMode::All); }, glm::vec2(0.0f, -100.0f), glm::vec2(2.0f));
+	createButton("Hard", []() {GameWindow::Instance->startGame(Difficulty::Hard, GameMode::All); }, glm::vec2(0.0f, -200.0f), glm::vec2(2.0f));
 	//createButton("X", doNothingFunc, glm::vec3(1.0f), glm::vec3(0.0f), 0, HTA::Center, VTA::Center);
 }
 
