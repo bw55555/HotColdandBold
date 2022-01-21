@@ -7,7 +7,7 @@ Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(co
 	continues = 3;
 	grazeAmount = 0;
 	bombs = 100.0f;
-	superchargeHeatMax = 250.0f;
+	superchargeHeatMax = 240.0f;
 	initialize();
 }
 

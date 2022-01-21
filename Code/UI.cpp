@@ -100,6 +100,9 @@ void UI::render() {
     if (BossEnemy::bossHealthBar != nullptr) {
         BossEnemy::bossHealthBar->draw();
     }
+    if (BossEnemy::bossTimerSprite != nullptr) {
+        BossEnemy::bossTimerSprite->draw();
+    }
 
 	for (auto& t : texts) {
 		t->draw();

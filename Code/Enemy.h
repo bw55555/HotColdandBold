@@ -41,5 +41,7 @@ public:
     DestroyFunc dfunc = doNothingFunc;
     void setDFunc(DestroyFunc d) { dfunc = d; }
     static DestroyFunc spawnDropOnDeath(DropItemType d);
+
+    virtual float getBossTimer() { return 0.0f; };
 };
 

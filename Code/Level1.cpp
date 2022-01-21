@@ -22,9 +22,9 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
-        L1Part1(l);
-        L1Part2(l);
-        L1Part3(l);
+        //L1Part1(l);
+        //L1Part2(l);
+        //L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
@@ -298,7 +298,6 @@ namespace Level {
     */
 
     void minibossUFunc(Ep e) {
-        float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
             wf(e, 90.0f) { e->createBulletSpawner(minibossPattern1); 
             BSp s1 = e->createBulletSpawner(glm::vec2(0.0f, 100.0f), minibossPattern1Sub);
@@ -306,13 +305,11 @@ namespace Level {
             BSp s2 = e->createBulletSpawner(glm::vec2(0.0f, -100.0f), minibossPattern1Sub);
             s2->initializeCustomVars(static_cast<int>(BulletType::RoundRed));
             }
-            wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(minibossPattern2);
             }
-            wf(e, destroyTime) { e->destroy(); }
         }
     }
 
@@ -534,13 +531,9 @@ namespace Level {
     */
 
     void bossUFunc(Enemy* e) {
-        float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern7); }
-            wf(e, destroyTime) {
-                e->destroy();
-            }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
@@ -550,9 +543,6 @@ namespace Level {
                 every(e, 60) e->dir = randomDir();
                 fyexo(e, 60, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             }
-            wf(e, destroyTime) {
-                e->destroy();
-            }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
@@ -561,29 +551,22 @@ namespace Level {
                 every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
                 fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             }
-            wf(e, destroyTime) { 
-                e->destroy(); 
-            }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern2); }
-            wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern3); }
-            wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern4); }
-            wf(e, destroyTime) { e->destroy(); }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern5); }
-            wf(e, destroyTime) { e->destroy(); }
         }
     }
 

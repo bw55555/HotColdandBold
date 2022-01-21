@@ -18,6 +18,7 @@
 #include "UIRect.h"
 #include "BossEnemy.h"
 #include "Audio.h"
+#include "Text.h"
 #include <irrklang/irrKlang.h>
 
 extern std::string PATH_START = "";
@@ -27,7 +28,6 @@ int mainloop();
 
 irrklang::ISoundEngine* Audio::SoundEngine = irrklang::createIrrKlangDevice();
 
-std::unique_ptr<Sprite> BossEnemy::bossHealthBar = nullptr;
 KeyInput::KeyMap KeyInput::keys;
 int KeyInput::currFrame = -1;
 std::shared_ptr<GameWindow> GameWindow::Instance;
