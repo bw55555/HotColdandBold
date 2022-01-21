@@ -97,7 +97,8 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/icevsfire.jpg", &Sprite::backgroundTextures[0]);
 
     loadTexture(PATH_START + "resources/textures/Heat.png", &DropItem::itemTextures[0]);
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
+    DropItem::itemTextures[1] = DropItem::itemTextures[0];
+    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
     createEnemyTextures();
     
@@ -161,7 +162,6 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-    SoundEffect::clearPlayed();
     scene->update();
 }
 

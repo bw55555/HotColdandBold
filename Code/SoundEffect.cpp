@@ -1,9 +1,10 @@
 #include "SoundEffect.h"
 #include <irrklang/irrKlang.h>
+#include "KeyInput.h"
 
 using namespace irrklang;
 
-SoundEffect::SFXPlayMap SoundEffect::playedThisFrame;//{ {SFXType::Shot, false}, {SFXType::EnemyDeath, false}, {SFXType::PlayerDeath, false} };
+SoundEffect::SFXPlayMap SoundEffect::lastPlayed;//{ {SFXType::Shot, false}, {SFXType::EnemyDeath, false}, {SFXType::PlayerDeath, false} };
 
 std::shared_ptr<SoundEffect> SoundEffect::play(std::string filePath, bool shouldReturn) {
 	ISound* sound = SoundEngine->play2D((PATH_START + filePath).c_str(), false, true);
@@ -14,8 +15,8 @@ std::shared_ptr<SoundEffect> SoundEffect::play(std::string filePath, bool should
 }
 
 std::shared_ptr<SoundEffect> SoundEffect::play(SFXType t, bool shouldReturn) {
-	if (!playedThisFrame[t]) {
-		playedThisFrame[t] = true;
+	if (lastPlayed[t] + 6 <= KeyInput::currFrame) {
+		lastPlayed[t] = KeyInput::currFrame;
 		switch (t) {
 		case SFXType::Shot:
 			return play("resources/audio/shot.wav", shouldReturn);
@@ -26,10 +27,4 @@ std::shared_ptr<SoundEffect> SoundEffect::play(SFXType t, bool shouldReturn) {
 
 SoundEffect::~SoundEffect() {
 	sound->drop();
-}
-
-void SoundEffect::clearPlayed() {
-	for (auto p : playedThisFrame) {
-		playedThisFrame[p.first] = false;
-	}
 }
