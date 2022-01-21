@@ -12,7 +12,12 @@ unsigned int UI::textureColorbuffer = 0;
 glm::vec2 UI::UIsize{2 * GameWindow::halfWidth + 1600, 2 * GameWindow::halfHeight + 100};
 glm::mat4 UI::UIprojection = glm::ortho(-UI::UIsize.x / 2, UI::UIsize.x / 2, -UI::UIsize.y / 2, UI::UIsize.y / 2);
 
+glm::vec2 overheatBarSLoc{ 730.0f, -300.0f };
+glm::vec2 overheatBarSScale{ 400.0f, 32.0f };
+
 void UI::initialize() {
+    makeRect(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f), Scale(UIsize.x, UIsize.y));
+
     makeText("Score", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Lives", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
@@ -26,20 +31,47 @@ void UI::initialize() {
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(730.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
 
     makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
+    
+
+    //overheat bar
+    makeRect(glm::vec4(0.6f, 1.0f, 1.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, overheatBarSScale);
+
+    //permanent heat
+    makeRect(glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(0.0f, 32.0f));
+
+    //instant heat
+    makeRect(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(0.0f, 32.0f));
+    
+
     //Reference X
-    makeText("X", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f));
-    makeRect(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f), Scale(UIsize.x, UIsize.y));
+    //makeText("X", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec2(1.0f));
+    
 }
 
 void UI::update() {
+    
+    //playerData
     texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
     texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
     texts[6]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->grazeAmount));
     texts[8]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->heat));
     texts[10]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->continues));
+    
+    //overheat
+    sprites[2]->scale.x = overheatBarSScale.x* GameWindow::Instance->player->superchargeHeatPermanent / GameWindow::Instance->player->superchargeHeatMax;
+    sprites[2]->trans.x = overheatBarSLoc.x + 0.5f * sprites[2]->scale.x;
+
+    sprites[3]->scale.x = overheatBarSScale.x * GameWindow::Instance->player->superchargeHeatInstant / GameWindow::Instance->player->superchargeHeatMax;
+    sprites[3]->trans.x = overheatBarSLoc.x + sprites[2]->scale.x + 0.5f * sprites[3]->scale.x;
+
+    //framerate
     std::stringstream s;
     s << std::setprecision(2) << GameWindow::Instance->frameRate << "fps";
     texts[11]->text = s.str();
+
+
+
+
     if (GameWindow::Instance->over) {
         GameWindow::Instance->overMenu->update();
     }
