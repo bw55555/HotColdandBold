@@ -136,6 +136,10 @@ void Player::collect(DropItem* item) {
 		break;
 	case DropItemType::Heat:
 		heat += 10.0f;
+		break;
+	case DropItemType::LargeHeat:
+		heat += 100.0f;
+		break;
 	}
 	item->destroy();
 }
