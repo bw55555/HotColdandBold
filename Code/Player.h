@@ -26,6 +26,8 @@ public:
 
     float noInstantHeatTimer = 0.0f;
 
+    float deathbombTimer = -1.0f;
+
     int grazeAmount;
     bool destroyed;
 

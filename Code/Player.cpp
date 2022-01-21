@@ -33,18 +33,27 @@ void Player::update() {
 	superchargeHeatInstant -= (superchargeHeatInstant > 0) * 1.0f;
 	noInstantHeatTimer -= (noInstantHeatTimer > 0) * 1.0f;
 
+	if (deathbombTimer >= 0.0f) {
+		if (deathbombTimer == 0.0f) {
+			takeDamage();
+		}
+		deathbombTimer -= 1.0f;
+	}
+
 	if (superchargeHeatInstant + superchargeHeatPermanent >= superchargeHeatMax) {
 		overHeatTime = 480.0f;
 		superchargeHeatInstant = 0.0f;
 		superchargeHeatPermanent = 0.0f;
 	}
 
-	if (invTimer > 0) {
+	if (invTimer >= 0) {
+		if (invTimer == 0.0f) {
+			color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		}
+		else {
+			color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
+		}
 		invTimer -= 1;
-		color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
-	} else if (invTimer == 0.0f) {
-		invTimer -= 1;
-		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
 	if (overHeatTime > 0) {
@@ -134,7 +143,11 @@ void Player::takeDamage() {
 		return;
 	}
 
-	if (invTimer <= 0) {
+	if (deathbombTimer == -1.0f) {
+		collisionEnabled = false;
+		deathbombTimer = 10.0f;
+		//sound effect here
+	} else if (invTimer <= 0) {
 		health -= 1;
 		if (health <= 0) {
 			destroy();
@@ -157,6 +170,7 @@ void Player::destroy() {
 
 void Player::respawn() {
 	GameWindow::Instance->clearBullets();
+	collisionEnabled = true;
 	invTimer = 180.0f;
 	superchargeHeatInstant = 0.0f;
 	//do something!
@@ -198,8 +212,14 @@ bool Player::checkGraze(Bullet* b) {
 }
 
 void Player::bomb() {
-	//maybe do something (sound effect) if can't bomb for any reason?
+	//maybe do something (sound effect here) if can't bomb for any reason?
 	if (bombs <= 0 || heat < 300.0f) { return; }
+
+	if (deathbombTimer > 0.0f) {
+		deathbombTimer = -1.0f;
+		collisionEnabled = true;
+	}
+	//sound effect here
 	noInstantHeatTimer = 60.0f;
 	bombs -= 1;
 	superchargeHeatInstant = 0.0f;
