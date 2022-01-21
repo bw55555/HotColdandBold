@@ -145,7 +145,7 @@ void Player::takeDamage() {
 
 	if (deathbombTimer == -1.0f) {
 		collisionEnabled = false;
-		deathbombTimer = 10.0f;
+		deathbombTimer = 6.0f;
 		//sound effect here
 	} else if (invTimer <= 0) {
 		health -= 1;
