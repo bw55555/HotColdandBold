@@ -8,6 +8,7 @@
 #include "KeyInput.h"
 #include "Settings.h"
 #include "WindowVar.h"
+#include "SoundEffect.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
@@ -33,6 +34,8 @@ public:
 	std::shared_ptr<Scene> overMenu = nullptr;
 	std::shared_ptr<Scene> winMenu = nullptr;
 	std::shared_ptr<Scene> credits = nullptr;
+
+	std::shared_ptr<Audio> mainLoopMusic;
 
 	static Settings settings;
 

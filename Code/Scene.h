@@ -2,7 +2,7 @@
 #include <vector>
 #include "Text.h"
 
-enum class SceneName { MainMenu, DifficultyMenu, Level1, Level2, Level3, Credits};
+enum class SceneName { MainMenu, DifficultyMenu, SettingsMenu, Level1, Level2, Level3, GameOver, Credits };
 
 class Scene {
 public:

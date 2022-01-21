@@ -5,7 +5,7 @@
 
 class Enemy;
 
-enum class DropItemType {Heat, Life};
+enum class DropItemType {Heat, LargeHeat, Life};
 
 class DropItem :
     public CollidableObject, public UpdateTime<DropItem>

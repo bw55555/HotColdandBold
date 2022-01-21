@@ -7,8 +7,11 @@
 #include "stb_image.h"
 #include "Text.h"
 #include "MainMenu.h"
+#include "SettingsMenu.h"
 #include "UI.h"
 #include "PauseMenu.h"
+#include "Audio.h"
+#include "SoundEffect.h"
 #include "GameOver.h"
 #include "WinMenu.h"
 #include "Credits.h"
@@ -98,10 +101,10 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/icevsfire.jpg", &Sprite::backgroundTextures[0]);
 
     loadTexture(PATH_START + "resources/textures/Heat.png", &DropItem::itemTextures[0]);
-    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[1]);
+    DropItem::itemTextures[1] = DropItem::itemTextures[0];
+    loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
     createEnemyTextures();
-
     
     Text::initializeFT();
     //scene = std::make_shared<GameLevel>(Level::Level1);
@@ -125,6 +128,12 @@ void GameWindow::initialize() {
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
         std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    if (!Audio::SoundEngine) {
+        std::cout << "Failed to create Sound Engine";
+    }
+
+    mainLoopMusic = Audio::playSound("resources/audio/mainloop.mp3", true, true);
 
     /*
     glGenFramebuffers(1, &screenFBO);
@@ -157,7 +166,6 @@ void GameWindow::render() {
 }
 
 void GameWindow::update() {
-
     scene->update();
 }
 
@@ -287,6 +295,9 @@ void GameWindow::loadScene(SceneName name) {
         break;
     case SceneName::DifficultyMenu:
         scene = std::make_shared<DifficultyMenu>();
+        break;
+    case SceneName::SettingsMenu:
+        scene = std::make_shared<SettingsMenu>();
         break;
     case SceneName::Level1:
         scene = std::make_shared<GameLevel>(Level::Level1);

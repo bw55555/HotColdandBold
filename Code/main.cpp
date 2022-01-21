@@ -17,10 +17,15 @@
 #include "KeyInput.h"
 #include "UIRect.h"
 #include "BossEnemy.h"
+#include "Audio.h"
+#include <irrklang/irrKlang.h>
 
 extern std::string PATH_START = "";
 std::shared_ptr<GameWindow> gameWindow;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+int mainloop();
+
+irrklang::ISoundEngine* Audio::SoundEngine = irrklang::createIrrKlangDevice();
 
 std::unique_ptr<Sprite> BossEnemy::bossHealthBar = nullptr;
 KeyInput::KeyMap KeyInput::keys;
@@ -47,7 +52,18 @@ struct stat info;
 float frameRateLog[60];
 int currFrameNum = 0;
 float currFrameRateSum = 1.0f;
+
+int CALLBACK WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
+    return mainloop();
+}
+
 int main() {
+    return mainloop();
+}
+
+
+
+int mainloop() {
     for (int i = 0; i < 60; i++) {
         frameRateLog[i] = 1.0f / 60.0f;
     }
@@ -71,7 +87,7 @@ int main() {
     std::cout << "Initializing GLFW window" << std::endl;
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x/2, UI::UIsize.y/2, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x / 2, UI::UIsize.y / 2, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -80,7 +96,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    
+
     // glad: load all OpenGL function pointers
     // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -94,7 +110,7 @@ int main() {
         return -1;
     }
     wglSwapIntervalEXT(1.0f);
-    Shader* s = Shader::makeShader(PATH_START+std::string("resources/shaders/SpriteShader_U.vert"), PATH_START+std::string("resources/shaders/SpriteShader_U.frag"));
+    Shader* s = Shader::makeShader(PATH_START + std::string("resources/shaders/SpriteShader_U.vert"), PATH_START + std::string("resources/shaders/SpriteShader_U.frag"));
     Shader* screenShader = Shader::makeShader(PATH_START + std::string("resources/shaders/ScreenShader.vert"), PATH_START + std::string("resources/shaders/ScreenShader.frag"));
     Shader* textShader = Shader::makeShader(PATH_START + std::string("resources/shaders/TextShader.vert"), PATH_START + std::string("resources/shaders/TextShader.frag"));
     Shader* rectShader = Shader::makeShader(PATH_START + std::string("resources/shaders/RectShader.vert"), PATH_START + std::string("resources/shaders/RectShader.frag"));
@@ -112,6 +128,9 @@ int main() {
 
     bool debugMode = false;
     bool canAdvance = false;
+
+
+
     KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
     KeyInput::track("P", GLFW_KEY_P, 1000000);
     KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
@@ -158,14 +177,14 @@ int main() {
         else if (KeyInput::isPressed("ESC")) {
             GameWindow::Instance->quit();
         }
-        
+
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
         //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;
         if (glfwGetTime() - currFrame > 1000.0f / 60.0f) {
             std::cout << "FR: " << 1.0f / (glfwGetTime() - currFrame) << std::endl;
         }
-        
+
         //_sleep(1000.0f / 60.0f - (glfwGetTime() - currFrame) - 0.06f);
         currFrameRateSum -= frameRateLog[currFrameNum];
         frameRateLog[currFrameNum] = glfwGetTime() - currFrame;
@@ -176,9 +195,10 @@ int main() {
             currFrameNum = 0;
             std::cout << "TFR: " << GameWindow::Instance->frameRate << " B: " << Bullet::bullets.size() << std::endl;
         }
-        
+
     }
 
+    Audio::dropEngine();
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
