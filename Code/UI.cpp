@@ -40,18 +40,19 @@ void UI::update() {
     std::stringstream s;
     s << std::setprecision(2) << GameWindow::Instance->frameRate << "fps";
     texts[11]->text = s.str();
-    if (GameWindow::Instance->paused) {
-        GameWindow::Instance->pauseMenu->update();
-    }
     if (GameWindow::Instance->over) {
         GameWindow::Instance->overMenu->update();
     }
-    if (GameWindow::Instance->won) {
+    else if (GameWindow::Instance->won) {
         GameWindow::Instance->winMenu->update();
     }
-    if (GameWindow::Instance->credit) {
+    else if (GameWindow::Instance->credit) {
         GameWindow::Instance->credits->update();
     }
+    else if (GameWindow::Instance->paused) {
+        GameWindow::Instance->pauseMenu->update();
+    }
+    
 }
 
 void UI::render() {
@@ -72,18 +73,19 @@ void UI::render() {
 		t->draw();
 	}
 
-    if (GameWindow::Instance->paused && !GameWindow::Instance->over) {
-        GameWindow::Instance->pauseMenu->render();
-    }
+    
 
     if (GameWindow::Instance->over) {
         GameWindow::Instance->overMenu->render();
     }
-    if (GameWindow::Instance->won) {
+    else if (GameWindow::Instance->won) {
         GameWindow::Instance->winMenu->render();
     }
-    if (GameWindow::Instance->credit) {
+    else if (GameWindow::Instance->credit) {
         GameWindow::Instance->credits->render();
+    }
+    else if (GameWindow::Instance->paused) {
+        GameWindow::Instance->pauseMenu->render();
     }
 }
 

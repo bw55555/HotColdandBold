@@ -167,6 +167,17 @@ void GameWindow::render() {
 
 void GameWindow::update() {
     scene->update();
+    if (shouldLoadNextScene) {
+        shouldLoadNextScene = false;
+        switch (currScene) {
+        case SceneName::Level1:
+            GameWindow::Instance->loadScene(SceneName::Level2);
+            break;
+        case SceneName::Level2:
+            GameWindow::Instance->loadScene(SceneName::Credits);
+            break;
+        }
+    }
 }
 
 void GameWindow::loadTexture(std::string filePath, unsigned int* texturePointer) {
@@ -346,6 +357,7 @@ void GameWindow::setPause(bool _pause) {
 }
 
 void GameWindow::setLost(bool dead) {
+    paused = dead;
     over = dead;
     if (over == false) {
         overMenu = nullptr;
@@ -358,21 +370,23 @@ void GameWindow::setLost(bool dead) {
 }
 
 void GameWindow::setWin(bool win) {
+    paused = win;
     won = win;
     if (won) {
         winMenu = std::make_shared<WinMenu>();
     }
-    if (won == false) {
+    else {
         winMenu = nullptr;
     }
 }
 
 void GameWindow::setCredits(bool cred) {
+    paused = cred;
     credit = cred;
     if (credit) {
         credits = std::make_shared<Credits>();
     }
-    if (credit == false) {
+    else {
         credits = nullptr;
     }
 }

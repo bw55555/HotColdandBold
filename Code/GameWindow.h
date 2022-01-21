@@ -28,6 +28,7 @@ public:
 	bool paused = false;
 	bool over = false;
 	bool won = false;
+	bool shouldLoadNextScene = false;
 	bool credit = false;
 	int winTimer = 0;
 	std::shared_ptr<Scene> pauseMenu = nullptr;
