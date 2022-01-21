@@ -3,11 +3,9 @@
 #include "BulletSpawner.h"
 
 Player::Player(Hitbox collisionbox, unsigned int textureID): CollidableObject(collisionbox, glm::vec2(0.0f, -600.0f), textureID, glm::vec3(100.0f, 100.0f, 100.0f)) {
-	health = 3.0f;
-	continues = 3;
-	grazeAmount = 0;
-	bombs = 100.0f;
 	superchargeHeatMax = 240.0f;
+	speed = 25.0f;
+	continues = 3;
 	initialize();
 }
 
@@ -15,12 +13,35 @@ void Player::initialize() {
 	lastFired = 0.0f;
 	lastHomingFired = 0.0f;
 	currTime = 0.0f;
-	speed = 25.0f;
+
+	grazeAmount = 0;
+	
+	superchargeHeatPermanent = 0.0f;
+	
+	useContinue();
+	continues = 3;
+	noInstantHeatTimer = 0.0f;
 	invTimer = -1.0f;
+}
+
+void Player::useContinue() {
+	bombs = 10.0f;
+	overHeatTime = -1.0f;
+	heat = 2000.0f;
+	continues -= 1;
 	destroyed = false;
 	collisionEnabled = true;
 	renderEnabled = true;
-	heat = 2000.0f;
+	deathbombTimer = -1.0f;
+	superchargeHeatInstant = 0.0f;
+	noInstantHeatTimer = 60.0f;
+	invTimer = 180.0f;
+	if (GameWindow::Instance->settings.mode == GameMode::All) {
+		health = 3.0f;
+	}
+	else {
+		health = 100.0f;
+	}
 }
 
 void Player::update() {
@@ -142,12 +163,12 @@ void Player::takeDamage() {
 		//sound effect here
 		return;
 	}
-
-	if (deathbombTimer == -1.0f) {
+	//std::cout << deathbombTimer << "\n";
+	if (invTimer <= 0 && deathbombTimer == -1.0f) {
 		collisionEnabled = false;
 		deathbombTimer = 6.0f;
 		//sound effect here
-	} else if (invTimer <= 0) {
+	} else if (deathbombTimer == 0.0f) {
 		health -= 1;
 		if (health <= 0) {
 			destroy();

@@ -19,7 +19,7 @@ BossEnemy::BossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, u
 	createBossHealthBar();
 	numPhases = countPhases();
 	setDFunc([](Enemy* e) {
-		for (int i = 0; i < 20 - static_cast<int>((e->getBossTimer() - 30 * 60) / 120); i++) {
+		for (int i = 0; i < 20 - std::max(0, static_cast<int>((e->getBossTimer() - 30 * 60) / 120)); i++) {
 			DropItem::makeDropItem(DropItemType::Heat, e->getPos() + Movement::randomDir() * Movement::randomFloat(0.0f, 300.0f), DropItem::gravityDropFunc);
 		}
 	});

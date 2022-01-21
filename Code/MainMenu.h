@@ -16,3 +16,11 @@ public:
 	//void render() override;
 	void update() override;
 };
+
+class LevelSelectMenu : public Menu {
+public:
+	LevelSelectMenu() { initialize(); }
+	void initialize() override;
+	//void render() override;
+	void update() override;
+};

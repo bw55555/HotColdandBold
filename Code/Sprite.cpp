@@ -74,7 +74,7 @@ void Sprite::drawHitbox() {
 		if (!renderEnabled) { return; }
 		shader->use();
 		shader->setInt("texture1", 0);
-		shader->setVec4("color", color);
+		shader->setVec4("color", glm::vec4(1.0f, 1.0f, 1.0f, color.w));
 		glm::mat4 transmatrix = glm::mat4(1.0f);
 		transmatrix = glm::translate(transmatrix, trans);
 		transmatrix = glm::scale(transmatrix, glm::vec3(2 * hitbox.radius));

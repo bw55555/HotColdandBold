@@ -73,6 +73,10 @@ public:
 
 	void initializePlayer();
 	void loadScene(SceneName name);
+
+	void startGame(Difficulty d) {
+		return startGame(d, settings.mode);
+	}
 	void startGame(Difficulty, GameMode);
 
 	void checkCollisions();

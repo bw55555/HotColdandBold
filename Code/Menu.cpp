@@ -61,3 +61,15 @@ void Menu::update() {
 		selectPrev();
 	}
 }
+
+void Menu::deactivateButton(int buttonPos) {
+	buttonPos = buttonPos % static_cast<int>(buttons.size());
+	while (buttonPos < 0) { buttonPos += buttons.size(); }
+	if (buttonPos == selectedButton) {
+		selectNext();
+		if (selectedButton == buttonPos) {
+			selectedButton = -1;
+		}
+	}
+	buttons[buttonPos]->deactivate();
+}
