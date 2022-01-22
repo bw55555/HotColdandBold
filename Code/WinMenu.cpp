@@ -18,13 +18,9 @@ void WinMenu::initialize() {
 }
 
 void WinMenu::update() {
-
-	
-	int damage = 3 - GameWindow::Instance->player->health;
-	int bombsUsed = 100 - GameWindow::Instance->player->bombs;
 	int contUsed = 3 - GameWindow::Instance->player->continues;
-	texts[2]->text = std::to_string(static_cast<int>(damage));
-	texts[4]->text = std::to_string(static_cast<int>(bombsUsed));
+	texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->deaths));
+	texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombsUsed));
 	texts[6]->text = std::to_string(static_cast<int>(contUsed));
 
 	Menu::update();

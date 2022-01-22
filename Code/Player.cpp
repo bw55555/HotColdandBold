@@ -20,6 +20,8 @@ void Player::initialize() {
 	superchargeHeatPermanent = 0.0f;
 	
 	useContinue();
+	deaths = 0;
+	bombsUsed = 0;
 	continues = 3;
 	noInstantHeatTimer = 0.0f;
 	invTimer = -1.0f;
@@ -170,6 +172,7 @@ void Player::takeDamage() {
 		SoundEffect::play("resources/audio/roar.mp3", false, 2.0f);
 	} else if (deathbombTimer == 0.0f) {
 		health -= 1;
+		deaths += 1;
 		if (health <= 0) {
 			destroy();
 		}
@@ -242,6 +245,7 @@ void Player::bomb() {
 	SoundEffect::play("resources/audio/echo5.wav", false, 0.4f);
 	noInstantHeatTimer = 60.0f;
 	bombs -= 1;
+	bombsUsed += 1;
 	superchargeHeatInstant = 0.0f;
 	heat -= 300.0f;
 	for (auto& e : Enemy::enemies) {

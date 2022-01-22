@@ -138,8 +138,6 @@ int mainloop() {
 
 
     KeyInput::track("ESC", GLFW_KEY_ESCAPE, 1000000);
-    KeyInput::track("P", GLFW_KEY_P, 1000000);
-    KeyInput::track("PERIOD", GLFW_KEY_PERIOD, 20000);
     KeyInput::track("DOWN", GLFW_KEY_DOWN, -1);
     KeyInput::track("UP", GLFW_KEY_UP, -1);
     KeyInput::track("LEFT", GLFW_KEY_LEFT, -1);
@@ -168,22 +166,9 @@ int mainloop() {
         currFrame = glfwGetTime();
         glfwPollEvents();
         KeyInput::checkEvents();
-        if (KeyInput::isPressed("P")) {
-            debugMode = !debugMode;
-        }
+        //WindowVar::updatewvar();
 
-        if (KeyInput::isPressed("PERIOD", 60)) {
-            canAdvance = true;
-        }
-        WindowVar::updatewvar();
-        if (canAdvance || !debugMode) {
-            canAdvance = false;
-            gameWindow->update();
-        }
-        else if (KeyInput::isPressed("ESC")) {
-            GameWindow::Instance->quit();
-        }
-
+        gameWindow->update();
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
         gameWindow->render();
         //std::cout << glfwGetTime() - currFrame << " R " << Bullet::bullets.size() << std::endl;
