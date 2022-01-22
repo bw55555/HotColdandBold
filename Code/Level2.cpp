@@ -9,16 +9,19 @@ namespace Level {
     using namespace Movement;
     using namespace BulletMovement;
     void Level2(GLp l) {
-        L2Part1(l);
+        //L2Part1(l);
+        /*
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], miniboss2UFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(200.0f), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], miniboss2UFunc, glm::vec3(400.0f));
         }
         delayClear(l, 30.0f, 10000.0f);
         delay(l, 180.0f);
+        
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
+        */
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], boss2UFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(200.0f), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], boss2UFunc, glm::vec3(400.0f));
         }
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
@@ -216,9 +219,11 @@ namespace Level {
         float destroyTime = 3600.0f;
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern7); }
-            wf(e, destroyTime) {
-                e->destroy();
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern1); }
+            forever(e) {
+                every(e, 60) {
+                    Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(randomSign() * randomFloat(200.0f, 700.0f), randomFloat(-100.0f, 100.0f)), boss2Pattern1MinionFunc);
+                }
             }
         }
         if (e->onNextPhase()) {
@@ -267,27 +272,33 @@ namespace Level {
         }
     }
 
+    void boss2Pattern1MinionFunc(Enemy* e) {
+        once(e) { e->createBulletSpawner(boss2Pattern1MinionBSFunc); };
+        delay(e, 300.0f);
+        during(e, 60) {
+            e->color.w -= 1.0f / 60.0f;
+        }
+        wf(e, 60) {
+            e->destroy();
+        }
+    }
+
+    void boss2Pattern1MinionBSFunc(BSp s) {
+        every(s, 20) {
+            s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(targetPlayer(s->pos, 100.0f * randomDir()), 8.0f));
+        }
+    }
+
     void boss2Pattern1(BSp s) {
-        every(s, 7) {
+        every(s, 40) {
+            float rf = randomFloat(0.0f, 360.0f);
             nring(o, 4) {
-                nspread(a, o, 10, 2)
-                    s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet{ avecd(a), 10.0f });
+                nspread(a, o + rf, 10, 2)
+                    nstack(spd, 8.0f, 2.0f, 2)
+                        s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet{ avecd(a), spd });
             }
         }
-        every(s, 5) {
-            nring(o, 4) {
-                s->spawnPreset(BulletType::RoundBlue, s->pos, DirectionalBullet{ avecd(o + 45 + oscillate(t(s), -40, 40, 0.6)), 10.0f });
-                s->spawnPreset(BulletType::RoundBlue, s->pos, DirectionalBullet{ avecd(o - 45 - oscillate(t(s), -40, 40, 0.6)), 10.0f });
-                s->spawnPreset(BulletType::RoundRed, s->pos, DirectionalBullet{ avecd(o + 45 + oscillate(t(s), -40, 40, 0.6, -40)), 10.0f });
-                s->spawnPreset(BulletType::RoundRed, s->pos, DirectionalBullet{ avecd(o - 45 - oscillate(t(s), -40, 40, 0.6, -40)), 10.0f });
-            }
-        }
-        every(s, 60) {
-            nring(o, 16) {
-                avec(dir, o + t(s) / 10);
-                //s->spawnPreset(BulletType::KnifeBlue, s->pos + dir, SpinningDirectionalBullet(s->pos, 3.0f, 0.5f, 0.02f, 0.0f));
-            }
-        }
+        
     }
 
     void boss2Pattern2(BSp s) {

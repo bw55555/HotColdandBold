@@ -14,7 +14,7 @@ public:
 
 	//initialize this with all the SFX types you need in the cpp file, or it will cause errors
 	static SFXPlayMap lastPlayed;
-	static void clearPlayed();
+	//static void clearPlayed();
 
 
 	SoundEffect(irrklang::ISound* _sound) : Audio(_sound) {};
