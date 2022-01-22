@@ -1,6 +1,7 @@
 #include "BulletSpawner.h"
 #include "Enemy.h"
 #include "SoundEffect.h"
+#include "GameWindow.h"
 
 BulletSpawner::BulletSpawner(std::shared_ptr<Enemy> parentPointer, glm::vec2 initialPos, void (*func)(BulletSpawner*)) : UpdateTime<BulletSpawner>(func){
 	parent = std::weak_ptr<Enemy>(parentPointer);
@@ -34,7 +35,8 @@ std::shared_ptr<Bullet> BulletSpawner::spawnBullet(Hitbox collisionbox, glm::vec
 }
 
 std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 pos, void (*func)(Bullet*)) {
-	SoundEffect::play(SFXType::Shot);
+	if (std::abs(pos.x) < GameWindow::halfWidth && std::abs(pos.y) < GameWindow::halfHeight) { SoundEffect::play(SFXType::Shot); }
+	
 	if (type == BulletType::RoundBlue) {
 		Hitbox h;
 		h.type = HitboxType::Circle;

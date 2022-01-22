@@ -18,6 +18,7 @@ BossEnemy::BossEnemy(float _health, Hitbox collisionbox, glm::vec2 initialPos, u
 	bossTimer = maxBossTimer;
 	createBossHealthBar();
 	numPhases = countPhases();
+	SoundEffect::play("resources/audio/enemy_powereffect.wav", false, 0.4f);
 	setDFunc([](Enemy* e) {
 		for (int i = 0; i < 20 - std::max(0, static_cast<int>((e->getBossTimer() - 30 * 60) / 120)); i++) {
 			DropItem::makeDropItem(DropItemType::Heat, e->getPos() + Movement::randomDir() * Movement::randomFloat(0.0f, 300.0f), DropItem::gravityDropFunc);
@@ -90,6 +91,7 @@ void BossEnemy::startNextPhase() {
 	health = maxHealth;
 	bossTimer = maxBossTimer;
 	reInitializeTime();
+	SoundEffect::play("resources/audio/enemy_powereffect.wav", false, 0.4f);
 	spawners.clear();
 	//remember to reset health and stuff... or set to a default and let 
 }

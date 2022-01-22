@@ -29,6 +29,7 @@ namespace Movement {
     };
     float randomFloat(float low, float high);
     glm::vec2 randomDir(float minAngle = 0.0f, float maxAngle = 360.0f);
+    inline float randomSign() { return 2 * (randomFloat(-1.0f, 1.0f) > 0) - 1.0f; }
 
     //oscillate and linearAccel does not return a movement speed, but a distance
     //likely should be in a different namespace, but what to name that namespace?

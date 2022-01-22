@@ -51,10 +51,12 @@ void GameLevel::update() {
             }
         }
 
-        for (std::shared_ptr<Enemy> enemy : Enemy::enemies) {
-            enemy->update();
+        int evsize = Enemy::enemies.size();
 
-            for (auto& s : enemy->spawners) {
+        for (int i = 0; i < evsize;i++) {
+            Enemy::enemies[i]->update();
+
+            for (auto& s : Enemy::enemies[i]->spawners) {
                 s->update();
             }
         }

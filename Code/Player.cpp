@@ -72,13 +72,13 @@ void Player::update() {
 	if (overHeatTime >= 0.0f) {
 		if (overHeatTime == 0.0f) {
 			health += 1;
-			Audio::playSound("resources/audio/1up.mp3", false, false);
+			SoundEffect::play("resources/audio/1up.mp3", false);
 		}
 		overHeatTime -= 1.0f;
 		float fluc = sin(overHeatTime / (6 - 2 * (overHeatTime < 180.0f) - 2 * (overHeatTime < 60.0f)));
 		color = glm::vec4(1.0f, 0.5f - 0.5f * fluc, 0.5f - 0.5f * fluc, 1.0f);
 	}
-	else if (invTimer >= 0) {
+	else if (invTimer > 0) {
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
 	}
 	else {
@@ -158,15 +158,16 @@ void Player::takeDamage() {
 	if (overHeatTime >= 0.0f) {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
+		SoundEffect::play("resources/audio/echo5.wav", false, 1.0f);
 		GameWindow::Instance->clearBullets();
-		Audio::playSound("resources/audio/ow.mp3", false, false);
 		return;
 	}
 	//std::cout << deathbombTimer << "\n";
 	if (invTimer <= 0 && deathbombTimer == -1.0f) {
 		collisionEnabled = false;
 		deathbombTimer = 6.0f;
-		Audio::playSound("resources/audio/ow.mp3", false, false);
+		SoundEffect::play("resources/audio/ow.mp3", false, 2.0f);
 	} else if (deathbombTimer == 0.0f) {
 		health -= 1;
 		if (health <= 0) {
@@ -233,12 +234,12 @@ bool Player::checkGraze(Bullet* b) {
 
 void Player::bomb() {
 	if (invTimer > 0.0f || bombs <= 0 || heat < 300.0f) { return; }
-	AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
 	if (deathbombTimer > 0.0f) {
 		deathbombTimer = -1.0f;
 		collisionEnabled = true;
 	}
-	Audio::playSound("resources/audio/echo5.wav", false, false);
+	AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
+	SoundEffect::play("resources/audio/echo5.wav", false, 0.4f);
 	noInstantHeatTimer = 60.0f;
 	bombs -= 1;
 	superchargeHeatInstant = 0.0f;

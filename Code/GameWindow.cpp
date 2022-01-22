@@ -139,7 +139,7 @@ void GameWindow::initialize() {
         std::cout << "Failed to create Sound Engine";
     }
 
-    mainLoopMusic = Audio::playSound("resources/audio/mainloop.mp3", true, true);
+    mainLoopMusic = Audio::playSound("resources/audio/mainloop.mp3", true, true, 0.4f);
 
     /*
     glGenFramebuffers(1, &screenFBO);
