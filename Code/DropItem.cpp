@@ -19,9 +19,9 @@ std::shared_ptr<DropItem> DropItem::makeDropItem(DropItemType type, glm::vec2 po
 std::shared_ptr<DropItem> DropItem::makeDropItem(DropItemType type, glm::vec2 pos, void (*func)(DropItem*)) {
 	switch (type) {
 	case DropItemType::Heat:
-		return makeDropItem(Hitbox::Box(glm::vec2(25.0f)), pos, type, func, glm::vec3(50.0f));
+		return makeDropItem(Hitbox::Box(glm::vec2(25.0f)), pos, type, func, glm::vec3(75.0f));
 	case DropItemType::LargeHeat:
-		return makeDropItem(Hitbox::Box(glm::vec2(50.0f)), pos, type, func, glm::vec3(100.0f));
+		return makeDropItem(Hitbox::Box(glm::vec2(50.0f)), pos, type, func, glm::vec3(150.0f));
 	case DropItemType::Life:
 		return makeDropItem(Hitbox::Box(glm::vec2(50.0f)), pos, type, func, glm::vec3(100.0f));
 	default:

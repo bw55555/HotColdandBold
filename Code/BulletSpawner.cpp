@@ -72,7 +72,7 @@ std::shared_ptr<Bullet> BulletSpawner::spawnPreset(BulletType type, glm::vec2 po
 	}
 	if (type == BulletType::DotWhite) {
 		//hitbox whatevers
-		return Bullet::makeBullet(Hitbox::Circle(10.0f), pos, bulletPresetTextures[4], func, glm::vec3(20.0f));
+		return Bullet::makeBullet(Hitbox::Circle(10.0f), pos, bulletPresetTextures[5], func, glm::vec3(20.0f));
 	}
 	return std::shared_ptr<Bullet>(nullptr);
 }

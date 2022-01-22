@@ -10,6 +10,7 @@ GameLevel::GameLevel(void (*func)(GameLevel*)) : UpdateTime(func) {
 
 void GameLevel::initialize() {
     ui = std::make_unique<UI>();
+    makeSprite(Sprite::backgroundTextures[GameWindow::Instance->player->level], Pos(0.0f, 0.0f), Scale(2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight));
 }
 
 void GameLevel::update() {
@@ -94,7 +95,7 @@ void GameLevel::render() {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         glViewport(0, 0, 2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight);
-        for (std::shared_ptr<Sprite> sprite : Sprite::spriteList) {
+        for (std::shared_ptr<Sprite> sprite : sprites) {
             sprite->draw();
         }
 
@@ -111,9 +112,11 @@ void GameLevel::render() {
         for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
             dropItem->draw();
         }
+        
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
         float ratio = UI::UIsize.y / UI::UIsize.x;
         glViewport(GameWindow::screenSize.x / 2 - GameWindow::screenSize.y / 2 / ratio, 0, GameWindow::Instance->screenSize.y / ratio, GameWindow::Instance->screenSize.y);
+        
     }
     ui->render();
 }

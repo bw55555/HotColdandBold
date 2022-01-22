@@ -4,6 +4,7 @@
 #include "GameWindow.h"
 #include "EnemyBuilder.h"
 #include "BossEnemy.h"
+#include "Scene.h"
 
 namespace Level {
     
@@ -27,14 +28,14 @@ namespace Level {
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], minibossUFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[6], minibossUFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
         L1Part4(l);
         L1Part5(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], bossUFunc);
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
@@ -43,6 +44,7 @@ namespace Level {
         wf(l, 180) {
             GameWindow::Instance->setWin(false);
             GameWindow::Instance->loadScene(SceneName::Level2);
+            GameWindow::Instance->player->level = 2;
         }
 
 

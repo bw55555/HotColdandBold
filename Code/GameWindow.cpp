@@ -88,19 +88,21 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
     
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
-    loadTexture(PATH_START + "resources/textures/Bullet.png", &BulletSpawner::bulletPresetTextures[0]);
-    loadTexture(PATH_START + "resources/textures/KnifeBlue.png", &BulletSpawner::bulletPresetTextures[1]);
-    loadTexture(PATH_START + "resources/textures/RoundRed.png", &BulletSpawner::bulletPresetTextures[2]);
-    loadTexture(PATH_START + "resources/textures/KnifeRed.png", &BulletSpawner::bulletPresetTextures[3]);
+    loadTexture(PATH_START + "resources/textures/iceball.png", &BulletSpawner::bulletPresetTextures[0]);
+    loadTexture(PATH_START + "resources/textures/icicle.png", &BulletSpawner::bulletPresetTextures[1]);
+    loadTexture(PATH_START + "resources/textures/iceball2.png", &BulletSpawner::bulletPresetTextures[2]);
+    loadTexture(PATH_START + "resources/textures/icicle2.png", &BulletSpawner::bulletPresetTextures[3]);
     loadTexture(PATH_START + "resources/textures/BallBlackBorder.png", &BulletSpawner::bulletPresetTextures[4]);
     loadTexture(PATH_START + "resources/textures/DotWhite.png", &BulletSpawner::bulletPresetTextures[5]);
-    
+    loadTexture(PATH_START + "resources/textures/RoundRed.png", &BulletSpawner::bulletPresetTextures[18]);
     loadTexture(PATH_START + "resources/textures/fireball.png", &BulletSpawner::bulletPresetTextures[19]);
     
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
     loadTexture(PATH_START + "resources/textures/icevsfire.jpg", &Sprite::backgroundTextures[0]);
+    loadTexture(PATH_START + "resources/textures/level1.jpg", &Sprite::backgroundTextures[1]);
+    loadTexture(PATH_START + "resources/textures/level2.png", &Sprite::backgroundTextures[2]);
 
-    loadTexture(PATH_START + "resources/textures/Heat.png", &DropItem::itemTextures[0]);
+    loadTexture(PATH_START + "resources/textures/sigil.png", &DropItem::itemTextures[0]);
     DropItem::itemTextures[1] = DropItem::itemTextures[0];
     loadTexture(PATH_START + "resources/textures/Life.png", &DropItem::itemTextures[2]);
 
@@ -210,7 +212,8 @@ void GameWindow::createEnemyTextures() {
     //This is not an ideal implementation! Simply a placeholder for now
     //Add more textures here as you make more enemies, but ideally we're looping through everything in a file
     loadTexture(PATH_START + "resources/textures/snowman.png", &enemyTextures[0]);
-    loadTexture(PATH_START + "resources/textures/scaryface.png", &enemyTextures[1]);
+    loadTexture(PATH_START + "resources/textures/yeti.png", &enemyTextures[6]);
+    loadTexture(PATH_START + "resources/textures/icedragon.png", &enemyTextures[7]);
 }
 
 void GameWindow::checkCollisions() {
@@ -371,6 +374,7 @@ void GameWindow::setCredits(bool cred) {
     credit = cred;
     if (credit) {
         credits = std::make_shared<Credits>();
+        GameWindow::Instance->player->level = 1;
     }
     if (credit == false) {
         credits = nullptr;
@@ -390,10 +394,12 @@ void GameWindow::mainMenu() {
     player->health = 3.0f;
     player->bombs = 100;
     setLost(false);
+    GameWindow::Instance->player->level = 1;
 }
 
 void GameWindow::restart() {
     GameWindow::Instance->loadScene(SceneName::Level1);
     player->continues = 3;
     setLost(false);
+    GameWindow::Instance->player->level = 1;
 }

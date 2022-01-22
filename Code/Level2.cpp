@@ -30,9 +30,11 @@ namespace Level {
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
             GameWindow::Instance->setWin(true);
-            if (GameWindow::Instance->won == false) {
-                GameWindow::Instance->loadScene(SceneName::Credits);
-            }
+        }
+        wf(l, 180) {
+            GameWindow::Instance->setWin(false);
+            GameWindow::Instance->loadScene(SceneName::Credits);
+            GameWindow::Instance->player->level = 1;
         }
 
 

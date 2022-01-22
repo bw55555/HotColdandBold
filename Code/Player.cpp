@@ -20,6 +20,7 @@ void Player::initialize() {
 	collisionEnabled = true;
 	renderEnabled = true;
 	heat = 2000.0f;
+	level = 1;
 }
 
 void Player::update() {
@@ -93,7 +94,7 @@ void Player::fire() {
 			lastHomingFired = 12.0f;
 			float bulletSize = 100.0f;
 			for (int i = 0; i < 2; i++) {
-				std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize / 2.0f - 2), getPos() + glm::vec2(50.0f * (2.0f * i - 1.0f), 10.0f), BulletSpawner::bulletPresetTextures[2], BulletMovement::homingBullet, glm::vec3(bulletSize));
+				std::shared_ptr<Bullet> bullet = Bullet::makeBullet(Hitbox::Circle(bulletSize / 2.0f - 2), getPos() + glm::vec2(50.0f * (2.0f * i - 1.0f), 10.0f), BulletSpawner::bulletPresetTextures[18], BulletMovement::homingBullet, glm::vec3(bulletSize));
 				bullet->firedByPlayer = true;
 				bullet->initializeCustomVars(Movement::Direction{ glm::vec2(0.0f, 1.0f) }, Movement::Speed{ 50.0f });
 				bullet->color = glm::vec4(1.0f, 1.0f, 1.0f, 0.8f);

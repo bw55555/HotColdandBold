@@ -18,6 +18,7 @@ public:
     float invTimer;
     float heat;
     int continues;
+    int level;
 
     int grazeAmount;
     bool destroyed;
