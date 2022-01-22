@@ -16,6 +16,7 @@ std::shared_ptr<AnimatedSprite> AnimatedSprite::makePresetAnimatedSprite(Animati
 	case AnimationType::BombAnim:
 		return makeAnimatedSprite(spriteTextures[0], [](AnimatedSprite* a) {
 			a->scale += glm::vec3(10.0f * a->currTime, 10.0f * a->currTime, 0.0f);
+			a->rotate(5.0f);
 			if (a->wait(120)) { a->destroy(); }
 		}, GameWindow::Instance->player->getPos(), glm::vec3(100.0f), 0.0f);
 	}

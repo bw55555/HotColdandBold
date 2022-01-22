@@ -103,7 +103,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/level1.jpg", &Sprite::backgroundTextures[1]);
     loadTexture(PATH_START + "resources/textures/level2.png", &Sprite::backgroundTextures[2]);
 
-    loadTexture(PATH_START + "resources/textures/redring.png", &AnimatedSprite::spriteTextures[0]);
+    loadTexture(PATH_START + "resources/textures/ringoffire.png", &AnimatedSprite::spriteTextures[0]);
 
 
     loadTexture(PATH_START + "resources/textures/sigil.png", &DropItem::itemTextures[0]);
