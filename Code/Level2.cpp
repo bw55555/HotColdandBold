@@ -236,6 +236,24 @@ namespace Level {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern3); }
         }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern5); }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern7); }
+        }
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            wf(e, 60.0f) {
+                e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern6);
+            }
+            forever(e) {
+                every(e, 60) e->dir = randomDir();
+                rtfyexo(e, rtx, 60, 30, 30) e->move(linearBurst(rtx - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+            }
+        }
         
     }
 
@@ -300,29 +318,6 @@ namespace Level {
         once(b) { b->speed = 10.0f; }
         forever(b) { directionalBullet(b); }
         
-    }
-
-    void boss2Pattern4(BSp s) {
-        every(s, 40) {
-            float rf = randomFloat(0.0f, 15.0f);
-            rf = 0;
-            nring(a, 12) {
-                nstack(spd, 5, 0.3, 7) {
-                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(rf + a + 15 * t(s) / 40), spd));
-                }
-            }
-        }
-        every(s, 60) {
-            s->dir = targetPlayer(s->pos);
-        }
-        fyex(s, 60, 18) {
-            every(s, 3) {
-                float a = rt(s, 60) + 1;
-                nspread(o, getAngle(s->dir), a, 2) {
-                    s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(o), 10.0f));
-                }
-            }
-        }
     }
 
     void boss2Pattern5(BSp s) {

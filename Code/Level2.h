@@ -23,7 +23,6 @@ namespace Level {
     void boss2Pattern2(BSp s);
     void boss2Pattern3(BSp s);
     void boss2Pattern3BFunc(Bp b);
-    void boss2Pattern4(BSp s);
     void boss2Pattern5(BSp s);
     void boss2Pattern6(BSp s);
     void boss2Pattern7(BSp s);

@@ -47,10 +47,7 @@ namespace Level {
     void bossPattern2(BSp s);
     void bossPattern3(BSp s);
     void bossPattern4(BSp s);
-    void bossPattern5(BSp s);
-    void bossPattern6(BSp s);
     void bossPattern7Fail(BSp s);
-    void bossPattern7(BSp s);
 
     void macroExample(BSp s);
     
