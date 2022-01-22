@@ -10,7 +10,18 @@ GameLevel::GameLevel(void (*func)(GameLevel*)) : UpdateTime(func) {
 
 void GameLevel::initialize() {
     ui = std::make_unique<UI>();
-    makeSprite(Sprite::backgroundTextures[GameWindow::Instance->player->level], Pos(0.0f, 0.0f), Scale(2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight));
+    int level = -1;
+    switch (GameWindow::Instance->currScene) {
+    case SceneName::Level1:
+        level = 1;
+        break;
+    case SceneName::Level2:
+        level = 2;
+        break;
+    }
+    if (level != -1) {
+        makeSprite(Sprite::backgroundTextures[level], Pos(0.0f, 0.0f), Scale(2 * GameWindow::halfWidth, 2 * GameWindow::halfHeight));
+    }
 }
 
 void GameLevel::update() {

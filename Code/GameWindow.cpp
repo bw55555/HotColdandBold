@@ -394,7 +394,6 @@ void GameWindow::setCredits(bool cred) {
     credit = cred;
     if (credit) {
         credits = std::make_shared<Credits>();
-        GameWindow::Instance->player->level = 1;
     }
     else {
         credits = nullptr;
@@ -411,11 +410,9 @@ void GameWindow::undeadify() {
 void GameWindow::mainMenu() {
     GameWindow::Instance->loadScene(SceneName::MainMenu);
     setLost(false);
-    GameWindow::Instance->player->level = 1;
 }
 
 void GameWindow::restart() {
     GameWindow::Instance->loadScene(SceneName::Level1);
     setLost(false);
-    GameWindow::Instance->player->level = 1;
 }
