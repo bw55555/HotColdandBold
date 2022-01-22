@@ -21,7 +21,9 @@ namespace Level {
     
     void L1Part3(GLp l);
     void L1P3EnemyFunc(Ep e);
+    void L1P3EnemyFunc2(Ep e);
     void L1P3EnemyBSFunc(BSp s);
+    void L1P3EnemyBSFunc2(BSp s);
 
     void minibossUFunc(Ep e);
     void minibossPattern1(BSp s);

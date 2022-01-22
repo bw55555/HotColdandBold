@@ -23,7 +23,7 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
-        /*L1Part1(l);
+        L1Part1(l);
         L1Part2(l);
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
@@ -32,7 +32,7 @@ namespace Level {
         }
         delayClear(l, 30.0f, 10000.0f);
         L1Part4(l);
-        L1Part5(l);*/
+        L1Part5(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc);
@@ -261,7 +261,7 @@ namespace Level {
             Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(-500.0f, 1100.0f), L1P3EnemyFunc);
             Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(500.0f, 1100.0f), L1P3EnemyFunc);
         }
-        delayClear(l, 30.0f, 960.0f);
+        delayClear(l, 30.0f, 1560.0f);
         delay(l, 300.0f);
 
     }
@@ -272,6 +272,19 @@ namespace Level {
         } delay(e, 30);
         once(e) { e->createBulletSpawner(L1P3EnemyBSFunc); }
         delay(e, 900);
+        during(e, 30) {
+            float accel = 0.5f;
+            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, 20.0f));
+        }
+        wf(e, 30) { e->destroy(); };
+    }
+
+    void L1P3EnemyFunc2(Ep e) {
+        during(e, 30) {
+            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
+        } delay(e, 30);
+        once(e) { e->createBulletSpawner(L1P3EnemyBSFunc2); }
+        delay(e, 1500);
         during(e, 30) {
             float accel = 0.5f;
             e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, 20.0f));
@@ -290,6 +303,17 @@ namespace Level {
         }
     }
     
+    void L1P3EnemyBSFunc2(BSp s) {
+        every(s, dchoice(9, 7, 5)) {
+            nring(o, 2) {
+                nstack(spd, 4.0f, 2.0f, dchoice(2, 2, 3)) {
+                    s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(-45 + o + 2.03314 * t(s)), spd));
+                    s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(-45 + o + 90 - 2.03314 * t(s)), spd));
+                }
+            }
+        }
+    }
+
     /*
     * -----------------------------------------------------------------------------------------------------------------
     * ------------
