@@ -90,7 +90,7 @@ int mainloop() {
     std::cout << "Initializing GLFW window" << std::endl;
     // glfw window creation
     // --------------------
-    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x / 2, UI::UIsize.y / 2, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(UI::UIsize.x / 2, UI::UIsize.y / 2, "Hot, Cold and Bold", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;

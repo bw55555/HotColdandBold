@@ -216,7 +216,7 @@ namespace Level {
     */
 
     void boss2UFunc(Enemy* e) {
-        /*
+        
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern1); }
@@ -231,7 +231,7 @@ namespace Level {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern2); }
         }
-        */
+        
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern3); }

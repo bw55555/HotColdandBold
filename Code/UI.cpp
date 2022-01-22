@@ -18,7 +18,12 @@ glm::vec2 overheatBarSScale{ 400.0f, 32.0f };
 void UI::initialize() {
     makeRect(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f), Scale(UIsize.x, UIsize.y));
 
-    makeText("Score", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
+    std::string difficultyText = "Easy";
+    if (GameWindow::Instance->settings.difficulty == Difficulty::Normal) { difficultyText = "Normal"; }
+    if (GameWindow::Instance->settings.difficulty == Difficulty::Hard) { difficultyText = "Hard"; }
+
+    makeText("Difficulty", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText(difficultyText, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Lives", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Bombs", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
@@ -52,11 +57,11 @@ void UI::initialize() {
 void UI::update() {
     
     //playerData
-    texts[2]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
-    texts[4]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
-    texts[6]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->grazeAmount));
-    texts[8]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->heat));
-    texts[10]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->continues));
+    texts[3]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->health));
+    texts[5]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->bombs));
+    texts[7]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->grazeAmount));
+    texts[9]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->heat));
+    texts[11]->text = std::to_string(static_cast<int>(GameWindow::Instance->player->continues));
     
     //overheat
     sprites[2]->scale.x = overheatBarSScale.x* GameWindow::Instance->player->superchargeHeatPermanent / GameWindow::Instance->player->superchargeHeatMax;
@@ -68,7 +73,7 @@ void UI::update() {
     //framerate
     std::stringstream s;
     s << std::setprecision(2) << GameWindow::Instance->frameRate << "fps";
-    texts[11]->text = s.str();
+    texts[12]->text = s.str();
 
 
 
