@@ -20,6 +20,15 @@ public:
     int continues;
     int level;
 
+    float overHeatTime;
+    float superchargeHeatInstant;
+    float superchargeHeatPermanent;
+    float superchargeHeatMax;
+
+    float noInstantHeatTimer;
+
+    float deathbombTimer;
+
     int grazeAmount;
     bool destroyed;
 
@@ -33,8 +42,11 @@ public:
     void destroy();
     void respawn();
     void bomb();
+    void addHeat(float amt);
 
     void collect(DropItem* item);
     bool checkGraze(Bullet* b);
+
+    void useContinue();
 };
 

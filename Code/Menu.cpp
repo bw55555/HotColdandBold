@@ -51,7 +51,8 @@ void Menu::render() {
 }
 void Menu::update() {
 	if (KeyInput::isPressed("Z", 1000000) || KeyInput::isPressed("ENTER", 1000000)) {
-		buttons[selectedButton]->use();
+		if (selectedButton != -1) { buttons[selectedButton]->use(); }
+		
 	}
 	if (KeyInput::isPressed("DOWN", 10)) {
 		selectNext();
@@ -59,4 +60,16 @@ void Menu::update() {
 	if (KeyInput::isPressed("UP", 10)) {
 		selectPrev();
 	}
+}
+
+void Menu::deactivateButton(int buttonPos) {
+	buttonPos = buttonPos % static_cast<int>(buttons.size());
+	while (buttonPos < 0) { buttonPos += buttons.size(); }
+	if (buttonPos == selectedButton) {
+		selectNext();
+		if (selectedButton == buttonPos) {
+			selectedButton = -1;
+		}
+	}
+	buttons[buttonPos]->deactivate();
 }

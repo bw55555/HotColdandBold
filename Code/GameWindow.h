@@ -28,6 +28,7 @@ public:
 	bool paused = false;
 	bool over = false;
 	bool won = false;
+	bool shouldLoadNextScene = false;
 	bool credit = false;
 	int winTimer = 0;
 	std::shared_ptr<Scene> pauseMenu = nullptr;
@@ -72,6 +73,10 @@ public:
 
 	void initializePlayer();
 	void loadScene(SceneName name);
+
+	void startGame(Difficulty d) {
+		return startGame(d, settings.mode);
+	}
 	void startGame(Difficulty, GameMode);
 
 	void checkCollisions();

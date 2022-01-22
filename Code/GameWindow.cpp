@@ -84,9 +84,10 @@ void GameWindow::initialize() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     
-    initializePlayer();
-    loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
     
+    loadTexture(PATH_START + "resources/textures/phoenix.png", &playerTexture);
+    initializePlayer();
+
     //note that we may end up needing to put all of these into a spritesheet and use another function to choose the right texture when drawing
     loadTexture(PATH_START + "resources/textures/iceball.png", &BulletSpawner::bulletPresetTextures[0]);
     loadTexture(PATH_START + "resources/textures/icicle.png", &BulletSpawner::bulletPresetTextures[1]);
@@ -169,6 +170,23 @@ void GameWindow::render() {
 
 void GameWindow::update() {
     scene->update();
+    if (shouldLoadNextScene) {
+        GameWindow::setWin(false);
+        shouldLoadNextScene = false;
+        if (settings.mode == GameMode::All) {
+            switch (currScene) {
+            case SceneName::Level1:
+                GameWindow::Instance->loadScene(SceneName::Level2);
+                break;
+            case SceneName::Level2:
+                GameWindow::Instance->loadScene(SceneName::Credits);
+                break;
+            }
+        }
+        else {
+            GameWindow::Instance->loadScene(SceneName::LevelSelectMenu);
+        }
+    }
 }
 
 void GameWindow::loadTexture(std::string filePath, unsigned int* texturePointer) {
@@ -222,13 +240,13 @@ void GameWindow::checkCollisions() {
             for (std::shared_ptr<Enemy> e : Enemy::enemies) {
                 if (e->checkCollision(std::static_pointer_cast<CollidableObject>(b))) {
                     //collision detected between enemy and player bullet, do something!
-                    
+                    float ohmult = 1.0f + (player->overHeatTime > 0.0f) * 0.2f;
                     if (b->isPlayerHomingBullet) {
-                        e->takeDamage(dchoice(0.5f, 0.334f, 0.25f));
+                        e->takeDamage(ohmult * dchoice(0.5f, 0.334f, 0.25f));
                         b->destroy();
                     }
                     else {
-                        e->takeDamage();
+                        e->takeDamage(ohmult);
                         b->collisionEnabled = false;
                     }
                 }
@@ -248,7 +266,6 @@ void GameWindow::checkCollisions() {
     for (std::shared_ptr<Enemy> e : Enemy::enemies) {
         if (player->checkCollision(std::static_pointer_cast<CollidableObject>(e))) {
             //Collision detected between enemy and player, do something!
-            std::cout << "Got hit by enemy :(" << std::endl;
             player->takeDamage();
         }
     }
@@ -281,7 +298,7 @@ void GameWindow::clearBullets() {
 void GameWindow::initializePlayer() {
     Hitbox playerHitbox;
     playerHitbox.type = HitboxType::Circle;
-    playerHitbox.radius = 10.0f;
+    playerHitbox.radius = 8.0f;
     //dosmth with the player hitbox
     player = std::make_shared<Player>(playerHitbox, playerTexture);
 }
@@ -298,6 +315,9 @@ void GameWindow::loadScene(SceneName name) {
         break;
     case SceneName::DifficultyMenu:
         scene = std::make_shared<DifficultyMenu>();
+        break;
+    case SceneName::LevelSelectMenu:
+        scene = std::make_shared<LevelSelectMenu>();
         break;
     case SceneName::SettingsMenu:
         scene = std::make_shared<SettingsMenu>();
@@ -320,8 +340,7 @@ void GameWindow::loadScene(SceneName name) {
 void GameWindow::startGame(Difficulty d, GameMode g) {
     settings.difficulty = d;
     settings.mode = g;
-    player = nullptr;
-    initializePlayer();
+    player->initialize();
     switch (settings.mode) {
     case GameMode::All:
     case GameMode::Prac1:
@@ -349,11 +368,10 @@ void GameWindow::setPause(bool _pause) {
 }
 
 void GameWindow::setLost(bool dead) {
+    paused = dead;
     over = dead;
     if (over == false) {
         overMenu = nullptr;
-        player->health = 3.0f;
-        player->initialize();
     }
     if (over) {
         overMenu = std::make_shared<GameOver>();
@@ -361,45 +379,43 @@ void GameWindow::setLost(bool dead) {
 }
 
 void GameWindow::setWin(bool win) {
+    paused = win;
     won = win;
     if (won) {
         winMenu = std::make_shared<WinMenu>();
     }
-    if (won == false) {
+    else {
         winMenu = nullptr;
     }
 }
 
 void GameWindow::setCredits(bool cred) {
+    paused = cred;
     credit = cred;
     if (credit) {
         credits = std::make_shared<Credits>();
         GameWindow::Instance->player->level = 1;
     }
-    if (credit == false) {
+    else {
         credits = nullptr;
     }
 }
 
 void GameWindow::undeadify() {
     if (player->continues > 0) {
-        player->continues -= 1;
+        player->useContinue();
         setLost(false);
     }
 }
 
 void GameWindow::mainMenu() {
     GameWindow::Instance->loadScene(SceneName::MainMenu);
-    player->continues = 3;
-    player->health = 3.0f;
-    player->bombs = 100;
     setLost(false);
     GameWindow::Instance->player->level = 1;
 }
 
 void GameWindow::restart() {
     GameWindow::Instance->loadScene(SceneName::Level1);
-    player->continues = 3;
     setLost(false);
     GameWindow::Instance->player->level = 1;
 }
