@@ -9,8 +9,8 @@ namespace Level {
     using namespace Movement;
     using namespace BulletMovement;
     void Level2(GLp l) {
-        //L2Part1(l);
-        /*
+        L2Part1(l);
+        
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(200.0f), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], miniboss2UFunc, glm::vec3(400.0f));
@@ -19,7 +19,7 @@ namespace Level {
         delay(l, 180.0f);
         
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
-        */
+        
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(200.0f), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], boss2UFunc, glm::vec3(400.0f));
         }
