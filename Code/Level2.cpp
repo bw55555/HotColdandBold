@@ -290,10 +290,10 @@ namespace Level {
     }
 
     void boss2Pattern1(BSp s) {
-        every(s, 40) {
+        every(s, dchoice(40, 30, 20)) {
             float rf = randomFloat(0.0f, 360.0f);
-            nring(o, 4) {
-                nspread(a, o + rf, 10, 2)
+            nring(o, dchoice(4, 6, 8)) {
+                nspread(a, o + rf, 15, 2)
                     nstack(spd, 8.0f, 2.0f, 2)
                         s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet{ avecd(a), spd });
             }

@@ -159,7 +159,7 @@ void Player::takeDamage() {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
-		SoundEffect::play("resources/audio/echo5.wav", false, 0.4f);
+		SoundEffect::play("resources/audio/echo5.wav", false, 1.0f);
 		GameWindow::Instance->clearBullets();
 		return;
 	}
