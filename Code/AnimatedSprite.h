@@ -2,7 +2,7 @@
 #include "CollidableObject.h"
 #include "UpdateTime.h"
 
-enum class AnimationType {BombAnim};
+enum class AnimationType {BombAnim, EnemyBulletSpawnAnim};
 
 class AnimatedSprite : public CollidableObject, public UpdateTime<AnimatedSprite> {
 public:
