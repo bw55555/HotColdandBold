@@ -68,6 +68,10 @@ void GameLevel::update() {
             
         }
 
+        for (auto& a : AnimatedSprite::animatedSprites) {
+            a->update();
+        }
+
         GameWindow::Instance->checkCollisions();
 
 
@@ -96,6 +100,14 @@ void GameLevel::update() {
                 }), DropItem::dropItems.end());
 
         }
+
+        if (AnimatedSprite::animatedSprites.size() > 0) {
+
+            AnimatedSprite::animatedSprites.erase(std::remove_if(AnimatedSprite::animatedSprites.begin(), AnimatedSprite::animatedSprites.end(), [](const std::shared_ptr<AnimatedSprite>& aSprite) {
+                return aSprite->destroyed;
+                }), AnimatedSprite::animatedSprites.end());
+
+        }
     }
     ui->update();
 }
@@ -122,6 +134,10 @@ void GameLevel::render() {
 
         for (std::shared_ptr<DropItem> dropItem : DropItem::dropItems) {
             dropItem->draw();
+        }
+
+        for (auto &a : AnimatedSprite::animatedSprites) {
+            a->draw();
         }
         
         glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default

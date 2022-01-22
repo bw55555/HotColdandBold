@@ -9,6 +9,7 @@
 #include "Settings.h"
 #include "WindowVar.h"
 #include "SoundEffect.h"
+#include "AnimatedSprite.h"
 
 typedef struct GLFWwindow GLFWwindow;
 
