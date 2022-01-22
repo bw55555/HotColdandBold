@@ -5,6 +5,7 @@
 #include "EnemyBuilder.h"
 #include "BossEnemy.h"
 #include "Scene.h"
+#include "Audio.h"
 
 namespace Level {
     
