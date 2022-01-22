@@ -18,7 +18,6 @@ public:
     float invTimer;
     float heat;
     int continues;
-    int level;
 
     float overHeatTime;
     float superchargeHeatInstant;

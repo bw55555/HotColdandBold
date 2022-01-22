@@ -31,11 +31,6 @@ namespace Level {
         wf(l, 30) {
             GameWindow::Instance->setWin(true);
         }
-        wf(l, 180) {
-            GameWindow::Instance->setWin(false);
-            GameWindow::Instance->loadScene(SceneName::Credits);
-            GameWindow::Instance->player->level = 1;
-        }
 
 
         /*

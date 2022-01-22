@@ -33,10 +33,6 @@ void Player::useContinue() {
 	destroyed = false;
 	collisionEnabled = true;
 	renderEnabled = true;
-<<<<<<< HEAD
-	heat = 2000.0f;
-	level = 1;
-=======
 	deathbombTimer = -1.0f;
 	superchargeHeatInstant = 0.0f;
 	noInstantHeatTimer = 60.0f;
@@ -47,7 +43,6 @@ void Player::useContinue() {
 	else {
 		health = 100.0f;
 	}
->>>>>>> 7c426908593930ce5e3ccd17c35d0a4323309967
 }
 
 void Player::update() {
