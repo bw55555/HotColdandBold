@@ -36,7 +36,7 @@ namespace Level {
         L1Part5(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
-            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc, glm::vec3(400.0f));
+            std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(200), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc, glm::vec3(400.0f));
         }
         delayClear(l, 30.0f, 10000.0f);
         wf(l, 30) {
