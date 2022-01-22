@@ -16,7 +16,7 @@ public:
 	static float sfxVolume;
 	static irrklang::ISoundEngine* SoundEngine;
 	
-	static std::shared_ptr<Audio> playSound(std::string filePath, bool loop = false, bool shouldReturn = false);
+	static std::shared_ptr<Audio> playSound(std::string filePath, bool loop = false, bool shouldReturn = false, float volumeMult = 1.0f);
 	static void dropEngine();
 
 	Audio(irrklang::ISound* _sound) { sound = _sound; };

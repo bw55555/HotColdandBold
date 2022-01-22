@@ -7,8 +7,8 @@ enum class SFXType {Shot, EnemyDeath, PlayerDeath};
 
 class SoundEffect : public Audio {
 public:
-	static std::shared_ptr<SoundEffect> play(std::string filePath, bool shouldReturn = false);
-	static std::shared_ptr<SoundEffect> play(SFXType t, bool shouldReturn = false);
+	static std::shared_ptr<SoundEffect> play(std::string filePath, bool shouldReturn = false, float volumeMult = 0.2f);
+	static std::shared_ptr<SoundEffect> play(SFXType t, bool shouldReturn = false, float volumeMult = 0.2f);
 	
 	typedef std::unordered_map<SFXType, float> SFXPlayMap;
 

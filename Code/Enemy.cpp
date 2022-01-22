@@ -70,7 +70,7 @@ void Enemy::destroy(DestroyReason reason) {
 	destroyed = true;
 	collisionEnabled = false;
 	renderEnabled = false;
-	Audio::playSound("resources/audio/enemydead.wav", false, false);
+	SoundEffect::play(SFXType::EnemyDeath, false, 0.3f);
 }
 
 Enemy::~Enemy() {

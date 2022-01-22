@@ -10,15 +10,12 @@ namespace Level {
     using namespace BulletMovement;
     void Level2(GLp l) {
         L2Part1(l);
-        L2Part2(l);
-        L2Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(300.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], miniboss2UFunc);
         }
         delayClear(l, 30.0f, 10000.0f);
-        L2Part4(l);
-        L2Part5(l);
+        delay(l, 180.0f);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[0], boss2UFunc);
@@ -67,7 +64,7 @@ namespace Level {
     /*
     * -----------------------------------------------------------------------------------------------------------------
     * --------------
-    * Level 1 Part 1
+    * Level 2 Part 1
     * --------------
     * -----------------------------------------------------------------------------------------------------------------
     */
@@ -83,7 +80,7 @@ namespace Level {
         }
         delay(l, 600);
         during(l, 600) {
-            every(l, 60) {
+            every(l, dchoice(60, 70, 80)) {
                 float x = 2 * ((randomFloat(-1, 1) > 0) - 0.5f);
                 Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(x * randomFloat(300, 700), 1100.0f), L2P1EnemyFunc);
                 e->initializeCustomVars(glm::vec2(-x, randomFloat(-0.5f, -0.2f)));
@@ -92,7 +89,7 @@ namespace Level {
         }
         delay(l, 300);
         during(l, 300) {
-            every(l, 60) {
+            every(l, dchoice(60, 90, 120)) {
                 float x = 2 * ((randomFloat(-1, 1) > 0) - 0.5f);
                 Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(x * randomFloat(300, 700), 1100.0f), L2P1EnemyFunc);
                 e->initializeCustomVars(glm::vec2(-x, randomFloat(-0.5f, -0.2f)));
@@ -111,18 +108,14 @@ namespace Level {
         forever(e) {
             e->move(glm::vec2(cf(e, 0), cf(e, 1)) * std::max(e->getNestedTime() * 0.05f, 20.0f));
         }
-        wft(e, e->isOnScreen(), 600.0f);
-    }
-
-    void L2P1EnemyFunc2(Ep e) {
-        
+        wft(e, !e->isOnScreen(), 600.0f) { e->destroy(); };
     }
 
     void L2P1EnemyBSFunc(BSp s) {
-        every(s, dchoice(60, 50, 40)) {
-            nstack(spd, 8.0f, 2.0f, dchoice(3, 4, 5)) {
+        every(s, 60) {
+            nstack(spd, 8.0f, 2.0f, dchoice(2, 3, 3)) {
                 float rf = randomFloat(0, 360);
-                nring(o, dchoice(8, 10, 12)) {
+                nring(o, dchoice(8, 8, 12)) {
                     s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet{ avecd(rf + o), spd });
                 }
             }
@@ -131,158 +124,8 @@ namespace Level {
 
     /*
     * -----------------------------------------------------------------------------------------------------------------
-    * --------------
-    * Level 1 Part 2
-    * --------------
-    * -----------------------------------------------------------------------------------------------------------------
-    */
-
-    void L2Part2(GLp l) {
-        wf(l, 120) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        during(l, 360) {
-            every(l, 30) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(-900.0f, 700.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P2EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ 10.0f });
-            }
-        }
-        delayClear(l, 360, 660);
-        wf(l, 120) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        during(l, 360) {
-            every(l, 30) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(900.0f, 700.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P2EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ -10.0f });
-            }
-        }
-        delayClear(l, 360, 660);
-        wf(l, 120) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        during(l, 360) {
-            every(l, 30) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(900.0f, 800.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P2EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ -10.0f });
-            }
-        }
-        during(l, 375) {
-            everyo(l, 30, 15) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(-900.0f, 700.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P2EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ 10.0f });
-            }
-        }
-        delayClear(l, 375, 660);
-    }
-
-    void L2P2EnemyFunc(Ep e) {
-        during(e, 30) {
-            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
-        } delay(e, 30);
-        once(e) { e->createBulletSpawner(L2P2EnemyBSFunc); }
-        delay(e, 600);
-        during(e, 30) {
-            float accel = 0.5f;
-            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, 20.0f));
-        }
-        wf(e, 30) { e->destroy(); };
-
-    }
-
-    void L2P2EnemyBSFunc(BSp s) {
-        every(s, 120) {
-            nstack(spd, dchoice(6, 7, 8), 2.0f, dchoice(3, 4, 6)) {
-                s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(glm::vec2(0.0f, -1.0f), spd));
-            }
-        }
-        /*
-        everyo(s, 120, 60) {
-            nring(o, 16) {
-                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), dchoice(5.0f, 6.0f, 8.0f)));
-            }
-        }
-        */
-    }
-
-    void L2P2EnemyFunc2(Ep e) {
-        forever(e) {
-            e->move(glm::vec2(1.0f, 0.0f) * e->speed);
-        }
-        wfmt(e, !e->isOnScreen(), 60.0f, 1200.0f) {
-            e->destroy();
-        }
-    }
-
-    void L2P2EnemyBSFunc2(BSp s) {
-        everyo(s, dchoice(60, 40, 20), 10) {
-            nstack(spd, dchoice(8, 9, 10), 2.0f, dchoice(1, 2, 3)) {
-                s->spawnPreset(BulletType::KnifeRed, TargetedBullet(spd));
-            }
-        }
-    }
-
-    /*
-    * -----------------------------------------------------------------------------------------------------------------
-    * --------------
-    * Level 1 Part 3
-    * --------------
-    * -----------------------------------------------------------------------------------------------------------------
-    */
-
-    void L2Part3(GLp l) {
-        once(l) {
-            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(0.0f, 1100.0f), L2P3EnemyFunc);
-        }
-        delayClear(l, 30.0f, 960.0f);
-        delay(l, 300.0f);
-        once(l) {
-            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(-500.0f, 1100.0f), L2P3EnemyFunc);
-            Enemy::makePresetEnemy(EnemyType::StrongFairy, glm::vec2(500.0f, 1100.0f), L2P3EnemyFunc);
-        }
-        delayClear(l, 30.0f, 960.0f);
-        delay(l, 300.0f);
-
-    }
-
-    void L2P3EnemyFunc(Ep e) {
-        during(e, 30) {
-            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
-        } delay(e, 30);
-        once(e) { e->createBulletSpawner(L2P3EnemyBSFunc); }
-        delay(e, 900);
-        during(e, 30) {
-            float accel = 0.5f;
-            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, 20.0f));
-        }
-        wf(e, 30) { e->destroy(); };
-    }
-
-    void L2P3EnemyBSFunc(BSp s) {
-        every(s, dchoice(7, 5, 5)) {
-            nring(o, 2) {
-                nstack(spd, 4.0f, 2.0f, dchoice(2, 3, 4)) {
-                    s->spawnPreset(BulletType::RoundRed, DirectionalBullet(avecd(-45 + o + 2.03314 * t(s)), spd));
-                    s->spawnPreset(BulletType::RoundBlue, DirectionalBullet(avecd(-45 + o + 90 - 2.03314 * t(s)), spd));
-                }
-            }
-        }
-    }
-
-    /*
-    * -----------------------------------------------------------------------------------------------------------------
     * ------------
-    * Level 1 Miniboss2
+    * Level 2 Miniboss
     * ------------
     * -----------------------------------------------------------------------------------------------------------------
     */
@@ -360,166 +203,11 @@ namespace Level {
         }
     }
 
-    /*
-    * -----------------------------------------------------------------------------------------------------------------
-    * --------------
-    * Level 1 Part 4
-    * --------------
-    * -----------------------------------------------------------------------------------------------------------------
-    */
-
-    void L2Part4(GLp l) {
-        during(l, 1500) {
-            every(l, 30) {
-                float xpos = (static_cast<int>(nt(l) / 30) % 5) - 2;
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos * 300.0f + randomFloat(-100.0f, 100.0f), 1100.0f), L2P4EnemyFunc);
-                e->createBulletSpawner(L2P4EnemyBSFunc);
-            }
-        }
-        when(l, 600) {
-            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(0.0f, 1100.0f), L2P4EnemyFunc2);
-        }
-        when(l, 1200) {
-            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(-600.0f, 1100.0f), L2P4EnemyFunc2);
-            Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(600.0f, 1100.0f), L2P4EnemyFunc2);
-        }
-        delayClear(l, 1500, 2200);
-        delay(l, 180.0f);
-    }
-
-    void L2P4EnemyFunc(Ep e) {
-        e->move(3.0f * glm::vec2(sin(glm::radians(3.234f * t(e))), -1.0f));
-        wfmt(e, !e->isOnScreen(), 60.0f, 10000.0f) { e->destroy(); }
-    }
-
-    void L2P4EnemyBSFunc(BSp s) {
-        every(s, dchoice(60, 40, 30)) {
-            nstack(spd, 5.0f, 2.0f, dchoice(3, 4, 5)) {
-                s->spawnPreset(BulletType::RoundBlue, TargetedBullet(spd));
-            }
-        }
-    }
-
-    void L2P4EnemyFunc2(Ep e) {
-        constexpr float accel = 0.5f;
-        constexpr float maxVel = 20.0f;
-        constexpr float moveTime = 30.0f;;
-        during(e, moveTime) {
-            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -1 * maxVel, accel, moveTime));
-        } delay(e, moveTime);
-        once(e) { e->createBulletSpawner(L2P4EnemyBSFunc2); }
-        delay(e, 900);
-        during(e, moveTime) {
-            e->move(glm::vec2(0.0f, 1.0f) * std::max(e->getNestedTime() * accel, maxVel));
-        }
-        wf(e, moveTime) { e->destroy(); };
-    }
-
-    void L2P4EnemyBSFunc2(BSp s) {
-        float o = 0.0f;
-        int interval = 15;
-        after(s, 180) {
-            o += t(s) * 2;
-            interval -= floor(std::min(nt(s) / 30, 10.0f));
-        }
-        every(s, interval) {
-            nring(a, 8) {
-                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(a + o), 10.0f));
-            }
-        }
-    }
-
-    /*
-    * -----------------------------------------------------------------------------------------------------------------
-    * --------------
-    * Level 1 Part 5
-    * --------------
-    * -----------------------------------------------------------------------------------------------------------------
-    */
-
-    void L2Part5(GLp l) {
-        once(l) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        during(l, 1500) {
-            every(l, 90) {
-                float xpos = (static_cast<int>(nt(l) / 90) % 5) - 2;
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos * 300.0f + randomFloat(-100.0f, 100.0f), 1100.0f), L2P4EnemyFunc);
-                e->createBulletSpawner(L2P5EnemyBSFunc);
-            }
-        }
-        delay(l, 300);
-        during(l, 1200) {
-            every(l, 60) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(900.0f, 800.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P5EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ -10.0f });
-            }
-        }
-        during(l, 1230) {
-            everyo(l, 60, 30) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(-900.0f, 700.0f), L2P2EnemyFunc2);
-                e->createBulletSpawner(L2P5EnemyBSFunc2);
-                e->initializeCustomVars(Speed{ 10.0f });
-            }
-        }
-        wf(l, 300) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        during(l, 360) {
-            every(l, 60) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L2P1EnemyFunc);
-                e->createBulletSpawner(L2P5EnemyBSFunc3);
-            }
-        }
-        during(l, 360) {
-            every(l, 60) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(-850.0f, 900.0f), L2P1EnemyFunc2);
-                e->createBulletSpawner(L2P5EnemyBSFunc3);
-            }
-        }
-        wf(l, 300) {
-            nspread(xpos, 0, 1200, 8) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(xpos, 1100.0f), L2P2EnemyFunc);
-            }
-        }
-        delayClear(l, 1200, 2400);
-    }
-    void L2P5EnemyBSFunc(BSp s) {
-        every(s, dchoice(120, 80, 60)) {
-            nstack(spd, 5.0f, 2.0f, dchoice(1, 2, 3)) {
-                s->spawnPreset(BulletType::RoundBlue, TargetedBullet(spd));
-            }
-        }
-    }
-    void L2P5EnemyBSFunc2(BSp s) {
-        everyo(s, dchoice(120, 90, 60), 10) {
-            nstack(spd, dchoice(6, 7, 8), 2.0f, dchoice(1, 2, 3)) {
-                s->spawnPreset(BulletType::KnifeRed, TargetedBullet(spd));
-            }
-        }
-    }
-    void L2P5EnemyBSFunc3(BSp s) {
-        delay(s, 60);
-        forever(s) {
-            every(s, dchoice(240, 180, 120)) {
-                nspread(o, getAngle(targetPlayer(s->pos)), dchoice(30, 30, 60), dchoice(3, 3, 5)) {
-                    nstack(spd, 6.0f, 2.0f, dchoice(1, 2, 3)) {
-                        s->spawnPreset(BulletType::DotWhite, DirectionalBullet(avecd(o), spd));
-                    }
-                }
-            }
-        }
-    }
-
+    
     /*
     * -----------------------------------------------------------------------------------------------------------------
     * ------------
-    * Level 1 Boss
+    * Level 2 Boss
     * ------------
     * -----------------------------------------------------------------------------------------------------------------
     */
