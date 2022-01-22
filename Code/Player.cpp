@@ -25,6 +25,7 @@ void Player::initialize() {
 }
 
 void Player::useContinue() {
+	color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	bombs = 10.0f;
 	overHeatTime = -1.0f;
 	heat = 2000.0f;
@@ -87,7 +88,7 @@ void Player::update() {
 		color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	}
 	else if (overHeatTime == 0.0f) {
-		overHeatTime = -1.0f;
+		overHeatTime -= -1.0f;
 		health += 1;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		//sound effect here

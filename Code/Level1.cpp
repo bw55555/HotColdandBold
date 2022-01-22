@@ -23,7 +23,7 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
-        L1Part1(l);
+        /*L1Part1(l);
         L1Part2(l);
         L1Part3(l);
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
@@ -32,7 +32,7 @@ namespace Level {
         }
         delayClear(l, 30.0f, 10000.0f);
         L1Part4(l);
-        L1Part5(l);
+        L1Part5(l);*/
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(10), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc);
@@ -550,15 +550,20 @@ namespace Level {
                 e->createBulletSpawner(glm::vec2(0, 0), bossPattern6); }
             forever(e) {
                 every(e, 60) e->dir = randomDir();
-                fyexo(e, 60, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+                rtfyexo(e, rtx, 60, 30, 30) e->move(linearBurst(rtx - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             }
         }
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), bossPattern1); }
             forever(e) {
-                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
-                fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
+                float interval = dchoice(120.0f, 90.0f, 60.0f);
+                
+                every(e, interval) {
+                    float rf = randomFloat(-0.5f, 0.5f);
+                    e->dir = glm::vec2(((rf > 0) - (rf < 0)) * 0.5f + rf, 0.0f);
+                }
+                rtfyexo(e, rtx, interval, 30, 30) e->move(linearBurst(rtx - 30, dchoice(8.0f, 12.0f, 16.0f), 0.75f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
             }
         }
         if (e->onNextPhase()) {
@@ -603,14 +608,13 @@ namespace Level {
     }
 
     void bossPattern2(BSp s) {
-        int spawnInterval = 90; //probably too hard
-        spawnInterval = 120; //this is a lot easier...
+        float spawnInterval = dchoice(150.0f, 120.0f, 90.0f); //this is a lot easier...
         fyex(s, spawnInterval, 18) { //executes 18 frames in a row every spawnInterval frames
             every(s, 2) { //every 2 frames
-                nring(o, 6) { //6 bullets in a ring
-                    nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
+                nring(o, dchoice(6, 7, 8)) { //6 bullets in a ring
+                    nstacki(spd, i, 4, 2, dchoice(3, 4, 5)) { //5 bullets in a stack with varying speed
                         BulletType bt = rt(s, spawnInterval*2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed; //alternate bullet type
-                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2f * o + 3.7385f * t(s) + 26.0f * i + randomFloat(0.0f, 2.0f)), [](Bp b) { //choose a starting direction
+                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2f * o + 3.6385f * t(s) + 26.0f * i + randomFloat(0.0f, 2.0f)), [](Bp b) { //choose a starting direction
                             //the time system I created is pretty complicated... but basically you should put everything in a time block like this
                             during(b, 29) {
                                 spinningDirectionalBullet(b); //creates that spinning effect at the beginning
