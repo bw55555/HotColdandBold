@@ -166,7 +166,7 @@ int mainloop() {
         currFrame = glfwGetTime();
         glfwPollEvents();
         KeyInput::checkEvents();
-        WindowVar::updatewvar();
+        //WindowVar::updatewvar();
 
         gameWindow->update();
         //std::cout << glfwGetTime() - currFrame << " U " << Bullet::bullets.size() << std::endl;
