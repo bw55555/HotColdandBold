@@ -226,10 +226,15 @@ namespace Level {
                 }
             }
         }
-        */
+        
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern2); }
+        }
+        */
+        if (e->onNextPhase()) {
+            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
+            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern3); }
         }
         
     }
@@ -274,18 +279,27 @@ namespace Level {
     }
 
     void boss2Pattern3(BSp s) {
-        every(s, 20) {
-            nring(o, 16) {
-                Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s) / 20)), );
-                b->destroyFlags.offScreen = false;
-                b->destroyFlags.destroyTime = 360.0f;
-                b->initializeCustomVars(s->pos, 8.0f, 2.0f, -0.01f, -0.001f);
+        float spawnTime = dchoice(60, 60, 80);
+        rtfyex(s, rtx, 120, spawnTime) {
+            BulletType bt = BulletType::KnifeRed;
+            if (ti(s) % 240 > 120) { bt = BulletType::KnifeBlue; }
+            every(s, 5) {
+                nringi(o, i, dchoice(8, 16, 16)) {
+                    Bsp b = s->spawnPreset(bt, s->pos + glm::vec2(avecd(o)), boss2Pattern3BFunc);
+                    b->initializeCustomVars(s->pos, 8.0f, 2.0f, -0.01f, -0.001f, 30 + 15 * i + spawnTime - rtx);
+                }
             }
         }
     }
 
     void boss2Pattern3BFunc(Bp b) {
-
+        during(b, cf(b, 6)) {
+            spinningDirectionalBullet(b);
+        }
+        delay(b, cf(b, 6));
+        once(b) { b->speed = 10.0f; }
+        forever(b) { directionalBullet(b); }
+        
     }
 
     void boss2Pattern4(BSp s) {
