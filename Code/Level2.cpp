@@ -264,7 +264,7 @@ namespace Level {
     }
 
     void boss2Pattern2(BSp s) {
-        every(s, dchoice(90, 60, 40)) {
+        every(s, dchoice(80, 60, 40)) {
             nring(o, dchoice(8, 12, 16)) {
                 Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s)/20)), SpinningDirectionalBullet(s->pos, 8.0f, 2.0f, dchoice(0.001f, 0.002f, 0.003f), dchoice(-0.0015f, -0.0013f, -0.001f)));
                 b->destroyFlags.offScreen = false;
@@ -276,11 +276,16 @@ namespace Level {
     void boss2Pattern3(BSp s) {
         every(s, 20) {
             nring(o, 16) {
-                Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s) / 20)), SpinningDirectionalBullet(s->pos, 8.0f, 2.0f, -0.01f, -0.001f));
+                Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s) / 20)), );
                 b->destroyFlags.offScreen = false;
                 b->destroyFlags.destroyTime = 360.0f;
+                b->initializeCustomVars(s->pos, 8.0f, 2.0f, -0.01f, -0.001f);
             }
         }
+    }
+
+    void boss2Pattern3BFunc(Bp b) {
+
     }
 
     void boss2Pattern4(BSp s) {
