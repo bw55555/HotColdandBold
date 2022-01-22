@@ -216,7 +216,7 @@ namespace Level {
     */
 
     void boss2UFunc(Enemy* e) {
-        float destroyTime = 3600.0f;
+        /*
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern1); }
@@ -226,50 +226,12 @@ namespace Level {
                 }
             }
         }
-        if (e->onNextPhase()) {
-            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) {
-                e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern6);
-            }
-            forever(e) {
-                every(e, 60) e->dir = randomDir();
-                fyexo(e, 60, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
-            }
-            wf(e, destroyTime) {
-                e->destroy();
-            }
-        }
-        if (e->onNextPhase()) {
-            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern1); }
-            forever(e) {
-                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
-                fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
-            }
-            wf(e, destroyTime) {
-                e->destroy();
-            }
-        }
+        */
         if (e->onNextPhase()) {
             motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
             wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern2); }
-            wf(e, destroyTime) { e->destroy(); }
         }
-        if (e->onNextPhase()) {
-            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern3); }
-            wf(e, destroyTime) { e->destroy(); }
-        }
-        if (e->onNextPhase()) {
-            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern4); }
-            wf(e, destroyTime) { e->destroy(); }
-        }
-        if (e->onNextPhase()) {
-            motw(e, glm::vec2(0.0f, 500.0f), 30.0f);
-            wf(e, 60.0f) { e->createBulletSpawner(glm::vec2(0, 0), boss2Pattern5); }
-            wf(e, destroyTime) { e->destroy(); }
-        }
+        
     }
 
     void boss2Pattern1MinionFunc(Enemy* e) {
@@ -302,60 +264,21 @@ namespace Level {
     }
 
     void boss2Pattern2(BSp s) {
-        int spawnInterval = 90; //probably too hard
-        spawnInterval = 120; //this is a lot easier...
-        fyex(s, spawnInterval, 18) { //executes 18 frames in a row every spawnInterval frames
-            every(s, 2) { //every 2 frames
-                nring(o, 6) { //6 bullets in a ring
-                    nstacki(spd, i, 4, 2, 5) { //5 bullets in a stack with varying speed
-                        BulletType bt = rt(s, spawnInterval * 2) < spawnInterval ? BulletType::KnifeBlue : BulletType::KnifeRed; //alternate bullet type
-                        Bsp b = s->spawnPresetwLambda(bt, s->pos + avecd(1.2f * o + 3.7385f * t(s) + 26.0f * i + randomFloat(0.0f, 2.0f)), [](Bp b) { //choose a starting direction
-                            //the time system I created is pretty complicated... but basically you should put everything in a time block like this
-                            during(b, 29) {
-                                spinningDirectionalBullet(b); //creates that spinning effect at the beginning
-                            }
-                            wf(b, 60) { //do this at 60 frames (wf stands for waitfor)
-                                b->rotateDir(90 * b->customFloats[6]); //rotate the bullets and shoot them out, but slower
-                                b->speed *= 0.8f;
-                            }
-                            forever(b) { //do this forever after 60 frames
-                                directionalBullet(b);
-                            }
-                            });
-                        b->initializeCustomVars(s->pos, spd, 3.0f, 0.0f, 0.0f, (int)(t(s) / 120)); //intialize the values for spinningDirectionalBullet
-                    }
-                }
+        every(s, dchoice(90, 60, 40)) {
+            nring(o, dchoice(8, 12, 16)) {
+                Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s)/20)), SpinningDirectionalBullet(s->pos, 8.0f, 2.0f, dchoice(0.001f, 0.002f, 0.003f), dchoice(-0.0015f, -0.0013f, -0.001f)));
+                b->destroyFlags.offScreen = false;
+                b->destroyFlags.destroyTime = 360.0f;
             }
         }
     }
 
     void boss2Pattern3(BSp s) {
-        every(s, 60) {
-            nspread(o, getAngle(targetPlayer(s->pos)), 40, 2) {
-                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos, DirectionalBullet(avecd(o), 5.0f));
-                b->createBulletSpawner(glm::vec2(0, 0), [](BSp s2) {
-                    every(s2, 1) if (s2->getParent<Bullet>()->touchingWall(WallDirection::Any)) {
-                        nspread(o, 90, 20, 4) {
-                            nstack(spd, 4.0f, 3.0f, 4) {
-                                //s2->spawnPreset(BulletType::KnifeBlue, s2->pos, DirectionalBullet(avecd(a), 10.0f));
-                                Bsp b = s2->spawnPresetwLambda(BulletType::RoundBlue, s2->pos, [](Bp b) {
-                                    glm::vec2 accel = glm::vec2(cf(b, 0), cf(b, 1));
-                                    b->setVelocity(b->getVelocity() + accel);
-                                    b->move();
-                                    });
-                                b->initializeCustomVars(Direction(avecd(o)), Speed(spd), glm::vec2(0, -0.1f));
-                            }
-                        }
-                        s2->getParent<Bullet>()->destroy();
-                    }
-                    });
-            }
-        }
-        every(s, 180) {
-            nspread(a, getAngle(targetPlayer(s->pos)), 4, 3) {
-                nstack(spd, 9.0f, 0.5f, 3) {
-                    s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(a), spd));
-                }
+        every(s, 20) {
+            nring(o, 16) {
+                Bsp b = s->spawnPreset(BulletType::KnifeRed, s->pos + glm::vec2(avecd(o + t(s) / 20)), SpinningDirectionalBullet(s->pos, 8.0f, 2.0f, -0.01f, -0.001f));
+                b->destroyFlags.offScreen = false;
+                b->destroyFlags.destroyTime = 360.0f;
             }
         }
     }
