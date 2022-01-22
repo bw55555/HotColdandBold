@@ -72,7 +72,7 @@ void Player::update() {
 	if (overHeatTime >= 0.0f) {
 		if (overHeatTime == 0.0f) {
 			health += 1;
-			//sound effect here
+			Audio::playSound("resources/audio/1up.mp3", false, false);
 		}
 		overHeatTime -= 1.0f;
 		float fluc = sin(overHeatTime / (6 - 2 * (overHeatTime < 180.0f) - 2 * (overHeatTime < 60.0f)));
@@ -159,14 +159,14 @@ void Player::takeDamage() {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		GameWindow::Instance->clearBullets();
-		//sound effect here
+		Audio::playSound("resources/audio/ow.mp3", false, false);
 		return;
 	}
 	//std::cout << deathbombTimer << "\n";
 	if (invTimer <= 0 && deathbombTimer == -1.0f) {
 		collisionEnabled = false;
 		deathbombTimer = 6.0f;
-		//sound effect here
+		Audio::playSound("resources/audio/ow.mp3", false, false);
 	} else if (deathbombTimer == 0.0f) {
 		health -= 1;
 		if (health <= 0) {
@@ -238,7 +238,7 @@ void Player::bomb() {
 		deathbombTimer = -1.0f;
 		collisionEnabled = true;
 	}
-	Audio::playSound("resources/audio/explode.mp3", false, false);
+	Audio::playSound("resources/audio/echo5.wav", false, false);
 	noInstantHeatTimer = 60.0f;
 	bombs -= 1;
 	superchargeHeatInstant = 0.0f;
