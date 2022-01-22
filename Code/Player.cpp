@@ -63,31 +63,28 @@ void Player::update() {
 	}
 
 	if (superchargeHeatInstant + superchargeHeatPermanent >= superchargeHeatMax) {
-		overHeatTime = 480.0f;
+		overHeatTime = 420.0f;
 		superchargeHeatInstant = 0.0f;
 		superchargeHeatPermanent = 0.0f;
 	}
-
-	if (invTimer >= 0) {
-		if (invTimer == 0.0f) {
-			color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	invTimer -= (invTimer > 0) * 1.0f;
+	if (overHeatTime >= 0.0f) {
+		if (overHeatTime == 0.0f) {
+			health += 1;
+			//sound effect here
 		}
-		else {
-			color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
-		}
-		invTimer -= 1;
-	}
-
-	if (overHeatTime > 0) {
 		overHeatTime -= 1.0f;
-		color = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+		float fluc = sin(overHeatTime / (6 - 2 * (overHeatTime < 180.0f) - 2 * (overHeatTime < 60.0f)));
+		color = glm::vec4(1.0f, 0.5f - 0.5f * fluc, 0.5f - 0.5f * fluc, 1.0f);
 	}
-	else if (overHeatTime == 0.0f) {
-		overHeatTime -= -1.0f;
-		health += 1;
+	else if (invTimer >= 0) {
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f + 0.5f * sin(invTimer / 3));
+	}
+	else {
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		//sound effect here
 	}
+
+	
 
 	checkMovement();
 	//bomb!
