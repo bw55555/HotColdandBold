@@ -233,7 +233,7 @@ bool Player::checkGraze(Bullet* b) {
 void Player::bomb() {
 	//maybe do something (sound effect here) if can't bomb for any reason?
 	if (invTimer > 0.0f || bombs <= 0 || heat < 300.0f) { return; }
-
+	AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
 	if (deathbombTimer > 0.0f) {
 		deathbombTimer = -1.0f;
 		collisionEnabled = true;
