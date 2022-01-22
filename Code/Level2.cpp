@@ -9,10 +9,6 @@ namespace Level {
     using namespace Movement;
     using namespace BulletMovement;
     void Level2(GLp l) {
-        //FairyBuilder* fairy = new FairyBuilder(); // Creates the FairyBuilder
-        //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
-        //EnemyBuildDirector director; //Creates the director
-        //std::cout << "Running Level Update\n";
         L2Part1(l);
         L2Part2(l);
         L2Part3(l);
@@ -77,54 +73,57 @@ namespace Level {
     */
 
     void L2Part1(GLp l) {
-        during(l, 360) {
+        during(l, 1200) {
             every(l, 60) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L2P1EnemyFunc);
+                float x = 2 * ((randomFloat(-1, 1) > 0) - 0.5f);
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(x * randomFloat(300, 700), 1100.0f), L2P1EnemyFunc);
+                e->initializeCustomVars(glm::vec2(-x, randomFloat(-0.5f, -0.2f)));
                 e->createBulletSpawner(L2P1EnemyBSFunc);
             }
         }
-        delayClear(l, 360, 900);
-        delay(l, 60);
-        during(l, 360) {
+        delay(l, 600);
+        during(l, 600) {
             every(l, 60) {
-                Esp e = Enemy::makePresetEnemy(EnemyType::Fairy, glm::vec2(850.0f, 900.0f), L2P1EnemyFunc2);
+                float x = 2 * ((randomFloat(-1, 1) > 0) - 0.5f);
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(x * randomFloat(300, 700), 1100.0f), L2P1EnemyFunc);
+                e->initializeCustomVars(glm::vec2(-x, randomFloat(-0.5f, -0.2f)));
                 e->createBulletSpawner(L2P1EnemyBSFunc);
             }
         }
-        delayMinTrigger(l, Enemy::enemies.size() == 0, 360, 900); // same as delayClear(l, 360, 900)
-        delay(l, 60);
+        delay(l, 300);
+        during(l, 300) {
+            every(l, 60) {
+                float x = 2 * ((randomFloat(-1, 1) > 0) - 0.5f);
+                Esp e = Enemy::makePresetEnemy(EnemyType::WeakFairy, glm::vec2(x * randomFloat(300, 700), 1100.0f), L2P1EnemyFunc);
+                e->initializeCustomVars(glm::vec2(-x, randomFloat(-0.5f, -0.2f)));
+                e->createBulletSpawner(L2P1EnemyBSFunc);
+            }
+        }
+        delayClear(l, 300, 1800);
     }
 
     void L2P1EnemyFunc(Ep e) {
-        float mT = 600.0f;
-        during(e, mT) {
-            float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
-            e->moveTo(followBezierCurve(cbct, glm::vec2(850.0f, 900.0f), glm::vec2(-850.0f, 400.0f), glm::vec2(566.0f, 504.0f)));
+        during(e, 30) {
+            e->move(glm::vec2(0.0f, 1.0f) * linearBurst(t(e), -20.0f, 0.5f, 30));
+        } delay(e, 30);
+        once(e) { e->createBulletSpawner(L2P1EnemyBSFunc); }
+        delay(e, 120);
+        forever(e) {
+            e->move(glm::vec2(cf(e, 0), cf(e, 1)) * std::max(e->getNestedTime() * 0.05f, 20.0f));
         }
-        wf(e, mT) {
-            e->destroy();
-        }
+        wft(e, e->isOnScreen(), 600.0f);
     }
 
     void L2P1EnemyFunc2(Ep e) {
-        float mT = 600.0f;
-        during(e, mT) {
-            float cbct = cubic_bezier_time(t(e), mT, 0, .89, 1, .57);
-            e->moveTo(followBezierCurve(cbct, glm::vec2(-850.0f, 900.0f), glm::vec2(850.0f, 400.0f), glm::vec2(-566.0f, 504.0f)));
-        }
-        wf(e, mT) {
-            e->destroy();
-        }
+        
     }
 
     void L2P1EnemyBSFunc(BSp s) {
-        delay(s, 60);
-        forever(s) {
-            every(s, 60) {
-                nspread(o, getAngle(targetPlayer(s->pos)), dchoice(30, 30, 60), dchoice(1, 3, 5)) {
-                    nstack(spd, 6.0f, 2.0f, dchoice(1, 2, 3)) {
-                        s->spawnPreset(BulletType::DotWhite, DirectionalBullet(avecd(o), spd));
-                    }
+        every(s, dchoice(60, 50, 40)) {
+            nstack(spd, 8.0f, 2.0f, dchoice(3, 4, 5)) {
+                float rf = randomFloat(0, 360);
+                nring(o, dchoice(8, 10, 12)) {
+                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet{ avecd(rf + o), spd });
                 }
             }
         }
