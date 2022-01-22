@@ -10,7 +10,7 @@ void PauseMenu::initialize() {
 	//in full...
 	createButton("Resume", []() {GameWindow::Instance->setPause(false); }, glm::vec2(-600.0f, 0.0f), glm::vec2(1.0f), 0, HTA::Center, VTA::Center);
 	//createButton("Restart", []() {GameWindow::Instance->setPause(false); GameWindow::restart(); }, glm::vec2(-600.0f, -120.0f));
-	createButton("Return to Main Menu", []() {GameWindow::Instance->setPause(false); GameWindow::Instance->loadScene(SceneName::MainMenu); }, glm::vec2(-600.0f, -240.0f));
+	createButton("Return to Main Menu", []() {GameWindow::Instance->setPause(false); GameWindow::Instance->loadScene(SceneName::MainMenu); }, glm::vec2(-600.0f, -120.0f));
 	//createButton("X", doNothingFunc, glm::vec3(1.0f), glm::vec3(0.0f), 0, HTA::Center, VTA::Center);
 }
 
