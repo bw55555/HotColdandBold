@@ -159,7 +159,7 @@ void Player::takeDamage() {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
-		SoundEffect::play("resources/audio/echo5.wav", false, 1.0f);
+		SoundEffect::play("resources/audio/roar.wav", false, 1.0f);
 		GameWindow::Instance->clearBullets();
 		return;
 	}
@@ -167,7 +167,7 @@ void Player::takeDamage() {
 	if (invTimer <= 0 && deathbombTimer == -1.0f) {
 		collisionEnabled = false;
 		deathbombTimer = 6.0f;
-		SoundEffect::play("resources/audio/ow.mp3", false, 2.0f);
+		SoundEffect::play("resources/audio/roar.mp3", false, 2.0f);
 	} else if (deathbombTimer == 0.0f) {
 		health -= 1;
 		if (health <= 0) {
