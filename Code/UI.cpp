@@ -23,15 +23,15 @@ void UI::initialize() {
     if (GameWindow::Instance->settings.difficulty == Difficulty::Hard) { difficultyText = "Hard"; }
 
     makeText("Difficulty", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText(difficultyText, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText(difficultyText, glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(700.0f, 650.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Lives", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(550.0f, 550.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Bombs", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText("100", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("100", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(550.0f, 450.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Graze", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(550.0f, 350.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Heat", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 250.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(530.0f, 250.0f), glm::vec2(1.5f), 0, HTA::Left);
+    makeText("0", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(550.0f, 250.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("Continues", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(280.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(730.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
 
