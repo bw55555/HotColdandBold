@@ -32,6 +32,10 @@ public:
     bool destroyed;
 
     float bombs;
+
+    int deaths;
+    int bombsUsed;
+
     Player(Hitbox collisionbox, unsigned int textureID);
     void initialize();
     void checkMovement();
