@@ -627,13 +627,13 @@ namespace Level {
     }
 
     void bossPattern3(BSp s) {
-        every(s, 60) {
-            nspread(o, getAngle(targetPlayer(s->pos)), 40, 2) {
-                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos, DirectionalBullet(avecd(o), 5.0f));
+        every(s, dchoice(60.0f, 60.0f, 90.0f)) {
+            nspread(o, getAngle(targetPlayer(s->pos)), dchoice(40, 30, 60), dchoice(2, 2, 4)) {
+                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos, DirectionalBullet(avecd(o), dchoice(5.0f, 8.0f, 10.0f)));
                 b->createBulletSpawner(glm::vec2(0, 0), [](BSp s2) {
                     every(s2, 1) if (s2->getParent<Bullet>()->touchingWall(WallDirection::Any)) {
-                        nspread(o, 90, 20, 4) {
-                            nstack(spd, 4.0f, 3.0f, 4) {
+                        nspread(o, 90, 20, 3) {
+                            nstack(spd, 4.0f, 3.0f, dchoice(4.0f, 4.0f, 5.0f)) {
                                 //s2->spawnPreset(BulletType::KnifeBlue, s2->pos, DirectionalBullet(avecd(a), 10.0f));
                                 Bsp b = s2->spawnPresetwLambda(BulletType::RoundBlue, s2->pos, [](Bp b) {
                                     glm::vec2 accel = glm::vec2(cf(b, 0), cf(b, 1));
@@ -648,7 +648,7 @@ namespace Level {
                     });
             }
         }
-        every(s, 180) {
+        every(s, dchoice(180.0f, 120.0f, 90.0f)) {
             nspread(a, getAngle(targetPlayer(s->pos)), 4, 3) {
                 nstack(spd, 9.0f, 0.5f, 3) {
                     s->spawnPreset(BulletType::KnifeBlue, s->pos, DirectionalBullet(avecd(a), spd));
@@ -658,19 +658,19 @@ namespace Level {
     }
 
     void bossPattern4(BSp s) {
-        every(s, 40) {
+        every(s, dchoice(80.0f, 60.0f, 40.0f)) {
             float rf = randomFloat(0.0f, 15.0f);
             rf = 0;
             nring(a, 12) {
-                nstack(spd, 5, 0.3, 7) {
-                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(rf + a + 15 * t(s)/40), spd));
+                nstack(spd, dchoice(4.0f, 4.0f, 5.0f), dchoice(0.5f, 0.4f, 0.3f), dchoice(6, 7, 8)) {
+                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(rf + a + 15 * t(s)/dchoice(80.0f, 60.0f, 40.0f)), spd));
                 }
             }
         }
         every(s, 60) {
             s->dir = targetPlayer(s->pos);
         }
-        fyex(s, 60, 18) {
+        fyex(s, 60, dchoice(18, 21, 24)) {
             every(s, 3) {
                 float a = rt(s, 60) + 1;
                 nspread(o, getAngle(s->dir), a, 2) {
@@ -681,17 +681,17 @@ namespace Level {
     }
 
     void bossPattern5(BSp s) {
-        int spawnTimeA = 4;
+        int spawnTimeA = dchoice(4.0f, 3.0f, 3.0f);
         every(s, spawnTimeA) {
             nring(a, 6) {
                 float angle = a + linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
-                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(angle), 8.0f));
+                s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(angle), dchoice(6.0f, 8.0f, 12.0f)));
             }
         }
         every(s, spawnTimeA) {
             nring(a, 6) {
                 float angle = a - linearAcceleration(t(s) / spawnTimeA, 0.5f, 10.31274f, 30.0f, true);
-                s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(angle), 8.0f));
+                s->spawnPreset(BulletType::KnifeRed, DirectionalBullet(avecd(angle), dchoice(6.0f, 8.0f, 12.0f)));
             }
         }
         /*
