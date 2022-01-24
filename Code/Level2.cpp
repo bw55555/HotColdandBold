@@ -135,18 +135,17 @@ namespace Level {
     */
 
     void miniboss2UFunc(Ep e) {
-        float destroyTime = 3600.0f;
+        /*
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(miniboss2Pattern1);
             }
-            wf(e, destroyTime) { e->destroy(); }
         }
+        */
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(miniboss2Pattern2);
             }
-            wf(e, destroyTime) { e->destroy(); }
         }
     }
 
@@ -185,31 +184,31 @@ namespace Level {
     }
 
     void miniboss2Pattern2(BSp s) {
-        every(s, 300) {
-            float rf = randomFloat(0.0f, 45.0f);
-            nringi(o, i, 4) {
-                BulletType spawnType = BulletType::RoundBlue;
-                if (i % 2 == 0) {
-                    spawnType = BulletType::RoundBlue;
+        rtfyex(s, rtx, dchoice(360, 300, 240), dchoice(40, 50, 60)) {
+            every(s, 2) {
+                nringi(o, i, 8) {
+                    nstacki(spd, j, dchoice(6.0f, 6.0f, 8.0f), dchoice(2.0f, 4.0f, 2.0f), dchoice(1, 2, 3)) {
+                        Bsp b = s->spawnPreset(BulletType::RoundRed, miniboss2Pattern2BFunc);
+                        glm::vec2 bdir = avecd(o + t(s) * 7);
+                        b->initializeCustomVars(Direction{ bdir }, Speed{ 7.0f - 3.0f * bdir.y }, 170 - rtx, spd);
+                    }
                 }
-                else {
-                    spawnType = BulletType::RoundRed;
-                }
-                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, s->pos + avecd(o + 90 * t(s) / 300 + rf), SpinningDirectionalBullet(s->pos, 7.0f, 2.0f, -0.001f, 0.0f));
-                BSp s = b->createBulletSpawner(miniboss2Pattern2Sub);
-                s->initializeCustomVars(static_cast<int>(spawnType));
             }
         }
     }
 
-    void miniboss2Pattern2Sub(BSp s) {
-        delay(s, 20.0f);
-        forever(s) {
-            every(s, dchoice(20, 16, 12)) {
-                nring(o, dchoice(6, 8, 10)) {
-                    Bsp b = s->spawnPreset(static_cast<BulletType>(static_cast<int>(cf(s, 0))), DirectionalBullet(avecd(o + t(s)), dchoice(5.0f, 6.0f, 8.0f)));
-                }
-            }
+    void miniboss2Pattern2BFunc(Bp b) {
+        during(b, cf(b, 0)) {
+            directionalBullet(b);
+        }
+        delay(b, cf(b, 0));
+        once(b) {
+            b->dir = targetPlayer(b);
+            b->speed = cf(b, 1);
+            b->texture = BulletSpawner::bulletPresetTextures[1];
+        }
+        forever(b) {
+            directionalBullet(b);
         }
     }
 

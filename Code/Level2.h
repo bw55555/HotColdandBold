@@ -15,7 +15,7 @@ namespace Level {
     void miniboss2Pattern1BFunc(Bp b);
     void miniboss2Pattern1Sub(BSp s);
     void miniboss2Pattern2(BSp s);
-    void miniboss2Pattern2Sub(BSp s);
+    void miniboss2Pattern2BFunc(Bp b);
 
     void boss2UFunc(Enemy* e);
     void boss2Pattern1MinionFunc(Enemy* e);
