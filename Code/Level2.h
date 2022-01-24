@@ -12,6 +12,7 @@ namespace Level {
 
     void miniboss2UFunc(Ep e);
     void miniboss2Pattern1(BSp s);
+    void miniboss2Pattern1BFunc(Bp b);
     void miniboss2Pattern1Sub(BSp s);
     void miniboss2Pattern2(BSp s);
     void miniboss2Pattern2Sub(BSp s);

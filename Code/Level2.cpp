@@ -10,7 +10,7 @@ namespace Level {
     using namespace BulletMovement;
     void Level2(GLp l) {
 
-        L2Part1(l);
+        //L2Part1(l);
         
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
         once(l) {
@@ -139,10 +139,6 @@ namespace Level {
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(miniboss2Pattern1);
-                BSp s1 = e->createBulletSpawner(glm::vec2(0.0f, 100.0f), miniboss2Pattern1Sub);
-                s1->initializeCustomVars(static_cast<int>(BulletType::RoundBlue));
-                BSp s2 = e->createBulletSpawner(glm::vec2(0.0f, -100.0f), miniboss2Pattern1Sub);
-                s2->initializeCustomVars(static_cast<int>(BulletType::RoundRed));
             }
             wf(e, destroyTime) { e->destroy(); }
         }
@@ -155,24 +151,34 @@ namespace Level {
     }
 
     void miniboss2Pattern1(BSp s) {
-        rtfyex(s, rtv, 300, 240) {
-            every(s, dchoice(40, 30, 20)) {
-                nspread(o, -90.0f, std::abs(106 - dchoice(9.0f, 8.5f, 7.5f) * rtv / 10), 2) {
-                    nstack(spd, 6.0f, 2.0f, dchoice(5, 5, 6)) {
-                        Bsp b = s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o), spd));
-                    }
-                }
+        forever(s) {
+            every(s, dchoice(240, 240, 120)) {
+                Bsp b = s->spawnPreset(BulletType::BallBlackBorder, miniboss2Pattern1BFunc);
+                b->initializeCustomVars(Speed{ dchoice(6.0f, 8.0f, 10.0f) });
+                b->createBulletSpawner(miniboss2Pattern1Sub);
             }
         }
     }
 
+    void miniboss2Pattern1BFunc(Bp b) {
+        float maxAngleTurn = dchoice(1.0f, 2.0f, 4.0f);
+        every(b, 120) {
+            b->dir = targetPlayer(b);
+        }
+        fyex(b, 120, 90) {
+            float anglediff = getAngle(targetPlayer(b)) - getAngle(b->dir);
+            if (anglediff > 180) { anglediff -= 360; }
+            if (anglediff < -180) { anglediff += 360; }
+            b->rotateDir(std::clamp(anglediff, -maxAngleTurn, maxAngleTurn));
+            b->move(b->dir * b->speed);
+        }
+    }
+
     void miniboss2Pattern1Sub(BSp s) {
-        s->localPos = s->localPos + rotateAround(s->localPos, glm::vec2(0.0f, 0.0f), 1.0f);
-        delay(s, 240);
         forever(s) {
-            every(s, dchoice(16, 12, 9)) {
-                nring(o, dchoice(8, 8, 12)) {
-                    s->spawnPreset(static_cast<BulletType>(static_cast<int>(cf(s, 0))), DirectionalBullet(avecd(o + t(s)), dchoice(6.0f, 8.0f, 10.0f)));
+            everyo(s, 120, 105) {
+                nring(o, dchoice(6, 8, 12)) {
+                    s->spawnPreset(BulletType::KnifeBlue, DirectionalBullet(avecd(o + t(s)), dchoice(6.0f, 8.0f, 10.0f)));
                 }
             }
         }
