@@ -135,13 +135,13 @@ namespace Level {
     */
 
     void miniboss2UFunc(Ep e) {
-        /*
+        
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(miniboss2Pattern1);
             }
         }
-        */
+        
         if (e->onNextPhase()) {
             wf(e, 90.0f) {
                 e->createBulletSpawner(miniboss2Pattern2);
