@@ -9,6 +9,7 @@ namespace Level {
     using namespace Movement;
     using namespace BulletMovement;
     void Level2(GLp l) {
+
         L2Part1(l);
         
         wf(l, 120.0f) { GameWindow::Instance->clearScreen(); }
