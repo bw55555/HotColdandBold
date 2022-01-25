@@ -238,6 +238,8 @@ void GameWindow::createEnemyTextures() {
     loadTexture(PATH_START + "resources/textures/snowman.png", &enemyTextures[0]);
     loadTexture(PATH_START + "resources/textures/yeti.png", &enemyTextures[6]);
     loadTexture(PATH_START + "resources/textures/icedragon.png", &enemyTextures[7]);
+    loadTexture(PATH_START + "resources/textures/reindeer.png", &enemyTextures[8]);
+    loadTexture(PATH_START + "resources/textures/santa.png", &enemyTextures[9]);
 }
 
 void GameWindow::checkCollisions() {
