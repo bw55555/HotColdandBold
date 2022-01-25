@@ -109,7 +109,7 @@ void LevelSelectMenu::update() {
 void InstructionsMenu::initialize() {
 	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	makeText("INSTRUCTIONS", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 900.0f), glm::vec2(3.1f, 3.2f), 0, HTA::Center, VTA::Center);
-	makeText("INSTRUCTIONS", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 900.0f), glm::vec2(3.0f), 0, HTA::Center, VTA::Center);
+	makeText("INSTRUCTIONS", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(0.0f, 900.0f), glm::vec2(3.0f), 0, HTA::Center, VTA::Center);
 
 	makeText("Arrow keys to control your Phoenix.", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-1410.0f, 700.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
 	makeText("Hold Z to fire fireballs and homing fireballs.", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-1410.0f, 500.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
