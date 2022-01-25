@@ -19,14 +19,12 @@ void Credits::initialize() {
 	makeText("Helpers: Yassin Mostafa and Kevin Portinger", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -3700.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("Music by ZUN and danmaq", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4000.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("Phoenix Sprite by Ki-Shine", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4300.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Enemy Sprites by Open Source", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4600.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Main Menu and Level 2 Art by Open Source", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4900.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("Ice Dragon Art from Final Fantasy Dimensions II", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4600.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("Santa Claus Art from Christmas Pixel Art", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -4900.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("Level 1 Art by Animefox52", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5200.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Fonts by Open Source", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5500.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Bullet Art by ZUN", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5800.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Sound Effects by Open Source", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -6100.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("SPECIAL THANKS TO ZUN FOR TOUHOU", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -6400.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Thanks for Playing!", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, -6800.0f), glm::vec2(4.0f), 0, HTA::Center, VTA::Center);
+	makeText("Icicle Art from Super Mario Maker 2", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5500.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("SPECIAL THANKS TO ZUN FOR TOUHOU", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5800.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("Thanks for Playing!", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, -6100.0f), glm::vec2(4.0f), 0, HTA::Center, VTA::Center);
 	
 }
 
