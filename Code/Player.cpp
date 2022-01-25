@@ -67,6 +67,7 @@ void Player::update() {
 
 	if (superchargeHeatInstant + superchargeHeatPermanent >= superchargeHeatMax) {
 		overHeatTime = 420.0f;
+		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BarrierAnim);
 		superchargeHeatInstant = 0.0f;
 		superchargeHeatPermanent = 0.0f;
 	}
@@ -160,7 +161,7 @@ void Player::takeDamage() {
 	if (overHeatTime >= 0.0f) {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
+		//AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
 		SoundEffect::play("resources/audio/roar.mp3", false, 1.0f);
 		GameWindow::Instance->clearBullets();
 		return;

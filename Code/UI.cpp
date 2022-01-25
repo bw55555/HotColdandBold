@@ -12,8 +12,8 @@ unsigned int UI::textureColorbuffer = 0;
 glm::vec2 UI::UIsize{2 * GameWindow::halfWidth + 1600, 2 * GameWindow::halfHeight + 100};
 glm::mat4 UI::UIprojection = glm::ortho(-UI::UIsize.x / 2, UI::UIsize.x / 2, -UI::UIsize.y / 2, UI::UIsize.y / 2);
 
-glm::vec2 overheatBarSLoc{ 730.0f, -300.0f };
-glm::vec2 overheatBarSScale{ 400.0f, 32.0f };
+glm::vec2 overheatBarSLoc{ 530.0f, -300.0f };
+glm::vec2 overheatBarSScale{ 800.0f, 64.0f };
 
 void UI::initialize() {
     makeRect(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f), Scale(UIsize.x, UIsize.y));
@@ -36,17 +36,17 @@ void UI::initialize() {
     makeText("3", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(730.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Left);
 
     makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
-    makeText("Supercharge Bar", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(630.0f, -150.0f), glm::vec2(1.5f), 0, HTA::Left);
     
-
+    makeText("Supercharge Bar", glm::vec3(1.0f, 1.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f + glm::vec2(0.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Center);
+    makeText("SUPERCHARGED", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(1.0f));
     //overheat bar
     makeRect(glm::vec4(0.6f, 1.0f, 1.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, overheatBarSScale);
 
     //permanent heat
-    makeRect(glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(0.0f, 32.0f));
+    makeRect(glm::vec4(0.5f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, overheatBarSScale);
 
     //instant heat
-    makeRect(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(0.0f, 32.0f));
+    makeRect(glm::vec4(1.0f, 0.5f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, overheatBarSScale);
     
 
     //Reference X
@@ -75,6 +75,7 @@ void UI::update() {
     s << std::setprecision(2) << GameWindow::Instance->frameRate << "fps";
     texts[12]->text = s.str();
 
+    texts[14]->renderEnabled = GameWindow::Instance->player->overHeatTime > 0;
 
 
 

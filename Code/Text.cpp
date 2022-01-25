@@ -116,6 +116,7 @@ void Text::draw() {
 }
 
 void Text::draw(glm::mat4 customProjection) {
+    if (!renderEnabled) { return; }
     Shader* s = GameWindow::textShader;
     s->use();
     s->setVec4("textColor", color);
