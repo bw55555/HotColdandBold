@@ -411,11 +411,11 @@ void GameWindow::undeadify() {
 }
 
 void GameWindow::mainMenu() {
-    GameWindow::Instance->loadScene(SceneName::MainMenu);
     setLost(false);
+    GameWindow::Instance->loadScene(SceneName::MainMenu);
 }
 
 void GameWindow::restart() {
-    GameWindow::Instance->loadScene(SceneName::Level1);
     setLost(false);
+    GameWindow::Instance->loadScene(SceneName::Level1);
 }

@@ -105,11 +105,11 @@ void Player::checkMovement() {
 
 	//rshift?
 	if (KeyInput::isPressed("LSHIFT")) {
-		speed = std::min(heat / 20, 8.0f);
+		speed = std::min(8.0f * (overHeatTime > 0.0f) + sqrt(heat), 8.0f);
 		focus = true;
 	}
 	else {
-		speed = std::min(heat / 20, 20.0f); //idk but better formula is probably needed...
+		speed = std::min(20.0f * (overHeatTime > 0.0f) + sqrt(heat), 20.0f); //idk but better formula is probably needed...
 		focus = false;
 	}
 
@@ -171,6 +171,9 @@ void Player::takeDamage() {
 		deathbombTimer = 6.0f;
 		SoundEffect::play("resources/audio/roar.mp3", false, 2.0f);
 	} else if (deathbombTimer == 0.0f) {
+		if (GameWindow::Instance->settings.mode == GameMode::Prac1 || GameWindow::Instance->settings.mode == GameMode::Prac2) {
+			if (heat < 400) { heat = 1200.0f; }
+		}
 		health -= 1;
 		deaths += 1;
 		if (health <= 0) {
