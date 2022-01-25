@@ -75,7 +75,7 @@ void Player::update() {
 	if (overHeatTime >= 0.0f) {
 		if (overHeatTime == 0.0f) {
 			health += 1;
-			SoundEffect::play("resources/audio/1up.mp3", false);
+			//SoundEffect::play("resources/audio/1up.mp3", false);
 		}
 		overHeatTime -= 1.0f;
 		float fluc = sin(overHeatTime / (6 - 2 * (overHeatTime < 180.0f) - 2 * (overHeatTime < 60.0f)));

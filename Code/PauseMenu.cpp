@@ -31,10 +31,11 @@ void PauseMenu::render() {
 	for (auto& s : sprites) {
 		s->draw();
 	}
-	for (auto& b : buttons) {
-		b->draw();
-	}
 	for (auto& t : texts) {
 		t->draw();
 	}
+	for (auto& b : buttons) {
+		b->draw();
+	}
+	
 }
