@@ -7,7 +7,7 @@ void MainMenu::initialize() {
 	makeText("Play", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, 0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Play", []() {GameWindow::settings.mode = GameMode::All; GameWindow::Instance->loadScene(SceneName::DifficultyMenu); }, glm::vec2(0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("HOT, COLD, & BOLD", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(0.0f, 700.0f), glm::vec2(3.1f, 3.2f), 0, HTA::Center, VTA::Center);
-	makeText("HOT, COLD, & BOLD", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 700.0f), glm::vec2(3.0f), 0, HTA::Center, VTA::Center);
+	makeText("HOT, COLD, & BOLD", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(0.0f, 700.0f), glm::vec2(3.0f), 0, HTA::Center, VTA::Center);
 	
 	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	
@@ -119,10 +119,10 @@ void InstructionsMenu::initialize() {
 	makeText("Collecting enough heat will SUPERCHARGE you, briefly granting you invincibility, an extra life, and improved damage.", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-1405.0f, -500.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
 	makeText("Beware the many deadly phases of the minibosses and bosses!", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-1405.0f, -700.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
 	
-	makeText("WASD to control your Phoenix.", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, 500.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
-	makeText("Hold Z to fire fireballs and homing fireballs.", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, 300.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
-	makeText("Hold shift to move slowly for maneuvering, sacrificing your homing fireballs.", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, 100.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
-	makeText("X to use bombs that destroy all normal enemies on screen while significantly damaging bosses.", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, -100.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
+	makeText("WASD to control your Phoenix.", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(-1400.0f, 500.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
+	makeText("Hold Z to fire fireballs and homing fireballs.", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(-1400.0f, 300.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
+	makeText("Hold shift to move slowly for maneuvering, sacrificing your homing fireballs.", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(-1400.0f, 100.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
+	makeText("X to use bombs that destroy all normal enemies on screen while significantly damaging bosses.", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(-1400.0f, -100.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
 	makeText("The less heat you have, the slower you move, so pick up heat dropped from enemies!", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, -300.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
 	makeText("Collecting enough heat will SUPERCHARGE you, briefly granting you invincibility, an extra life, and improved damage.", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, -500.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);
 	makeText("Beware the many deadly phases of the minibosses and bosses!", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(-1400.0f, -700.0f), glm::vec2(1.0f), 0, HTA::Left, VTA::Center);

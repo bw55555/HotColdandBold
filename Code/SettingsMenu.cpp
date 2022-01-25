@@ -13,8 +13,8 @@ void SettingsMenu::initialize() {
 	makeText("Return to Main Menu", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, -300.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Return to Main Menu", []() {GameWindow::Instance->loadScene(SceneName::MainMenu); }, glm::vec2(0.0f, -300.0f), glm::vec2(2.0f), 0, HTA::Center);
 	
-	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
-	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Left);
+	makeText("", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(50.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
+	makeText("", glm::vec3(0.6f, 1.0f, 1.0f), glm::vec2(50.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Left);
 	
 	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	//createButton("Settings", doNothingFunc, glm::vec2(0.0f, -200.0f), glm::vec2(2.0f));
