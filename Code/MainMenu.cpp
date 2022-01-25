@@ -11,7 +11,8 @@ void MainMenu::initialize() {
 	//you can omit the last 4 parameters...
 	createButton("Practice", []() {GameWindow::Instance->loadScene(SceneName::LevelSelectMenu); }, glm::vec2(0.0f, -100.0f), glm::vec2(2.0f));
 	createButton("Settings", []() {GameWindow::Instance->loadScene(SceneName::SettingsMenu); }, glm::vec2(0.0f, -200.0f), glm::vec2(2.0f));
-	createButton("Quit", GameWindow::quit, glm::vec2(0.0f, -300.0f), glm::vec2(2.0f));
+	createButton("Credits", []() {GameWindow::Instance->loadScene(SceneName::Credits); }, glm::vec2(0.0f, -300.0f), glm::vec2(2.0f));
+	createButton("Quit", GameWindow::quit, glm::vec2(0.0f, -400.0f), glm::vec2(2.0f));
 	//createButton("X", doNothingFunc, glm::vec3(1.0f), glm::vec3(0.0f), 0, HTA::Center, VTA::Center);
 }
 

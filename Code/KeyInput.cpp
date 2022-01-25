@@ -34,7 +34,7 @@ void KeyInput::update() {
 	}
 }
 
-bool KeyInput::isPressed(std::string keyName, int _inputDelay) {
+bool KeyInput::isPressed(std::string keyName, int _inputDelay, int repeatDelay) {
 	/*
 	try {
 		if (!keys.at(keyName)) { std::cout << "Error"; }
@@ -52,7 +52,7 @@ bool KeyInput::isPressed(std::string keyName, int _inputDelay) {
 		if (currFrame - lp <= _inputDelay) {
 			return false;
 		}
-		return true;
+		return (currFrame - lp) % repeatDelay == 0;
 	}
 	return false;
 }

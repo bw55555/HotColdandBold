@@ -5,6 +5,7 @@
 #include <Shader.h>
 
 void Credits::initialize() {
+	credTimer = 1680;
 	makeRect(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), Pos(0.0f, 0.0f), Scale(UI::UIsize));
 	makeText("CREDITS", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -1000.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("Created by Brian Wang", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -1300.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
@@ -25,7 +26,7 @@ void Credits::initialize() {
 	makeText("Bullet Art by ZUN", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -5800.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("Sound Effects by Open Source", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -6100.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	makeText("SPECIAL THANKS TO ZUN FOR TOUHOU", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -6400.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
-	makeText("Thanks for Playing!", glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, -6700.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("Thanks for Playing!", glm::vec3(1.0f, 0.0f, 0.0f), glm::vec2(0.0f, -6800.0f), glm::vec2(4.0f), 0, HTA::Center, VTA::Center);
 	
 }
 

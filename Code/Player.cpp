@@ -161,7 +161,7 @@ void Player::takeDamage() {
 		overHeatTime = -1.0f;
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 		AnimatedSprite::makePresetAnimatedSprite(AnimationType::BombAnim);
-		SoundEffect::play("resources/audio/roar.wav", false, 1.0f);
+		SoundEffect::play("resources/audio/roar.mp3", false, 1.0f);
 		GameWindow::Instance->clearBullets();
 		return;
 	}
@@ -206,9 +206,9 @@ void Player::respawn() {
 void Player::addHeat(float amt) {
 	heat += amt;
 	if (noInstantHeatTimer <= 0.0f && overHeatTime == -1.0f) {
-		superchargeHeatInstant += 9 * amt / 10.0f;
+		superchargeHeatInstant += 4 * amt / 5.0f;
 	}
-	superchargeHeatPermanent += amt / 10.0f;
+	superchargeHeatPermanent += amt / 5.0f;
 }
 
 void Player::collect(DropItem* item) {

@@ -6,9 +6,9 @@
 void SettingsMenu::initialize() {
 
 	//in full...
-	createButton("BG Volume", []() {}, glm::vec2(0.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Right, VTA::Center);
-	createButton("SFX Volume", []() {}, glm::vec2(0.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Right);
-	createButton("Return to Main Menu", []() {GameWindow::Instance->loadScene(SceneName::MainMenu); }, glm::vec2(0.0f, -500.0f), glm::vec2(2.0f), 0, HTA::Center);
+	createButton("BG Volume     <         >", []() {}, glm::vec2(360.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Right, VTA::Center);
+	createButton("SFX Volume    <         >", []() {}, glm::vec2(360.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Right);
+	createButton("Return to Main Menu", []() {GameWindow::Instance->loadScene(SceneName::MainMenu); }, glm::vec2(0.0f, -300.0f), glm::vec2(2.0f), 0, HTA::Center);
 	
 	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
 	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Left);

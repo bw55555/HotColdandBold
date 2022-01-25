@@ -54,10 +54,10 @@ void Menu::update() {
 		if (selectedButton != -1) { buttons[selectedButton]->use(); }
 		
 	}
-	if (KeyInput::isPressed("DOWN", 10)) {
+	if (KeyInput::isPressed("DOWN", 10, 5)) {
 		selectNext();
 	}
-	if (KeyInput::isPressed("UP", 10)) {
+	if (KeyInput::isPressed("UP", 10, 5)) {
 		selectPrev();
 	}
 }

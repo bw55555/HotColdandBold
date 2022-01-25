@@ -8,6 +8,9 @@ SoundEffect::SFXPlayMap SoundEffect::lastPlayed;//{ {SFXType::Shot, false}, {SFX
 
 std::shared_ptr<SoundEffect> SoundEffect::play(std::string filePath, bool shouldReturn, float volumeMult) {
 	ISound* sound = SoundEngine->play2D((PATH_START + filePath).c_str(), false, true);
+	if (sound == nullptr) {
+		return nullptr;
+	}
 	sound->setVolume(volumeMult * sfxVolume);
 	sound->setIsPaused(false);
 	if (!shouldReturn) { return nullptr; }

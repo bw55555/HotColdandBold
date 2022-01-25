@@ -24,6 +24,7 @@ namespace Level {
         //DoppleBuilder* dopple = new DoppleBuilder(); // Creates the DoppleBuilder
         //EnemyBuildDirector director; //Creates the director
         //std::cout << "Running Level Update\n";
+        
         L1Part1(l);
         L1Part2(l);
         L1Part3(l);
@@ -39,44 +40,10 @@ namespace Level {
             std::shared_ptr<Enemy> e = BossEnemy::makeBossEnemy(400.0f, Hitbox::Circle(200), glm::vec2(0.0f, 500.0f), GameWindow::enemyTextures[7], bossUFunc, glm::vec3(400.0f));
         }
         delayClear(l, 30.0f, 10000.0f);
-        wf(l, 30) {
+        
+        wf(l, 300) {
             GameWindow::Instance->setWin(true);
         }
-
-
-        /*
-        wf(l, 0.5_s) {
-            
-            //Esp e = director.buildEnemy(fairy, glm::vec2(0.0f, 500.0f), enemyTestFunc); // Make a fairy at 0, 500
-            //e->createBulletSpawner(glm::vec2(0, 0), macroExample);
-            
-            Esp e = Enemy::makePresetEnemy(EnemyType::Doppel, glm::vec2(0.0f, 500.0f), [](Ep e) {
-                delay(e, 30);
-                every(e, 180) e->dir = glm::vec2(randomFloat(-1.0f, 1.0f), 0.0f);
-                //fyexo(e, 180, 30, 30) e->move(linearBurst(rt(e, 180) - 30, 8.0f, 0.5f, 30) * e->dir, glm::vec4(-400.0f, 400.0f, 400.0f, 800.0f));
-            });
-            
-            //e->createBulletSpawner(glm::vec2(0, 0), bossPattern2);
-            
-            //e->createBulletSpawner(glm::vec2(0, 0), bossPattern6);
-            
-            
-        }
-        wf(l, 1.5_s) {
-            //force you to unfocus, must keep player at the bottom of the screen
-            
-            Esp e2 = director.buildEnemy(fairy, glm::vec2(0.0f, 100.0f), enemyTestFunc);
-            e2->createBulletSpawner(glm::vec2(0, 0), [](BSp s) {
-                every(s, 4) s->spawnPreset(BulletType::RoundBlue, s->pos, TargetedBullet{ 10.0f });
-            });
-            
-        }
-        wu(l, 4.0_s) {
-            //std::shared_ptr<Enemy> e3 = director.buildEnemy(dopple, glm::vec2(500.0f, 500.0f), enemyTestFunc);
-        }
-        */
-        //delete fairy;
-        //delete dopple;
     }
 
     /*

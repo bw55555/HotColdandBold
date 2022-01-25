@@ -15,6 +15,7 @@
 #include "GameOver.h"
 #include "WinMenu.h"
 #include "Credits.h"
+#include <irrklang/irrKlang.h>
 
 extern std::string PATH_START;
 
@@ -138,6 +139,8 @@ void GameWindow::initialize() {
     if (!Audio::SoundEngine) {
         std::cout << "Failed to create Sound Engine";
     }
+
+    //Audio::SoundEngine->addSoundSourceFromFile(std::string(PATH_START + "resources/audio/roar.mp3").c_str(), irrklang::ESM_AUTO_DETECT, true);
 
     mainLoopMusic = Audio::playSound("resources/audio/mainloop.mp3", true, true, 0.4f);
 
