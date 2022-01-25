@@ -22,9 +22,9 @@ public:
 		{ButtonState::Selected, glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)} };
 	void setColorMap(glm::vec4 inactiveColor, glm::vec4 activeColor, glm::vec4 selectedColor) { colormap = ColorMap{ {ButtonState::Selected, selectedColor}, {ButtonState::Active, activeColor}, {ButtonState::Inactive, inactiveColor} }; }
 	void setColorMap(ColorMap c) { colormap = c; }
-	void setActiveColor(glm::vec4 color) { colormap[ButtonState::Active] = color; }
-	void setSelectedColor(glm::vec4 color) { colormap[ButtonState::Selected] = color; }
-	void setInactiveColor(glm::vec4 color) { colormap[ButtonState::Inactive] = color; }
+	void setActiveColor(glm::vec4 _color) { colormap[ButtonState::Active] = _color; color = colormap[state]; }
+	void setSelectedColor(glm::vec4 _color) { colormap[ButtonState::Selected] = _color; color = colormap[state]; }
+	void setInactiveColor(glm::vec4 _color) { colormap[ButtonState::Inactive] = _color; color = colormap[state]; }
 	bool isSelected() {
 		return state == ButtonState::Selected;
 	}
