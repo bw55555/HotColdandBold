@@ -172,7 +172,7 @@ namespace Level {
             b->dir = targetPlayer(b);
             b->speed = cf(b, 1);
             b->texture = BulletSpawner::bulletPresetTextures[1];
-            b->setRotation(dir);
+            b->setRotation(b->dir);
         }
         after(b, 30) {
             directionalBullet(b);
