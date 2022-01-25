@@ -100,7 +100,7 @@ void GameWindow::initialize() {
     loadTexture(PATH_START + "resources/textures/fireball.png", &BulletSpawner::bulletPresetTextures[19]);
     
     loadTexture(PATH_START + "resources/textures/Circle.png", &Sprite::circleHitboxTexture);
-    loadTexture(PATH_START + "resources/textures/icevsfire.jpg", &Sprite::backgroundTextures[0]);
+    loadTexture(PATH_START + "resources/textures/mainmenu.png", &Sprite::backgroundTextures[0]);
     loadTexture(PATH_START + "resources/textures/level1.jpg", &Sprite::backgroundTextures[1]);
     loadTexture(PATH_START + "resources/textures/level2.png", &Sprite::backgroundTextures[2]);
 
@@ -320,6 +320,9 @@ void GameWindow::loadScene(SceneName name) {
     switch (name) {
     case SceneName::MainMenu:
         scene = std::make_shared<MainMenu>();
+        break;
+    case SceneName::InstructionsMenu:
+        scene = std::make_shared<InstructionsMenu>();
         break;
     case SceneName::DifficultyMenu:
         scene = std::make_shared<DifficultyMenu>();

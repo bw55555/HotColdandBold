@@ -24,3 +24,10 @@ public:
 	//void render() override;
 	void update() override;
 };
+
+class InstructionsMenu : public Menu {
+public:
+	InstructionsMenu() { initialize(); }
+	void initialize() override;
+	void update() override;
+};
