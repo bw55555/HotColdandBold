@@ -150,7 +150,7 @@ namespace Level {
     }
 
     void miniboss2Pattern2(BSp s) {
-        rtfyex(s, rtx, dchoice(360, 300, 240), dchoice(40, 50, 60)) {
+        rtfyex(s, rtx, dchoice(390, 330, 270), dchoice(40, 50, 60)) {
             every(s, 2) {
                 nringi(o, i, 8) {
                     nstacki(spd, j, dchoice(6.0f, 6.0f, 8.0f), dchoice(2.0f, 4.0f, 2.0f), dchoice(1, 2, 3)) {
@@ -172,8 +172,9 @@ namespace Level {
             b->dir = targetPlayer(b);
             b->speed = cf(b, 1);
             b->texture = BulletSpawner::bulletPresetTextures[1];
+            b->setRotation(dir);
         }
-        forever(b) {
+        after(b, 30) {
             directionalBullet(b);
         }
     }
