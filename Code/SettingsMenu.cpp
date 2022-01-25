@@ -16,7 +16,7 @@ void SettingsMenu::initialize() {
 	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, 100.0f), glm::vec2(2.0f), 0, HTA::Left, VTA::Center);
 	makeText("", glm::vec3(0.0f), glm::vec2(50.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Left);
 	
-	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), UI::UIsize);
+	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	//createButton("Settings", doNothingFunc, glm::vec2(0.0f, -200.0f), glm::vec2(2.0f));
 	//createButton("Quit", GameWindow::quit, glm::vec2(0.0f, -300.0f), glm::vec2(2.0f));
 	//createButton("X", doNothingFunc, glm::vec3(1.0f), glm::vec3(0.0f), 0, HTA::Center, VTA::Center);

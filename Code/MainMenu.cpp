@@ -45,13 +45,13 @@ void MainMenu::update() {
 }
 
 void DifficultyMenu::initialize() {
-	makeSprite(Sprite::backgroundTextures[1], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
+	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	//in full...
 	makeText("Easy", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, 0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Easy", []() {GameWindow::Instance->startGame(Difficulty::Easy); }, glm::vec2(0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 
 	//you can omit the last 4 parameters...
-	makeText("Medium", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
+	makeText("Normal", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, -100.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Normal", []() {GameWindow::Instance->startGame(Difficulty::Normal); }, glm::vec2(0.0f, -100.0f), glm::vec2(2.0f));
 	makeText("Hard", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, -200.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Hard", []() {GameWindow::Instance->startGame(Difficulty::Hard); }, glm::vec2(0.0f, -200.0f), glm::vec2(2.0f));
@@ -77,7 +77,7 @@ void DifficultyMenu::update() {
 }
 
 void LevelSelectMenu::initialize() {
-	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), UI::UIsize);
+	makeSprite(Sprite::backgroundTextures[0], glm::vec2(0.0f, 0.0f), glm::vec2(2000.0f, 2000.0f));
 	//in full...
 	makeText("Level 1", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(-10.0f, 0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
 	createButton("Level 1", []() {GameWindow::settings.mode = GameMode::Prac1; GameWindow::Instance->loadScene(SceneName::DifficultyMenu); }, glm::vec2(0.0f), glm::vec2(2.0f), 0, HTA::Center, VTA::Center);
