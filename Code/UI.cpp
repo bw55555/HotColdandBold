@@ -38,7 +38,7 @@ void UI::initialize() {
     makeText("60", glm::vec3(1.0f, 1.0f, 1.0f), glm::vec2(1200.0f, -900.0f), glm::vec2(1.5f), 0, HTA::Left);
     
     makeText("Supercharge Bar", glm::vec3(1.0f, 1.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f + glm::vec2(0.0f, 150.0f), glm::vec2(1.5f), 0, HTA::Center);
-    makeText("SUPERCHARGED", glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(1.0f));
+    makeText("SUPERCHARGED", glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, glm::vec2(1.0f));
     //overheat bar
     makeRect(glm::vec4(0.6f, 1.0f, 1.0f, 1.0f), overheatBarSLoc + overheatBarSScale * 0.5f, overheatBarSScale);
 
